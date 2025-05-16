@@ -1,1 +1,32 @@
-/* You can add global styles to this file, and also import other style files */
+// Custom Theming for Angular Material
+// For more information: https://material.angular.dev/guide/theming
+@use "@angular/material" as mat;
+@use "./app/styles_theme-colors.scss" as theme;
+
+html {
+    @include mat.theme(
+        (
+            color: theme.$primary-palette,
+            typography: Carrois Gothic,
+            density: 0,
+        )
+    );
+}
+
+mat-toolbar {
+    @include mat.toolbar-overrides(
+        (
+            container-background-color: var(--mat-sys-primary),
+            container-text-color: var(--mat-sys-on-primary),
+        )
+    );
+}
+
+html,
+body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    font-family: Carrois Gothic, "Carrois Gothic", sans-serif;
+}
