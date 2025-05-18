@@ -1,8 +1,33 @@
-<mat-toolbar>
-    <mat-toolbar-row>
-        <span>Account Row</span>
-    </mat-toolbar-row>
-    <mat-toolbar-row>
-        <span>Menu Row</span>
-    </mat-toolbar-row>
-</mat-toolbar>
+<div class="primary">
+    <div class="content">
+        <!-- Shown only on big screen -->
+        <mat-toolbar>
+            <mat-toolbar-row>
+                <img
+                    src="/magicalkittieslogosquare4-w300h300.png"
+                    class="logo"
+                />
+                <span class="spacer"></span>
+
+                <img
+                    src="/github-mark.png"
+                    class="github"
+                />
+                <mat-divider vertical="true"></mat-divider>
+                <div class="account">
+                    <button mat-button>Sign In</button>
+                    <button
+                        mat-raised-button
+                        class="sign-up"
+                    >
+                        Sign Up
+                    </button>
+                </div>
+            </mat-toolbar-row>
+        </mat-toolbar>
+        <mat-toolbar>
+            <mat-toolbar-row>Options Row</mat-toolbar-row>
+        </mat-toolbar>
+        <!-- TODO: install side menu for these items  -->
+    </div>
+</div>

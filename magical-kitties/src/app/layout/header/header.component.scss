@@ -1,0 +1,28 @@
+@use "@angular/material" as mat;
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+.logo {
+    height: inherit;
+}
+
+.github {
+    width: 20px;
+}
+
+.account {
+    display: flex;
+    justify-content: space-between;
+}
+
+mat-toolbar {
+    max-height: 80px;
+}
+
+mat-divider {
+    height: calc(100% - 30px);
+    margin-left: 1rem;
+    margin-right: 1rem;
+}

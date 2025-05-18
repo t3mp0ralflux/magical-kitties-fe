@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { MatButton, MatFabButton } from '@angular/material/button';
-import { MatFormField, MatInput } from '@angular/material/input';
+import { MatCard, MatCardContent, MatCardImage } from '@angular/material/card';
 
 @Component({
     selector: 'app-landing',
-    imports: [MatFormField, MatButton, MatFabButton, MatInput,],
+    imports: [MatCard, MatCardContent, MatCardImage],
     templateUrl: './landing.component.html',
     styleUrl: './landing.component.scss'
 })
