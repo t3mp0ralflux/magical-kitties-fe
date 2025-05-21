@@ -5,15 +5,32 @@
     height: 1400px;
 }
 
-.announcements {
-    display: flex;
-    columns: 2;
-    max-height: 300px;
+@media screen and (max-width: 1024px) {
+    .information-card {
+        max-width: calc(100vw - 20px);
+        margin-bottom: 1rem;
+    }
+
+    .information {
+        display: flex;
+        flex-direction: column;
+        margin-left: auto;
+        margin-right: auto;
+    }
 }
 
-.information-card {
-    max-width: 400px;
-    margin-right: 5rem;
+@media screen and (min-width: 1024px) {
+    .information {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        max-height: 300px;
+    }
+
+    .information-card {
+        max-width: 400px;
+        margin-bottom: 2rem;
+    }
 }
 
 mat-card-content {
