@@ -2,14 +2,11 @@
     display: flex;
     padding-top: 2rem;
     padding-bottom: 2rem;
-}
-
-.landing-card {
-    max-height: fit-content;
+    height: 100vh;
 }
 
 @media screen and (max-width: 1024px) and (orientation: landscape) {
-    .landing {
+    .information {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
@@ -18,7 +15,7 @@
         margin-right: auto;
     }
 
-    .landing-card {
+    .information-card {
         max-width: 400px;
         max-height: fit-content;
         margin-right: 1rem;
@@ -31,27 +28,28 @@
 }
 
 @media screen and (max-width: 1024px) and (orientation: portrait) {
-    .landing {
+    .information {
         display: flex;
         flex-direction: column;
         margin-left: auto;
         margin-right: auto;
     }
 
-    .landing-card {
+    .information-card {
         max-width: calc(100vw - 20px);
         margin-bottom: 1rem;
     }
 }
 
 @media screen and (min-width: 1024px) {
-    .landing {
+    .information {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
+        max-height: 300px;
     }
 
-    .landing-card {
+    .information-card {
         max-width: 400px;
         margin-bottom: 2rem;
         margin-right: 2rem;
