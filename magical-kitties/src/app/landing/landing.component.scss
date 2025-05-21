@@ -2,37 +2,58 @@
     display: flex;
     padding-top: 2rem;
     padding-bottom: 2rem;
-    height: 1400px;
 }
 
-@media screen and (max-width: 1024px) {
-    .information-card {
-        max-width: calc(100vw - 20px);
+.landing-card {
+    max-height: fit-content;
+}
+
+@media screen and (max-width: 1024px) and (orientation: landscape) {
+    .landing {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .landing-card {
+        max-width: 400px;
+        max-height: fit-content;
+        margin-right: 1rem;
         margin-bottom: 1rem;
     }
 
-    .information {
+    .landing {
+        height: fit-content;
+    }
+}
+
+@media screen and (max-width: 1024px) and (orientation: portrait) {
+    .landing {
         display: flex;
         flex-direction: column;
         margin-left: auto;
         margin-right: auto;
     }
+
+    .landing-card {
+        max-width: calc(100vw - 20px);
+        margin-bottom: 1rem;
+    }
 }
 
 @media screen and (min-width: 1024px) {
-    .information {
+    .landing {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        max-height: 300px;
     }
 
-    .information-card {
+    .landing-card {
         max-width: 400px;
         margin-bottom: 2rem;
+        margin-right: 2rem;
     }
-}
-
-mat-card-content {
-    margin-top: auto;
 }
