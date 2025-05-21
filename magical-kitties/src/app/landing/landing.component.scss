@@ -1,8 +1,14 @@
 .landing {
     display: flex;
-    columns: 2;
     padding-top: 2rem;
     padding-bottom: 2rem;
+    height: 1400px;
+}
+
+.announcements {
+    display: flex;
+    columns: 2;
+    max-height: 300px;
 }
 
 .information-card {

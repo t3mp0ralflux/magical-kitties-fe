@@ -13,15 +13,6 @@ html {
     );
 }
 
-mat-toolbar {
-    @include mat.toolbar-overrides(
-        (
-            container-background-color: var(--mat-sys-primary),
-            container-text-color: var(--mat-sys-on-primary),
-        )
-    );
-}
-
 html,
 body {
     height: 100%;
@@ -41,10 +32,34 @@ body {
     background: var(--mat-sys-primary);
 }
 
+.secondary {
+    background: var(--mat-sys-secondary);
+}
+
 .background {
     background-color: #f8f2d1;
     background-image: url(/Cat-Paw-Print-Clipart-white.png);
     background-repeat: repeat;
     background-size: 40px;
     background-blend-mode: overlay;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-row {
+    flex-direction: row;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.flex-grow {
+    flex-grow: 1;
+}
+
+.hide {
+    display: none !important;
 }

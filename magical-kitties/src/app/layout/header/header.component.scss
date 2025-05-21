@@ -17,12 +17,65 @@
     justify-content: space-between;
 }
 
-mat-toolbar {
+mat-toolbar.top {
     max-height: 80px;
+
+    @include mat.toolbar-overrides(
+        (
+            container-background-color: var(--mat-sys-primary),
+            container-text-color: var(--mat-sys-on-primary),
+        )
+    );
+}
+
+mat-toolbar.bottom {
+    max-height: 80px;
+
+    @include mat.toolbar-overrides(
+        (
+            container-background-color: var(--mat-sys-secondary),
+            container-text-color: var(--mat-sys-on-secondary),
+        )
+    );
+}
+
+mat-toolbar-row {
+    display: flex;
+    align-items: center;
 }
 
 mat-divider {
     height: calc(100% - 30px);
     margin-left: 1rem;
     margin-right: 1rem;
+}
+
+mat-card {
+    max-width: fit-content;
+    margin-right: 1rem;
+
+    @include mat.card-overrides(
+        (
+            elevated-container-color: var(--mat-sys-secondary),
+            subtitle-text-color: var(--mat-sys-on-secondary),
+            elevated-container-elevation: 0,
+            elevated-container-shape: square,
+        )
+    );
+}
+
+.sign-up {
+    @include mat.button-overrides(
+        (
+            protected-container-color: var(--mat-sys-error),
+            protected-label-text-color: var(--mat-sys-on-error),
+        )
+    );
+}
+
+.menu {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: var(--mat-sys-secondary);
 }
