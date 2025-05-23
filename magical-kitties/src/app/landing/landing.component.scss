@@ -1,57 +1,60 @@
-.landing {
-    display: flex;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    height: 100vh;
-}
+// @import "tailwindcss/theme";
+// @import "tailwindcss/utilities";
 
-@media screen and (max-width: 1024px) and (orientation: landscape) {
-    .information {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin-left: auto;
-        margin-right: auto;
-    }
+// .landing {
+//     display: flex;
+//     padding-top: 2rem;
+//     padding-bottom: 2rem;
+//     height: 100vh;
+// }
 
-    .information-card {
-        max-width: 400px;
-        max-height: fit-content;
-        margin-right: 1rem;
-        margin-bottom: 1rem;
-    }
+// @media screen and (max-width: 1024px) and (orientation: landscape) {
+//     .information {
+//         display: flex;
+//         flex-direction: row;
+//         flex-wrap: wrap;
+//         justify-content: center;
+//         margin-left: auto;
+//         margin-right: auto;
+//     }
 
-    .landing {
-        height: fit-content;
-    }
-}
+//     .information-card {
+//         max-width: 400px;
+//         max-height: fit-content;
+//         margin-right: 1rem;
+//         margin-bottom: 1rem;
+//     }
 
-@media screen and (max-width: 1024px) and (orientation: portrait) {
-    .information {
-        display: flex;
-        flex-direction: column;
-        margin-left: auto;
-        margin-right: auto;
-    }
+//     .landing {
+//         height: fit-content;
+//     }
+// }
 
-    .information-card {
-        max-width: calc(100vw - 20px);
-        margin-bottom: 1rem;
-    }
-}
+// @media screen and (max-width: 1024px) and (orientation: portrait) {
+//     .information {
+//         display: flex;
+//         flex-direction: column;
+//         margin-left: auto;
+//         margin-right: auto;
+//     }
 
-@media screen and (min-width: 1024px) {
-    .information {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        max-height: 300px;
-    }
+//     .information-card {
+//         max-width: calc(100vw - 20px);
+//         margin-bottom: 1rem;
+//     }
+// }
 
-    .information-card {
-        max-width: 400px;
-        margin-bottom: 2rem;
-        margin-right: 2rem;
-    }
-}
+// @media screen and (min-width: 1024px) {
+//     .information {
+//         display: flex;
+//         flex-wrap: wrap;
+//         justify-content: center;
+//         max-height: 300px;
+//     }
+
+//     .information-card {
+//         max-width: 400px;
+//         margin-bottom: 2rem;
+//         margin-right: 2rem;
+//     }
+// }

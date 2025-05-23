@@ -1,7 +1,7 @@
 @use "@angular/material" as mat;
 
 mat-toolbar {
-    max-height: 100px;
+    height: fit-content;
     @include mat.toolbar-overrides(
         (
             container-background-color: var(--mat-sys-secondary),
@@ -17,18 +17,4 @@ mat-toolbar-row {
 
 .spacer {
     flex: 1 1 auto;
-}
-
-.footer-information {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 100%;
-}
-
-.column {
-    display: flex;
-    flex-direction: column;
-    flex-basis: 100%;
-    flex-grow: 1;
 }
