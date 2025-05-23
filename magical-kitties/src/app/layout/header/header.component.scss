@@ -1,18 +1,5 @@
 @use "@angular/material" as mat;
 
-.spacer {
-    flex: 1 1 auto;
-}
-
-.github {
-    width: 20px;
-}
-
-.account {
-    display: flex;
-    justify-content: space-between;
-}
-
 mat-toolbar.top {
     @include mat.toolbar-overrides(
         (
@@ -31,6 +18,14 @@ mat-toolbar.bottom {
     );
 }
 
+mat-divider {
+    @include mat.divider-overrides(
+        (
+            color: var(--mat-sys-on-secondary),
+        )
+    );
+}
+
 mat-toolbar-row {
     display: flex;
     align-items: center;
@@ -42,16 +37,12 @@ mat-divider {
     margin-right: 1rem;
 }
 
-mat-card {
-    max-width: fit-content;
-    margin-right: 1rem;
-
-    @include mat.card-overrides(
+button {
+    @include mat.button-overrides(
         (
-            elevated-container-color: var(--mat-sys-secondary),
-            subtitle-text-color: var(--mat-sys-on-secondary),
-            elevated-container-elevation: 0,
-            elevated-container-shape: square,
+            outlined-label-text-size: 1rem,
+            protected-label-text-size: 1rem,
+            text-label-text-size: 1rem,
         )
     );
 }
@@ -63,11 +54,4 @@ mat-card {
             protected-label-text-color: var(--mat-sys-on-error),
         )
     );
-}
-
-.menu {
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
-    background-color: var(--mat-sys-secondary);
 }
