@@ -4,10 +4,6 @@
     flex: 1 1 auto;
 }
 
-.logo {
-    height: inherit;
-}
-
 .github {
     width: 20px;
 }
@@ -18,8 +14,6 @@
 }
 
 mat-toolbar.top {
-    max-height: 80px;
-
     @include mat.toolbar-overrides(
         (
             container-background-color: var(--mat-sys-primary),
@@ -29,8 +23,6 @@ mat-toolbar.top {
 }
 
 mat-toolbar.bottom {
-    max-height: 80px;
-
     @include mat.toolbar-overrides(
         (
             container-background-color: var(--mat-sys-secondary),
