@@ -1,10 +1,19 @@
 @use "@angular/material" as mat;
 
-mat-toolbar {
+mat-toolbar.top {
     @include mat.toolbar-overrides(
         (
             container-background-color: var(--mat-sys-secondary),
             container-text-color: var(--mat-sys-on-secondary),
+        )
+    );
+}
+
+mat-toolbar.bottom {
+    @include mat.toolbar-overrides(
+        (
+            container-background-color: var(--mat-sys-primary),
+            container-text-color: var(--mat-sys-on-primary),
         )
     );
 }

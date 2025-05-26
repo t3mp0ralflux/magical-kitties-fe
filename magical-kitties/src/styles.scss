@@ -34,8 +34,16 @@ body {
     background: var(--mat-sys-primary);
 }
 
+.on-primary {
+    color: var(--mat-sys-on-primary);
+}
+
 .secondary {
     background: var(--mat-sys-secondary);
+}
+
+.on-secondary {
+    color: var(--mat-sys-on-secondary);
 }
 
 .background {
