@@ -2,11 +2,16 @@
     <div class="content">
         <!-- Shown only on big screen -->
         <mat-toolbar class="top">
-            <mat-toolbar-row>
-                <img
-                    src="/magicalkittieslogosquare4-w300h300.png"
+            <mat-toolbar-row id="fullMenu">
+                <a
+                    href=""
                     class="logo mr-auto"
-                />
+                >
+                    <img
+                        src="/magicalkittieslogosquare4-w300h300.png"
+                        class="logo mr-auto"
+                    />
+                </a>
                 <img
                     src="/github-mark.png"
                     class="size-10"
@@ -27,14 +32,35 @@
                     </button>
                 </div>
             </mat-toolbar-row>
+            <mat-toolbar-row id="miniMenu">
+                <a
+                    href=""
+                    class="logo mr-auto"
+                >
+                    <img
+                        src="/magicalkittieslogosquare4-w300h300.png"
+                        class="logo mr-auto"
+                    />
+                </a>
+                <button
+                    mat-mini-fab
+                    [matMenuTriggerFor]="smallMenu"
+                >
+                    <mat-icon>menu</mat-icon>
+                </button>
+            </mat-toolbar-row>
         </mat-toolbar>
         <!-- TODO: install side menu for these items  -->
     </div>
 </div>
-<div class="secondary">
+<div
+    class="secondary"
+    id="linkMenu"
+>
     <div class="content">
         <mat-toolbar class="bottom">
             <mat-toolbar-row>
+                <button mat-button>Characters</button>
                 <button mat-button>Game Rules</button>
                 <button mat-button>Source</button>
                 <button mat-button>Learn to Play</button>
@@ -42,3 +68,15 @@
         </mat-toolbar>
     </div>
 </div>
+
+<mat-menu #smallMenu="matMenu">
+    <button
+        mat-menu-item
+        class=""
+    >
+        Characters
+    </button>
+    <button mat-menu-item>Game Rules</button>
+    <button mat-menu-item>Source</button>
+    <button mat-menu-item>Learn to Play</button>
+</mat-menu>

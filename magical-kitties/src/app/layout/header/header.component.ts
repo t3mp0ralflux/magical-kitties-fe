@@ -1,16 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatDivider } from '@angular/material/divider';
-import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
+import { MatIcon } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
     selector: 'app-header',
-    imports: [CommonModule, MatToolbar, MatToolbarRow, MatDivider, MatButton],
+    imports: [CommonModule, MatToolbarModule, MatDivider, MatButton, MatMenuModule, MatIcon],
     templateUrl: './header.component.html',
     styleUrl: './header.component.scss'
 })
-export class HeaderComponent {
-    showCharacters = false;
-    fieldShown = "";
+export class HeaderComponent implements OnInit {
+
+    ngOnInit(): void {
+    }
 }

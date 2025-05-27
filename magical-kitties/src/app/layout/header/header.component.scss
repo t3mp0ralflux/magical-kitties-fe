@@ -1,5 +1,13 @@
 @use "@angular/material" as mat;
 
+mat-menu {
+    @include mat.menu-overrides(
+        (
+            item-label-text-size: 2rem,
+        )
+    );
+}
+
 mat-toolbar.top {
     @include mat.toolbar-overrides(
         (
@@ -54,4 +62,26 @@ button {
             protected-label-text-color: var(--mat-sys-on-error),
         )
     );
+}
+
+@media screen and (min-width: 1024px) {
+    #fullMenu {
+        display: flex;
+    }
+    #linkMenu {
+        display: inline;
+    }
+    #miniMenu {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    #fullMenu,
+    #linkMenu {
+        display: none;
+    }
+    #miniMenu {
+        display: flex;
+    }
 }

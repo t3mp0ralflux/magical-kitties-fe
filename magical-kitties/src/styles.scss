@@ -2,7 +2,7 @@
 // For more information: https://material.angular.dev/guide/theming
 @use "@angular/material" as mat;
 @use "./app/styles_theme-colors.scss" as theme;
-@use "tailwindcss";
+@use "./tailwind.css";
 
 html {
     @include mat.theme(
