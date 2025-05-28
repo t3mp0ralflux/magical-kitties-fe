@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
@@ -14,10 +14,12 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 })
 export class HeaderComponent {
     menuOpen: boolean = false;
-    @Output() openedMenu = new EventEmitter<boolean>();
 
     toggleMenu(): void {
         this.menuOpen = !this.menuOpen;
-        this.openedMenu.emit(this.menuOpen);
+        document.getElementById("minimenu-container")?.classList.toggle("invisible");
+        document.getElementById("minimenu-bg")?.classList.toggle("opacity-0");
+        document.getElementById("minimenu-bg")?.classList.toggle("opacity-50");
+        document.getElementById("minimenu")?.classList.toggle("translate-x-full");
     }
 }

@@ -7,8 +7,7 @@ export const routes: Routes = [
         path: '',
         component: LayoutComponent,
         children: [
-            { path: '', redirectTo: 'Landing', pathMatch: 'full' },
-            { path: 'Landing', component: LandingComponent }
+            { path: '', component: LandingComponent }
         ]
     },
     // {

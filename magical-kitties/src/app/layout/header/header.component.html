@@ -32,7 +32,7 @@
                     </button>
                 </div>
             </mat-toolbar-row>
-            <mat-toolbar-row>
+            <mat-toolbar-row id="miniMenu">
                 <a
                     href=""
                     class="logo mr-auto"
@@ -68,39 +68,39 @@
     </div>
 </div>
 <div
-    id="miniMenu"
-    class="absolute"
-    *ngIf="menuOpen"
+    id="minimenu-container"
+    class="fixed w-full h-full z-20 invisible"
 >
-    <div class="relative z-10 secondary">
-        <div class="flex flex-col mat-toolbar min-w-80 ease-in duration-1000">
-            <div class="flex flex-row justify-center">
-                <button
-                    mat-stroked-button
-                    class="mr-5"
-                >
-                    Sign In
-                </button>
-                <button
-                    mat-raised-button
-                    class="sign-up"
-                >
-                    Sign Up
-                </button>
+    <div
+        id="minimenu-bg"
+        class="absolute duration-500 ease-out transition-all inset-0 w-full h-full bg-gray-900 opacity-0"
+        (click)="toggleMenu()"
+    ></div>
+    <div
+        id="minimenu"
+        class="absolute duration-500 ease-out transition-all right-0 w-2/3 translate-x-full"
+    >
+        <div class="relative z-30 flex grow">
+            <div class="flex flex-col mat-toolbar grow">
+                <div class="flex grow justify-center">
+                    <button
+                        mat-stroked-button
+                        class="mr-5"
+                    >
+                        Sign In
+                    </button>
+                    <button
+                        mat-raised-button
+                        class="sign-up"
+                    >
+                        Sign Up
+                    </button>
+                </div>
+                <button mat-button>Characters</button>
+                <button mat-button>Game Rules</button>
+                <button mat-button>Source</button>
+                <button mat-button>Learn to Play</button>
             </div>
-            <button mat-button>Characters</button>
-            <button mat-button>Game Rules</button>
-            <button mat-button>Source</button>
-            <button mat-button>Learn to Play</button>
         </div>
     </div>
 </div>
-<!-- <mat-menu
-    xPosition="before"
-    #smallMenu="matMenu"
->
-    <button mat-menu-item>Characters</button>
-    <button mat-menu-item>Game Rules</button>
-    <button mat-menu-item>Source</button>
-    <button mat-menu-item>Learn to Play</button>
-</mat-menu> -->
