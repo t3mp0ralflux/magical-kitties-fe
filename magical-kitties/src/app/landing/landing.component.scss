@@ -1,0 +1,8 @@
+@use "@angular/material" as mat;
+
+mat-card-content {
+    display: flex;
+    justify-content: center;
+    font-size: larger;
+    padding-top: 16px;
+}

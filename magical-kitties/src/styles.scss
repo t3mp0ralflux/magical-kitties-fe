@@ -1,0 +1,59 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.dev/guide/theming
+@use "@angular/material" as mat;
+@use "./app/styles_theme-colors.scss" as theme;
+@use "./tailwind.css";
+
+html {
+    @include mat.theme(
+        (
+            color: theme.$primary-palette,
+            typography: Carrois Gothic,
+            density: 0,
+        )
+    );
+}
+
+html,
+body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    font-family: Carrois Gothic, "Carrois Gothic", sans-serif;
+    background-color: var(--mat-sys-secondary);
+}
+
+.content {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.primary {
+    background: var(--mat-sys-primary);
+}
+
+.on-primary {
+    color: var(--mat-sys-on-primary);
+}
+
+.secondary {
+    background: var(--mat-sys-secondary);
+}
+
+.on-secondary {
+    color: var(--mat-sys-on-secondary);
+}
+
+.background {
+    background-color: #f8f2d1;
+    background-image: url(/Cat-Paw-Print-Clipart-white.png);
+    background-repeat: repeat;
+    background-size: 40px;
+    background-blend-mode: overlay;
+}
+
+.logo {
+    height: inherit;
+}

@@ -1,0 +1,89 @@
+@use "@angular/material" as mat;
+
+mat-menu {
+    @include mat.menu-overrides(
+        (
+            item-label-text-size: 2rem,
+        )
+    );
+}
+
+mat-toolbar.top {
+    @include mat.toolbar-overrides(
+        (
+            container-background-color: var(--mat-sys-primary),
+            container-text-color: var(--mat-sys-on-primary),
+        )
+    );
+}
+
+mat-toolbar.bottom {
+    @include mat.toolbar-overrides(
+        (
+            container-background-color: var(--mat-sys-secondary),
+            container-text-color: var(--mat-sys-on-secondary),
+        )
+    );
+}
+
+mat-divider {
+    @media screen and (min-width: 1024px) {
+        @include mat.divider-overrides(
+            (
+                color: var(--mat-sys-on-secondary),
+            )
+        );
+    }
+}
+
+mat-toolbar-row {
+    display: flex;
+    align-items: center;
+}
+
+mat-divider {
+    height: calc(100% - 30px);
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+button {
+    @include mat.button-overrides(
+        (
+            outlined-label-text-size: 1rem,
+            protected-label-text-size: 1rem,
+            text-label-text-size: 1rem,
+        )
+    );
+}
+
+.sign-up {
+    @include mat.button-overrides(
+        (
+            protected-container-color: var(--mat-sys-error),
+            protected-label-text-color: var(--mat-sys-on-error),
+        )
+    );
+}
+
+@media screen and (min-width: 1024px) {
+    #fullMenu {
+        display: flex;
+    }
+    #linkMenu {
+        display: inline;
+    }
+    #miniMenu {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    #fullMenu,
+    #linkMenu {
+        display: none;
+    }
+    #miniMenu {
+        display: flex;
+    }
+}

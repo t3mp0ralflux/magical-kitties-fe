@@ -1,0 +1,41 @@
+@use "@angular/material" as mat;
+
+mat-toolbar.top {
+    @include mat.toolbar-overrides(
+        (
+            container-background-color: var(--mat-sys-secondary),
+            container-text-color: var(--mat-sys-on-secondary),
+        )
+    );
+}
+
+mat-toolbar.bottom {
+    @include mat.toolbar-overrides(
+        (
+            container-background-color: var(--mat-sys-primary),
+            container-text-color: var(--mat-sys-on-primary),
+        )
+    );
+}
+
+mat-toolbar-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: fit-content;
+
+    @media (width >= 48rem /* 768px */) {
+        flex-direction: row;
+    }
+}
+
+.links {
+    label,
+    a {
+        font-size: 15px;
+    }
+
+    label {
+        color: #aaaaaa;
+    }
+}

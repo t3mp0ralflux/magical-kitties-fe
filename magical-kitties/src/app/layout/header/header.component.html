@@ -1,0 +1,109 @@
+<div class="primary">
+    <div class="content">
+        <!-- Shown only on big screen -->
+        <mat-toolbar class="top">
+            <mat-toolbar-row id="fullMenu">
+                <a
+                    href=""
+                    class="logo mr-auto"
+                >
+                    <img
+                        src="/magicalkittieslogosquare4-w300h300.png"
+                        class="logo mr-auto"
+                    />
+                </a>
+                <img
+                    src="/github-mark.png"
+                    class="size-10"
+                />
+                <mat-divider vertical="true"></mat-divider>
+                <div>
+                    <button
+                        mat-stroked-button
+                        class="mr-5"
+                    >
+                        Sign In
+                    </button>
+                    <button
+                        mat-raised-button
+                        class="sign-up"
+                    >
+                        Sign Up
+                    </button>
+                </div>
+            </mat-toolbar-row>
+            <mat-toolbar-row id="miniMenu">
+                <a
+                    href=""
+                    class="logo mr-auto"
+                >
+                    <img
+                        src="/magicalkittieslogosquare4-w300h300.png"
+                        class="logo mr-auto"
+                    />
+                </a>
+                <button
+                    mat-mini-fab
+                    (click)="toggleMenu()"
+                >
+                    <mat-icon>menu</mat-icon>
+                </button>
+            </mat-toolbar-row>
+        </mat-toolbar>
+    </div>
+</div>
+<div
+    class="secondary"
+    id="linkMenu"
+>
+    <div class="content">
+        <mat-toolbar class="bottom">
+            <mat-toolbar-row>
+                <button mat-button>Characters</button>
+                <button mat-button>Game Rules</button>
+                <button mat-button>Source</button>
+                <button mat-button>Learn to Play</button>
+            </mat-toolbar-row>
+        </mat-toolbar>
+    </div>
+</div>
+<div
+    id="minimenu-container"
+    class="fixed w-full h-full z-20 invisible"
+>
+    <div
+        id="minimenu-bg"
+        class="absolute duration-500 ease-out transition-all inset-0 w-full h-full bg-gray-900 opacity-0"
+        (click)="toggleMenu()"
+    ></div>
+    <div
+        id="minimenu"
+        class="absolute duration-500 ease-out transition-all right-0 w-2/3 translate-x-full"
+    >
+        <div class="relative z-30 flex grow">
+            <div class="flex flex-col mat-toolbar grow">
+                <div class="flex grow justify-center py-3">
+                    <button
+                        mat-stroked-button
+                        class="mr-5"
+                    >
+                        Sign In
+                    </button>
+                    <button
+                        mat-raised-button
+                        class="sign-up"
+                    >
+                        Sign Up
+                    </button>
+                </div>
+                <mat-divider></mat-divider>
+                <div class="flex flex-col pt-3">
+                    <button mat-button>Characters</button>
+                    <button mat-button>Game Rules</button>
+                    <button mat-button>Source</button>
+                    <button mat-button>Learn to Play</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
