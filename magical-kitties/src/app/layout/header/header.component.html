@@ -32,7 +32,7 @@
                     </button>
                 </div>
             </mat-toolbar-row>
-            <mat-toolbar-row id="miniMenu">
+            <mat-toolbar-row>
                 <a
                     href=""
                     class="logo mr-auto"
@@ -44,13 +44,12 @@
                 </a>
                 <button
                     mat-mini-fab
-                    [matMenuTriggerFor]="smallMenu"
+                    (click)="toggleMenu()"
                 >
                     <mat-icon>menu</mat-icon>
                 </button>
             </mat-toolbar-row>
         </mat-toolbar>
-        <!-- TODO: install side menu for these items  -->
     </div>
 </div>
 <div
@@ -68,15 +67,40 @@
         </mat-toolbar>
     </div>
 </div>
-
-<mat-menu #smallMenu="matMenu">
-    <button
-        mat-menu-item
-        class=""
-    >
-        Characters
-    </button>
+<div
+    id="miniMenu"
+    class="absolute"
+    *ngIf="menuOpen"
+>
+    <div class="relative z-10 secondary">
+        <div class="flex flex-col mat-toolbar min-w-80 ease-in duration-1000">
+            <div class="flex flex-row justify-center">
+                <button
+                    mat-stroked-button
+                    class="mr-5"
+                >
+                    Sign In
+                </button>
+                <button
+                    mat-raised-button
+                    class="sign-up"
+                >
+                    Sign Up
+                </button>
+            </div>
+            <button mat-button>Characters</button>
+            <button mat-button>Game Rules</button>
+            <button mat-button>Source</button>
+            <button mat-button>Learn to Play</button>
+        </div>
+    </div>
+</div>
+<!-- <mat-menu
+    xPosition="before"
+    #smallMenu="matMenu"
+>
+    <button mat-menu-item>Characters</button>
     <button mat-menu-item>Game Rules</button>
     <button mat-menu-item>Source</button>
     <button mat-menu-item>Learn to Play</button>
-</mat-menu>
+</mat-menu> -->

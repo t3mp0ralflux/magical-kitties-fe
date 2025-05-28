@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
@@ -12,8 +12,12 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     templateUrl: './header.component.html',
     styleUrl: './header.component.scss'
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
+    menuOpen: boolean = false;
+    @Output() openedMenu = new EventEmitter<boolean>();
 
-    ngOnInit(): void {
+    toggleMenu(): void {
+        this.menuOpen = !this.menuOpen;
+        this.openedMenu.emit(this.menuOpen);
     }
 }

@@ -10,5 +10,9 @@ import { HeaderComponent } from './header/header.component';
     styleUrl: './layout.component.scss'
 })
 export class LayoutComponent {
+    menuOpen: boolean = false;
 
+    menuOpened(event: any) {
+        this.menuOpen = event.value;
+    }
 }
