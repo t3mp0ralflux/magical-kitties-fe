@@ -27,11 +27,13 @@ mat-toolbar.bottom {
 }
 
 mat-divider {
-    @include mat.divider-overrides(
-        (
-            color: var(--mat-sys-on-secondary),
-        )
-    );
+    @media screen and (min-width: 1024px) {
+        @include mat.divider-overrides(
+            (
+                color: var(--mat-sys-on-secondary),
+            )
+        );
+    }
 }
 
 mat-toolbar-row {
