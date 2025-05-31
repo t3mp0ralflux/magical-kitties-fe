@@ -6,6 +6,8 @@ import { MatIcon } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router } from '@angular/router';
+import { Account } from '../../models/account.model';
+import { AuthService } from '../../services/authService.service';
 
 @Component({
     selector: 'app-header',
@@ -16,8 +18,13 @@ import { Router } from '@angular/router';
 export class HeaderComponent {
     menuOpen: boolean = false;
 
-    constructor(private router: Router) {
+    constructor(private router: Router, private authService: AuthService) {
+        // TODO: AuthGuard needs to check token. If token is still valid, get the account, populate the authService, move along.
+        // TODO: Need a refresh token method cause it'd be ass to login every thirty minutes. Should refresh for like 7 days and a checkbox for "Remember Me" for 30 days or so.
+    }
 
+    get account(): Account | undefined {
+        return this.authService.account;
     }
 
     toggleMenu(): void {

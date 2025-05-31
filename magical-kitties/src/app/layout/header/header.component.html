@@ -17,7 +17,7 @@
                     class="size-10"
                 />
                 <mat-divider vertical="true"></mat-divider>
-                <div>
+                <div *ngIf="account === undefined">
                     <button
                         mat-stroked-button
                         class="mr-5"
@@ -31,6 +31,18 @@
                     >
                         Sign Up
                     </button>
+                </div>
+                <div *ngIf="account !== undefined">
+                    <button
+                        mat-button
+                        [matMenuTriggerFor]="accountMenu"
+                    >
+                        <mat-icon>person</mat-icon>{{ account.userName }}
+                    </button>
+                    <mat-menu #accountMenu="matMenu">
+                        <button mat-menu-item>Settings</button>
+                        <button mat-menu-item>Logout</button>
+                    </mat-menu>
                 </div>
             </mat-toolbar-row>
             <mat-toolbar-row id="miniMenu">
