@@ -19,19 +19,25 @@
             matInput
             formControlName="password"
             placeholder="Password"
+            [type]="hidePassword ? 'password' : 'text'"
         />
+        <mat-icon
+            matSuffix
+            (click)="hidePassword = !hidePassword"
+            >{{ hidePassword ? "visibility_off" : "visibility" }}</mat-icon
+        >
         <mat-hint
             ><a
                 routerLink="/forgot-password"
                 routerLinkActive="router-link-active"
                 >Forgot password?
-            </a></mat-hint
-        >
+            </a>
+        </mat-hint>
     </mat-form-field>
     <span
         *ngIf="loginError"
         class="error mb-5"
-        >Email, username, or password is incorrect. Please check and try again.</span
+        >Email, username, or password is incorrect. Please check and try again or click 'Forgot password' to reset your password.</span
     >
     <button
         mat-raised-button
