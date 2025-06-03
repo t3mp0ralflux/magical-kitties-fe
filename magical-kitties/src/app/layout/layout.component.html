@@ -1,7 +1,10 @@
-<app-header></app-header>
-<main class="background min-h-10/12">
+<app-header *ngIf="!loading"></app-header>
+<main
+    class="background min-h-10/12"
+    *ngIf="!loading"
+>
     <div class="content">
         <router-outlet></router-outlet>
     </div>
 </main>
-<app-footer></app-footer>
+<app-footer *ngIf="!loading"></app-footer>
