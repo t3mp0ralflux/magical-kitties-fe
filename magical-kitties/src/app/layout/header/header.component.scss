@@ -57,6 +57,14 @@ button {
     );
 }
 
+.mini-menu {
+    @include mat.button-overrides(
+        (
+            protected-container-height: 148px,
+        )
+    );
+}
+
 .sign-up {
     @include mat.button-overrides(
         (

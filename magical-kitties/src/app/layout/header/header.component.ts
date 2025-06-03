@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { MatButton } from '@angular/material/button';
-import { MatDivider } from '@angular/material/divider';
-import { MatIcon } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { AuthService } from '../../services/authService.service';
 
 @Component({
     selector: 'app-header',
-    imports: [CommonModule, MatToolbarModule, MatDivider, MatButton, MatMenuModule, MatIcon],
+    imports: [CommonModule, MatToolbarModule, MatDividerModule, MatButtonModule, MatMenuModule, MatIconModule],
     templateUrl: './header.component.html',
     styleUrl: './header.component.scss'
 })
@@ -37,5 +37,13 @@ export class HeaderComponent {
 
     navigateToLogin(): void {
         this.router.navigateByUrl('/login');
+    }
+
+    logout(): void {
+        this.authService.logout();
+    }
+
+    checkButton(text: string): void {
+        alert(text);
     }
 }

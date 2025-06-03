@@ -3,11 +3,10 @@
     [formGroup]="formGroup"
 >
     <mat-form-field class="mb-5">
-        <mat-label>Email address or Username</mat-label>
+        <mat-label>Email or Username</mat-label>
         <input
             matInput
             formControlName="email"
-            placeholder="email or username"
         />
         @if (formGroup.controls["email"].hasError('required')){
         <mat-error>Email is required</mat-error>
@@ -18,7 +17,6 @@
         <input
             matInput
             formControlName="password"
-            placeholder="Password"
             [type]="hidePassword ? 'password' : 'text'"
         />
         <mat-icon

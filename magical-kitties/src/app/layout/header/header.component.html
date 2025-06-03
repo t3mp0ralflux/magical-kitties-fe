@@ -17,33 +17,7 @@
                     class="size-10"
                 />
                 <mat-divider vertical="true"></mat-divider>
-                <div *ngIf="account === undefined">
-                    <button
-                        mat-stroked-button
-                        class="mr-5"
-                        (click)="navigateToLogin()"
-                    >
-                        Sign In
-                    </button>
-                    <button
-                        mat-raised-button
-                        class="sign-up"
-                    >
-                        Sign Up
-                    </button>
-                </div>
-                <div *ngIf="account !== undefined">
-                    <button
-                        mat-button
-                        [matMenuTriggerFor]="accountMenu"
-                    >
-                        <mat-icon>person</mat-icon>{{ account.userName }}
-                    </button>
-                    <mat-menu #accountMenu="matMenu">
-                        <button mat-menu-item>Settings</button>
-                        <button mat-menu-item>Logout</button>
-                    </mat-menu>
-                </div>
+                <ng-container *ngTemplateOutlet="signInOut"></ng-container>
             </mat-toolbar-row>
             <mat-toolbar-row id="miniMenu">
                 <a
@@ -56,8 +30,9 @@
                     />
                 </a>
                 <button
-                    mat-mini-fab
+                    mat-button
                     (click)="toggleMenu()"
+                    class="mini-menu"
                 >
                     <mat-icon>menu</mat-icon>
                 </button>
@@ -94,30 +69,77 @@
         class="absolute duration-500 ease-out transition-all right-0 w-2/3 translate-x-full"
     >
         <div class="relative z-30 flex grow">
-            <div class="flex flex-col mat-toolbar grow">
+            <div class="flex flex-col mat-toolbar grow pb-3">
                 <div class="flex grow justify-center py-3">
-                    <button
-                        mat-stroked-button
-                        class="mr-5"
-                        (click)="navigateToLogin()"
-                    >
-                        Sign In
-                    </button>
-                    <button
-                        mat-raised-button
-                        class="sign-up"
-                    >
-                        Sign Up
-                    </button>
+                    <ng-container *ngTemplateOutlet="signInOut"></ng-container>
                 </div>
                 <mat-divider></mat-divider>
-                <div class="flex flex-col pt-3">
-                    <button mat-button>Characters</button>
+                <div class="flex flex-col">
+                    <button
+                        mat-button
+                        (click)="checkButton('Characters')"
+                    >
+                        Characters
+                    </button>
                     <button mat-button>Game Rules</button>
                     <button mat-button>Source</button>
                     <button mat-button>Learn to Play</button>
                 </div>
+                <mat-divider *ngIf="account !== undefined"></mat-divider>
+                <button
+                    mat-button
+                    (click)="logout()"
+                    *ngIf="account !== undefined"
+                    class="font-bold"
+                >
+                    Sign Out
+                </button>
             </div>
         </div>
     </div>
 </div>
+
+<ng-template #signInOut>
+    <button
+        mat-stroked-button
+        class="mr-5"
+        (click)="navigateToLogin()"
+        *ngIf="account === undefined"
+    >
+        Sign In
+    </button>
+    <button
+        mat-raised-button
+        class="sign-up"
+        *ngIf="account === undefined"
+    >
+        Sign Up
+    </button>
+
+    <div class="hidden sm:block">
+        <button
+            mat-button
+            [matMenuTriggerFor]="accountMenu"
+            *ngIf="account !== undefined"
+        >
+            <mat-icon>person</mat-icon>{{ account.userName }}
+        </button>
+        <mat-menu #accountMenu="matMenu">
+            <button mat-menu-item>Settings</button>
+            <button
+                mat-menu-item
+                (click)="logout()"
+            >
+                Logout
+            </button>
+        </mat-menu>
+    </div>
+    <div class="sm:hidden">
+        <button
+            mat-button
+            *ngIf="account !== undefined"
+        >
+            <mat-icon>person</mat-icon>{{ account.userName }}
+        </button>
+    </div>
+</ng-template>
