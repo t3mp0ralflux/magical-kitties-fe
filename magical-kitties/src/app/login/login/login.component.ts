@@ -9,10 +9,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { LoginModel } from '../../models/login.model';
 import { AuthService } from '../../services/authService.service';
+import { GoogleComponent } from "../google/google.component";
 
 @Component({
     selector: 'app-login',
-    imports: [CommonModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatButtonModule, MatInputModule, RouterLink, RouterLinkActive, MatProgressSpinnerModule, MatIconModule],
+    imports: [CommonModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatButtonModule, MatInputModule, RouterLink, RouterLinkActive, MatProgressSpinnerModule, MatIconModule, GoogleComponent],
     templateUrl: './login.component.html',
     styleUrl: './login.component.scss'
 })
@@ -43,7 +44,7 @@ export class LoginComponent {
 
         this.authSerivce.login(loginInfo).subscribe({
             next: () => {
-                this.router.navigateByUrl("");
+                this.router.navigateByUrl("/");
             },
             error: (error: any) => {
                 switch (error.status) {

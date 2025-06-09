@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { Constants } from '../Constants';
 import { LoginResponse } from '../models/loginresponse.model';
@@ -13,7 +13,7 @@ import { HeaderComponent } from './header/header.component';
     templateUrl: './layout.component.html',
     styleUrl: './layout.component.scss'
 })
-export class LayoutComponent {
+export class LayoutComponent implements OnInit {
     menuOpen: boolean = false;
     loading: boolean = true;
 
@@ -21,8 +21,10 @@ export class LayoutComponent {
         this.menuOpen = event.value;
     }
 
-    constructor(router: ActivatedRoute, private authService: AuthService) {
-        router.params.subscribe({
+    constructor(private router: ActivatedRoute, private authService: AuthService) {}
+
+    ngOnInit(): void {
+        this.router.params.subscribe({
             next: () => {
                 // attempt to re-login if a valid token is present.
                 if (this.authService.account === undefined) {

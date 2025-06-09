@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './auth-guard.guard';
 import { LandingComponent } from './landing/landing.component';
 import { LayoutComponent } from './layout/layout.component';
 import { LoginLayoutComponent } from './login/layout/loginlayout.component';
@@ -10,7 +9,7 @@ export const routes: Routes = [
         path: '',
         component: LayoutComponent,
         children: [
-            { path: '', component: LandingComponent, canActivate: [authGuard] }
+            { path: '', component: LandingComponent }
         ]
     },
     {

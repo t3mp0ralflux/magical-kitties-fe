@@ -1,10 +1,11 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { jwtDecode, JwtPayload } from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { catchError, map, Observable } from "rxjs";
 import { environment } from "../../environments/environment";
 import { Constants } from "../Constants";
 import { Account } from "../models/account.model";
+import { JwtPayload } from "../models/JwtToken.model";
 import { LoginModel } from "../models/login.model";
 import { LoginResponse } from "../models/loginresponse.model";
 
@@ -34,10 +35,10 @@ export class AuthService {
         const parsedToken = jwtDecode<JwtPayload>(token);
         const headers = new HttpHeaders({
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
+            'Authorization': `Bearer ${token}`
         });
 
-        return this.http.post<LoginResponse>(this.baseUrl + "/auth/login/token", JSON.stringify(parsedToken.sub!), { headers: headers })
+        return this.http.post<LoginResponse>(this.baseUrl + "/auth/login/token", JSON.stringify(parsedToken.email!), { headers: headers })
     }
 
     logout(): void {
