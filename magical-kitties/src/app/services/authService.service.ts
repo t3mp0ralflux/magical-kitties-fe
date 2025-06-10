@@ -1,13 +1,12 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { jwtDecode } from "jwt-decode";
 import { catchError, map, Observable } from "rxjs";
 import { environment } from "../../environments/environment";
 import { Constants } from "../Constants";
 import { Account } from "../models/account.model";
-import { JwtPayload } from "../models/JwtToken.model";
 import { LoginModel } from "../models/login.model";
 import { LoginResponse } from "../models/loginresponse.model";
+import { TokenRequest } from "../models/tokenrequest.model";
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -20,9 +19,10 @@ export class AuthService {
     }
 
     login(loginInfo: LoginModel): Observable<void> {
-        return this.http.post<LoginResponse>(this.baseUrl + "/auth/login", loginInfo).pipe(
+        return this.http.post<LoginResponse>(`${this.baseUrl}/auth/login`, loginInfo).pipe(
             map((response: LoginResponse) => {
-                sessionStorage.setItem(Constants.JWTToken, response.token);
+                localStorage.setItem(Constants.JWTToken, response.accessToken);
+                localStorage.setItem(Constants.RefreshToken, response.refreshToken)
                 this.account = response.account;
             }),
             catchError(error => {
@@ -31,18 +31,17 @@ export class AuthService {
         );
     }
 
-    loginByToken(token: string) {
-        const parsedToken = jwtDecode<JwtPayload>(token);
-        const headers = new HttpHeaders({
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        });
-
-        return this.http.post<LoginResponse>(this.baseUrl + "/auth/login/token", JSON.stringify(parsedToken.email!), { headers: headers })
+    loginByToken(request: TokenRequest): Observable<LoginResponse> {
+        return this.http.post<LoginResponse>(`${this.baseUrl}/auth/login/token`, request)
     }
 
-    logout(): void {
-        this.account = undefined;
-        sessionStorage.removeItem(Constants.JWTToken);
+    logout(): Observable<void> {
+        return this.http.post<any>(`${this.baseUrl}/auth/logout/${this.account?.id}`, null).pipe(
+            map((response: any) => {
+                this.account = undefined;
+                localStorage.removeItem(Constants.JWTToken);
+                localStorage.removeItem(Constants.RefreshToken);
+            })
+        )
     }
 }

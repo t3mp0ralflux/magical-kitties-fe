@@ -1,3 +1,4 @@
 export const Constants = {
-    JWTToken: "token"
+    JWTToken: "token",
+    RefreshToken: "refresh_token"
 }

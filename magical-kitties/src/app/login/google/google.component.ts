@@ -22,7 +22,7 @@ export class GoogleComponent implements OnInit {
     initializeGoogleSignIn() {
         google.accounts.id.initialize({
             client_id: environment.googleClientId,
-            callback: (response: any) => this.handleCredentialResponse(response)
+            callback: (response: any) => this.handleCredentialResponse(response),
         });
 
         google.accounts.id.renderButton(
@@ -34,7 +34,7 @@ export class GoogleComponent implements OnInit {
     }
 
     handleCredentialResponse(response: any) {
-        sessionStorage.setItem(Constants.JWTToken, response.credential);
+        localStorage.setItem(Constants.JWTToken, response.credential);
         this.router.navigateByUrl("/");
     }
 

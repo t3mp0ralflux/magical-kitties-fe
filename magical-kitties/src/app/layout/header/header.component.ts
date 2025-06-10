@@ -40,7 +40,13 @@ export class HeaderComponent {
     }
 
     logout(): void {
-        this.authService.logout();
+        this.authService.logout().subscribe({
+            next: (response) => {
+            },
+            error: (err) => {
+
+            }
+        });
     }
 
     checkButton(text: string): void {
