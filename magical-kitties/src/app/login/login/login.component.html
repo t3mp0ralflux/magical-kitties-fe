@@ -1,6 +1,7 @@
-<div
+<form
     class="flex flex-col"
     [formGroup]="formGroup"
+    (ngSubmit)="login()"
 >
     <mat-form-field class="mb-5">
         <mat-label>Email or Username</mat-label>
@@ -39,8 +40,8 @@
     >
     <button
         mat-raised-button
+        type="submit"
         disabled="{{ formGroup.invalid || formSubmitting }}"
-        (click)="login()"
     >
         @if(formSubmitting){
         <mat-spinner [diameter]="20"></mat-spinner>
@@ -54,4 +55,10 @@
             >Register here.</a
         >
     </span>
+</form>
+<!-- <div class="mt-5 mb-5">
+    <mat-divider></mat-divider>
 </div>
+<div>
+    <app-google></app-google>
+</div> -->

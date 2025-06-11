@@ -1,6 +1,7 @@
 import { Account } from "./account.model";
 
 export class LoginResponse {
-    token!: string;
+    accessToken!: string;
+    refreshToken!: string;
     account!: Account;
 }

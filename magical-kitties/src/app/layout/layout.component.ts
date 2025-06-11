@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { Constants } from '../Constants';
 import { LoginResponse } from '../models/loginresponse.model';
+import { TokenRequest } from '../models/tokenrequest.model';
 import { AuthService } from '../services/authService.service';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
@@ -13,7 +14,7 @@ import { HeaderComponent } from './header/header.component';
     templateUrl: './layout.component.html',
     styleUrl: './layout.component.scss'
 })
-export class LayoutComponent {
+export class LayoutComponent implements OnInit {
     menuOpen: boolean = false;
     loading: boolean = true;
 
@@ -21,18 +22,29 @@ export class LayoutComponent {
         this.menuOpen = event.value;
     }
 
-    constructor(router: ActivatedRoute, private authService: AuthService) {
-        router.params.subscribe({
+    constructor(private router: ActivatedRoute, private authService: AuthService) {}
+
+    ngOnInit(): void {
+        this.router.params.subscribe({
             next: () => {
                 // attempt to re-login if a valid token is present.
                 if (this.authService.account === undefined) {
-                    const token = sessionStorage.getItem(Constants.JWTToken);
+                    var request = new TokenRequest({
+                        accessToken: localStorage.getItem(Constants.JWTToken)!,
+                        refreshToken: localStorage.getItem(Constants.RefreshToken)!
+                    });
 
-                    if (token) {
-                        this.authService.loginByToken(token).subscribe({
+                    if (request.accessToken && request.refreshToken) {
+                        this.authService.loginByToken(request).subscribe({
                             next: (result: LoginResponse) => {
                                 this.authService.account = result.account;
-                                sessionStorage.setItem(Constants.JWTToken, result.token); // refresh that thang.
+                                localStorage.setItem(Constants.JWTToken, result.accessToken); // refresh that thang.
+                                localStorage.setItem(Constants.RefreshToken, result.refreshToken);
+                                this.loading = false;
+                            },
+                            error: (err) => {
+                                // TODO: clear out storage and call it good.
+                                localStorage.clear();
                                 this.loading = false;
                             }
                         });
