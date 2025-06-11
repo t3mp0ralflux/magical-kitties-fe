@@ -1,4 +1,5 @@
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Account } from '../../models/Account/account.model';
 import { AccountCreateRequest } from '../../models/Account/accountcreaterequest.model';
 import { ValidationError } from '../../models/Errors/Error.model';
@@ -16,7 +17,7 @@ import { AuthService } from '../../services/authService.service';
 
 @Component({
     selector: 'app-register',
-    imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule],
+    imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule],
     templateUrl: './register.component.html',
     styleUrl: './register.component.scss'
 })
@@ -25,11 +26,13 @@ export class RegisterComponent {
     formGroup: FormGroup;
     hidePassword: boolean = true;
     formSubmitting: boolean = false;
+    registrationComplete: boolean = false;
 
     constructor(
         private fb: FormBuilder,
         private authService: AuthService,
-        private router: Router) {
+        private router: Router,
+        private activatedRoute: ActivatedRoute) {
         this.formGroup = fb.group(
             {
                 firstName: new FormControl("", [Validators.required]),
@@ -45,13 +48,12 @@ export class RegisterComponent {
     }
 
     openSnackBar(message: string, action: string) {
-        let snackBar: MatSnackBarRef<TextOnlySnackBar> = this._snackBar.open(message, action, {
-        });
+        let snackBar: MatSnackBarRef<TextOnlySnackBar> = this._snackBar.open(message, action, {});
         snackBar.onAction().subscribe({
             next: (thing: any) => {
                 this.submit();
             }
-        })
+        });
     }
 
     submit(): void {
@@ -65,8 +67,8 @@ export class RegisterComponent {
         });
 
         this.authService.register(registerInfo).subscribe({
-            next: (response: HttpResponse<Account>) => {
-                this.router.navigateByUrl("/registration-complete");
+            next: (response: Account) => {
+                this.registrationComplete = true;
             },
             error: (error: HttpErrorResponse) => {
                 switch (error.status) {

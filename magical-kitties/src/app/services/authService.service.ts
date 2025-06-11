@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpResponse } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { map, Observable, tap } from "rxjs";
 import { environment } from "../../environments/environment";
@@ -45,9 +45,9 @@ export class AuthService {
         )
     }
 
-    register(request: AccountCreateRequest): Observable<HttpResponse<Account>>;
+    register(request: AccountCreateRequest): Observable<Account>;
     register(request: AccountCreateRequest): Observable<HttpErrorResponse>;
-    register(request: AccountCreateRequest): Observable<HttpResponse<Account>> | Observable<HttpErrorResponse> {
+    register(request: AccountCreateRequest): Observable<Account> | Observable<HttpErrorResponse> {
         return this.http.post<any>(`${this.baseUrl}/api/accounts`, request);
     }
 }

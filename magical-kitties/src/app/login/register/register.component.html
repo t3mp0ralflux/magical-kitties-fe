@@ -2,6 +2,7 @@
     class="flex flex-col"
     [formGroup]="formGroup"
     (submit)="submit()"
+    *ngIf="!registrationComplete"
 >
     <mat-form-field class="mb-2">
         <mat-label>First Name</mat-label>
@@ -111,3 +112,6 @@
         } @else{ Register }
     </button>
 </form>
+<div *ngIf="registrationComplete">
+    <span>Thganks for registering your account! An email will be sent out to verify your account before you can login.</span>
+</div>
