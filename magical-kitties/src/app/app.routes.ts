@@ -3,6 +3,7 @@ import { LandingComponent } from './landing/landing.component';
 import { LayoutComponent } from './layout/layout.component';
 import { LoginLayoutComponent } from './login/layout/loginlayout.component';
 import { LoginComponent } from './login/login/login.component';
+import { RegisterComponent } from './login/register/register.component';
 
 export const routes: Routes = [
     {
@@ -19,11 +20,11 @@ export const routes: Routes = [
             { path: '', component: LoginComponent },
         ]
     },
-    // {
-    //     path: 'forgot-password',
-    //     component: LoginLayoutComponent,
-    //     children: [
-    //         { path: '', component: ForgotPasswordComponent}
-    //     ]
-    // }
+    {
+        path: 'register',
+        component: LoginLayoutComponent,
+        children: [
+            { path: '', component: RegisterComponent }
+        ]
+    }
 ];

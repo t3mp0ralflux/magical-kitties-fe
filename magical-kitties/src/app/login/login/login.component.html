@@ -38,6 +38,11 @@
         class="error mb-5"
         >Email, username, or password is incorrect. Please check and try again or click 'Forgot password' to reset your password.</span
     >
+    <span
+        *ngIf="accountError"
+        class="error mb-5"
+        >{{ accountErrorMessage }}.</span
+    >
     <button
         mat-raised-button
         type="submit"
