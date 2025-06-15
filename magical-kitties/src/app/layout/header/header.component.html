@@ -103,7 +103,7 @@
     <button
         mat-stroked-button
         class="mr-5"
-        (click)="navigateToLogin()"
+        (click)="navigate('login')"
         *ngIf="account === undefined"
     >
         Sign In
@@ -111,6 +111,7 @@
     <button
         mat-raised-button
         class="sign-up"
+        (click)="navigate('register')"
         *ngIf="account === undefined"
     >
         Sign Up

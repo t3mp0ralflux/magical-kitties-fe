@@ -1,4 +1,4 @@
-import { Account } from "./account.model";
+import { Account } from "../Account/account.model";
 
 export class LoginResponse {
     accessToken!: string;

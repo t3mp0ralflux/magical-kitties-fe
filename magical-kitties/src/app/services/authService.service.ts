@@ -1,12 +1,12 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { catchError, map, Observable } from "rxjs";
+import { map, Observable, tap } from "rxjs";
 import { environment } from "../../environments/environment";
 import { Constants } from "../Constants";
-import { Account } from "../models/account.model";
-import { LoginModel } from "../models/login.model";
-import { LoginResponse } from "../models/loginresponse.model";
-import { TokenRequest } from "../models/tokenrequest.model";
+import { Account } from "../models/Account/account.model";
+import { LoginModel } from "../models/Login/login.model";
+import { LoginResponse } from "../models/Login/loginresponse.model";
+import { TokenRequest } from "../models/Login/tokenrequest.model";
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -18,15 +18,14 @@ export class AuthService {
         this.baseUrl = environment.baseUrl;
     }
 
-    login(loginInfo: LoginModel): Observable<void> {
-        return this.http.post<LoginResponse>(`${this.baseUrl}/auth/login`, loginInfo).pipe(
-            map((response: LoginResponse) => {
+    login(loginInfo: LoginModel): Observable<LoginResponse>;
+    login(loginInfo: LoginModel): Observable<HttpErrorResponse>;
+    login(loginInfo: LoginModel): Observable<LoginResponse> | Observable<HttpErrorResponse> {
+        return this.http.post<any>(`${this.baseUrl}/auth/login`, loginInfo).pipe(
+            tap((response: LoginResponse) => {
                 localStorage.setItem(Constants.JWTToken, response.accessToken);
                 localStorage.setItem(Constants.RefreshToken, response.refreshToken)
                 this.account = response.account;
-            }),
-            catchError(error => {
-                throw (error);
             })
         );
     }
@@ -44,4 +43,6 @@ export class AuthService {
             })
         )
     }
+
+
 }

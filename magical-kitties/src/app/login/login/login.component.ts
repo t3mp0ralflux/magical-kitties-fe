@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,13 +10,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { LoginModel } from '../../models/login.model';
+import { LoginModel } from '../../models/Login/login.model';
+import { LoginResponse } from '../../models/Login/loginresponse.model';
 import { AuthService } from '../../services/authService.service';
-import { GoogleComponent } from "../google/google.component";
 
 @Component({
     selector: 'app-login',
-    imports: [CommonModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatButtonModule, MatInputModule, RouterLink, RouterLinkActive, MatProgressSpinnerModule, MatIconModule, GoogleComponent, MatDividerModule],
+    imports: [CommonModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatButtonModule, MatInputModule, RouterLink, RouterLinkActive, MatProgressSpinnerModule, MatIconModule, MatDividerModule],
     templateUrl: './login.component.html',
     styleUrl: './login.component.scss'
 })
@@ -23,13 +24,15 @@ export class LoginComponent {
     formGroup: FormGroup;
     formSubmitting: boolean = false;
     loginError: boolean = false;
+    accountError: boolean = false;
+    accountErrorMessage: string = "";
     hidePassword: boolean = true;
 
     private _snackBar = inject(MatSnackBar);
 
     constructor(
         private fb: FormBuilder,
-        private authSerivce: AuthService,
+        private authService: AuthService,
         private router: Router) {
         this.formGroup = fb.group({
             email: new FormControl(null, [Validators.required]),
@@ -56,12 +59,16 @@ export class LoginComponent {
             password: this.formGroup.controls['password'].value
         });
 
-        this.authSerivce.login(loginInfo).subscribe({
-            next: () => {
+        this.authService.login(loginInfo).subscribe({
+            next: ((response: LoginResponse) => {
                 this.router.navigateByUrl("/");
-            },
-            error: (error: any) => {
+            }),
+            error: (error: HttpErrorResponse) => {
                 switch (error.status) {
+                    case 401:
+                        this.accountError = true;
+                        this.accountErrorMessage = error.error;
+                        break;
                     case 404:
                         this.loginError = true;
                         break;
