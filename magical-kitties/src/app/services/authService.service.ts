@@ -4,7 +4,6 @@ import { map, Observable, tap } from "rxjs";
 import { environment } from "../../environments/environment";
 import { Constants } from "../Constants";
 import { Account } from "../models/Account/account.model";
-import { AccountCreateRequest } from "../models/Account/accountcreaterequest.model";
 import { LoginModel } from "../models/Login/login.model";
 import { LoginResponse } from "../models/Login/loginresponse.model";
 import { TokenRequest } from "../models/Login/tokenrequest.model";
@@ -45,9 +44,5 @@ export class AuthService {
         )
     }
 
-    register(request: AccountCreateRequest): Observable<Account>;
-    register(request: AccountCreateRequest): Observable<HttpErrorResponse>;
-    register(request: AccountCreateRequest): Observable<Account> | Observable<HttpErrorResponse> {
-        return this.http.post<any>(`${this.baseUrl}/api/accounts`, request);
-    }
+
 }

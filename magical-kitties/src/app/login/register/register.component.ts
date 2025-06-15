@@ -8,12 +8,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Account } from '../../models/Account/account.model';
 import { AccountCreateRequest } from '../../models/Account/accountcreaterequest.model';
 import { ValidationError } from '../../models/Errors/Error.model';
 import { ValidationErrorResponse } from '../../models/Errors/ValidationErrorResponse.model';
 import { AuthService } from '../../services/authService.service';
+import { LoginAPIService } from '../services/login.service';
 
 @Component({
     selector: 'app-register',
@@ -23,16 +23,15 @@ import { AuthService } from '../../services/authService.service';
 })
 export class RegisterComponent {
     private _snackBar = inject(MatSnackBar);
+    private authService: AuthService = inject(AuthService);
+    private loginService: LoginAPIService = inject(LoginAPIService);
     formGroup: FormGroup;
     hidePassword: boolean = true;
     formSubmitting: boolean = false;
     registrationComplete: boolean = false;
 
-    constructor(
-        private fb: FormBuilder,
-        private authService: AuthService,
-        private router: Router,
-        private activatedRoute: ActivatedRoute) {
+
+    constructor(fb: FormBuilder) {
         this.formGroup = fb.group(
             {
                 firstName: new FormControl("", [Validators.required]),
@@ -50,7 +49,7 @@ export class RegisterComponent {
     openSnackBar(message: string, action: string) {
         let snackBar: MatSnackBarRef<TextOnlySnackBar> = this._snackBar.open(message, action, {});
         snackBar.onAction().subscribe({
-            next: (thing: any) => {
+            next: (_: any) => {
                 this.submit();
             }
         });
@@ -66,8 +65,8 @@ export class RegisterComponent {
             password: this.formGroup.controls['password'].value
         });
 
-        this.authService.register(registerInfo).subscribe({
-            next: (response: Account) => {
+        this.loginService.register(registerInfo).subscribe({
+            next: (_: Account) => {
                 this.registrationComplete = true;
             },
             error: (error: HttpErrorResponse) => {

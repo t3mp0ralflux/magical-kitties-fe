@@ -1,0 +1,34 @@
+<div *ngIf="submitCodeInvalid">
+    Sorry, the code provided is either invalid or expired. You can request a new code be sent
+    <a
+        class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer"
+        (click)="resendActivation()"
+        >here</a
+    >
+    or
+    <a
+        href="mailto:support@magicalkitties.net"
+        class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer"
+        >Contact Support</a
+    >.
+</div>
+<div *ngIf="resendCodeInvalid">
+    Sorry, the code provided is either invalid or expired.
+    <a
+        href="mailto:support@magicalkitties.net"
+        class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer"
+        >Contact Support</a
+    >
+    for assistance with your request.
+</div>
+<div *ngIf="resendCodeComplete">A new activation link has been sent to your email. Follow its instructions to activate your account.</div>
+<div *ngIf="activationComplete">
+    Thank you for activating your account!
+    <a
+        class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer"
+        routerLink="/login"
+        routerLinkActive="router-link-active"
+        >Login</a
+    >
+    to begin your Magical Kitty adventure.
+</div>

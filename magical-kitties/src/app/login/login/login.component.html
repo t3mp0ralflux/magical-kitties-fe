@@ -25,8 +25,9 @@
             (click)="hidePassword = !hidePassword"
             >{{ hidePassword ? "visibility_off" : "visibility" }}</mat-icon
         >
-        <mat-hint
-            ><a
+        <mat-hint>
+            <a
+                class="font-medium hover:underline"
                 routerLink="/forgot-password"
                 routerLinkActive="router-link-active"
                 >Forgot password?
@@ -55,6 +56,7 @@
     <span class="mt-5"
         >Need an account?
         <a
+            class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
             routerLink="/register"
             routerLinkActive="router-link-active"
             >Register here.</a
