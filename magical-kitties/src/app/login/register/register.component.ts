@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,6 +14,7 @@ import { ValidationError } from '../../models/Errors/Error.model';
 import { ValidationErrorResponse } from '../../models/Errors/ValidationErrorResponse.model';
 import { AuthService } from '../../services/authService.service';
 import { LoginAPIService } from '../services/login.service';
+import { MatchValidator } from '../utilities';
 
 @Component({
     selector: 'app-register',
@@ -42,7 +43,7 @@ export class RegisterComponent {
                 passwordReEnter: new FormControl("", [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z].)(?=.*[@$!%*#?&^_-]).{8,}/)])
             },
             {
-                validators: this.matchValidator('password', 'passwordReEnter')
+                validators: MatchValidator('password', 'passwordReEnter')
             })
     }
 
@@ -91,27 +92,5 @@ export class RegisterComponent {
             },
             complete: (() => this.formSubmitting = false)
         });
-    }
-
-    matchValidator(controlName: string, matchingControlName: string): ValidatorFn {
-        return (abstractControl: AbstractControl) => {
-            const control = abstractControl.get(controlName);
-            const matchingControl = abstractControl.get(matchingControlName);
-
-            if (matchingControl!.errors && !matchingControl!.errors?.['confirmedValidator']) {
-                return null;
-            }
-
-            if (control!.value !== matchingControl!.value) {
-                const error = { confirmedValidator: true };
-                matchingControl!.setErrors(error);
-                control!.setErrors(error);
-                return error;
-            } else {
-                matchingControl!.setErrors(null);
-                control!.setErrors(null);
-                return null;
-            }
-        }
     }
 }

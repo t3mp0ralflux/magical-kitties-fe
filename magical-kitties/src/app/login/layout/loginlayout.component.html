@@ -1,54 +1,52 @@
 <main>
-    <div class="">
-        <div class="flex flex-col sm:flex-row">
+    <div class="flex flex-col md:flex-row min-h-dvh">
+        <div
+            id="leftColumn"
+            class="hidden md:flex md:flex-col w-1/4"
+        >
             <div
-                id="leftColumn"
-                class="hidden sm:flex sm:flex-col w-1/4"
+                id="dreamKitty"
+                class="mb-auto"
             >
-                <div
-                    id="dreamKitty"
-                    class="mb-auto"
-                >
-                    <img
-                        src="/magical-kitties-dreamwalker.png"
-                        class="sm:w-11/12"
-                    />
-                </div>
-                <div id="kidDm">
-                    <img
-                        src="/girl_dm.png"
-                        class="sm:w-11/12"
-                    />
-                </div>
+                <img
+                    src="/magical-kitties-dreamwalker.png"
+                    class="md:w-11/12"
+                />
             </div>
-            <div
-                id="middleColumn"
-                class="flex sm:w-1/2 justify-center"
-            >
-                <div class="sm:w-1/3 mt-20 sm:mt-auto sm:mb-auto">
-                    <div class="mb-5">
-                        <img
-                            src="/magicalkittieslogosquare4-w300h300.png"
-                            width="200px"
-                            class="mr-auto ml-auto"
-                        />
-                    </div>
-                    <router-outlet></router-outlet>
-                </div>
+            <div id="kidDm">
+                <img
+                    src="/girl_dm.png"
+                    class="md:w-11/12"
+                />
             </div>
-            <div
-                id="rightColumn"
-                class="flex flex-col mt-auto sm:mt-0 w-4/5 sm:w-1/4 ml-auto mr-auto"
-            >
-                <div
-                    id="catDm"
-                    class="flex justify-center mt-auto sm:justify-end"
-                >
+        </div>
+        <div
+            id="middleColumn"
+            class="flex md:w-1/2 justify-center"
+        >
+            <div class="min-w-auto mt-20 sm:mt-auto sm:mb-auto">
+                <div class="mb-5">
                     <img
-                        src="/cat_dm.png"
-                        class="sm:w-11/12"
+                        src="/magicalkittieslogosquare4-w300h300.png"
+                        width="200px"
+                        class="mr-auto ml-auto"
                     />
                 </div>
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+        <div
+            id="rightColumn"
+            class="flex flex-col mt-auto md:mt-0 w-4/5 md:w-1/4 ml-auto mr-auto"
+        >
+            <div
+                id="catDm"
+                class="flex justify-center mt-auto md:justify-end"
+            >
+                <img
+                    src="/cat_dm.png"
+                    class="md:w-11/12"
+                />
             </div>
         </div>
     </div>
