@@ -16,7 +16,6 @@ export class ApiClient {
     }
 
     get<T>(url: string, options?: object): Observable<T> {
-        5
         return this.http.get<T>(url, options).pipe(
             catchError((err) => this.handleError(err))
         )
