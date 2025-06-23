@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { LoginModel } from '../../models/Login/login.model';
 import { LoginResponse } from '../../models/Login/loginresponse.model';
 import { AuthService } from '../../services/authService.service';
@@ -27,17 +27,25 @@ export class LoginComponent {
     accountError: boolean = false;
     accountErrorMessage: string = "";
     hidePassword: boolean = true;
+    returnUrl: string = "";
+    resumeNavigation: boolean = false;
 
     private _snackBar = inject(MatSnackBar);
     private fb: FormBuilder = inject(FormBuilder);
     private authService: AuthService = inject(AuthService);
     private router: Router = inject(Router);
+    private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
+
 
     constructor() {
         this.formGroup = this.fb.group({
             email: new FormControl(null, [Validators.required]),
             password: new FormControl(null, [Validators.required])
         })
+
+        const returnUrlState = this.router.lastSuccessfulNavigation?.extras.state;
+        this.returnUrl = returnUrlState!['resumeUrl'];
+        this.resumeNavigation = returnUrlState!['resumeNavigation'];
     }
 
     openSnackBar(message: string, action: string) {
@@ -61,7 +69,11 @@ export class LoginComponent {
 
         this.authService.login(loginInfo).subscribe({
             next: ((response: LoginResponse) => {
-                this.router.navigateByUrl("/");
+                if (this.resumeNavigation) {
+                    this.router.navigateByUrl(this.returnUrl);
+                } else {
+                    this.router.navigateByUrl("/");
+                }
             }),
             error: (error: HttpErrorResponse) => {
                 switch (error.status) {

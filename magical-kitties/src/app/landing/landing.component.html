@@ -8,7 +8,11 @@
             <p>Create a Character</p>
         </mat-card-content>
     </mat-card>
-    <mat-card>
+    <mat-card
+        (click)="navigateToCharacters()"
+        matRipple
+        class="clickable"
+    >
         <img
             mat-card-image
             src="/wild-ones-conclave.png"
