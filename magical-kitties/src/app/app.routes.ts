@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from './auth-guard.guard';
 import { BuildCharacterComponent } from './characters/buildcharacter/buildcharacter.component';
 import { DisplayCharacterComponent } from './characters/displaycharacter/displaycharacter.component';
 import { ViewCharactersComponent } from './characters/viewcharacters/viewcharacters.component';
@@ -41,8 +40,6 @@ export const routes: Routes = [
     {
         path: 'characters',
         component: LayoutComponent,
-        canActivate: [AuthGuard],
-        canActivateChild: [AuthGuard],
         children: [
             { path: '', component: ViewCharactersComponent },
             { path: ':id', component: DisplayCharacterComponent },
