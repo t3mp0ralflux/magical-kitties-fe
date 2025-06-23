@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { HttpErrorResponse, HttpResponse } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { map, Observable, tap } from "rxjs";
 import { environment } from "../../environments/environment";
@@ -6,22 +6,25 @@ import { Constants } from "../Constants";
 import { Account } from "../models/Account/account.model";
 import { LoginModel } from "../models/Login/login.model";
 import { LoginResponse } from "../models/Login/loginresponse.model";
+import { PasswordResetRequest } from "../models/Login/passwordreset.model";
+import { PasswordResetResponse } from "../models/Login/passwordresetresponse.model";
 import { TokenRequest } from "../models/Login/tokenrequest.model";
+import { ApiClient } from "./apiClient.service";
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
     account?: Account;
-    http: HttpClient = inject(HttpClient);
+    apiClient: ApiClient = inject(ApiClient);
     baseUrl: string = "";
 
     constructor() {
-        this.baseUrl = environment.baseUrl;
+        this.baseUrl = `${environment.baseUrl}/auth`;
     }
 
     login(loginInfo: LoginModel): Observable<LoginResponse>;
     login(loginInfo: LoginModel): Observable<HttpErrorResponse>;
     login(loginInfo: LoginModel): Observable<LoginResponse> | Observable<HttpErrorResponse> {
-        return this.http.post<any>(`${this.baseUrl}/auth/login`, loginInfo).pipe(
+        return this.apiClient.post<LoginResponse>(`${this.baseUrl}/login`, loginInfo).pipe(
             tap((response: LoginResponse) => {
                 localStorage.setItem(Constants.JWTToken, response.accessToken);
                 localStorage.setItem(Constants.RefreshToken, response.refreshToken)
@@ -31,11 +34,11 @@ export class AuthService {
     }
 
     loginByToken(request: TokenRequest): Observable<LoginResponse> {
-        return this.http.post<LoginResponse>(`${this.baseUrl}/auth/login/token`, request)
+        return this.apiClient.post<LoginResponse>(`${this.baseUrl}/login/token`, request)
     }
 
     logout(): Observable<void> {
-        return this.http.post<any>(`${this.baseUrl}/auth/logout/${this.account?.id}`, null).pipe(
+        return this.apiClient.post<any>(`${this.baseUrl}/logout/${this.account?.id}`, null).pipe(
             map((response: any) => {
                 this.account = undefined;
                 localStorage.removeItem(Constants.JWTToken);
@@ -44,5 +47,21 @@ export class AuthService {
         )
     }
 
+    forgotPassword(request: PasswordResetRequest): Observable<PasswordResetResponse>;
+    forgotPassword(request: PasswordResetRequest): Observable<HttpErrorResponse>;
+    forgotPassword(request: PasswordResetRequest): Observable<PasswordResetResponse> | Observable<HttpErrorResponse> {
+        return this.apiClient.post<PasswordResetResponse>(`${this.baseUrl}/passwordreset/request`, request);
+    }
 
+    verifyPasswordReset(passwordReset: PasswordResetRequest): Observable<HttpResponse<any>>;
+    verifyPasswordReset(passwordReset: PasswordResetRequest): Observable<HttpErrorResponse>;
+    verifyPasswordReset(passwordReset: PasswordResetRequest): Observable<HttpResponse<any>> | Observable<HttpErrorResponse> {
+        return this.apiClient.post<any>(`${this.baseUrl}/passwordreset/verify`, passwordReset);
+    }
+
+    passwordReset(passwordReset: PasswordResetRequest): Observable<PasswordResetResponse>;
+    passwordReset(passwordReset: PasswordResetRequest): Observable<HttpErrorResponse>;
+    passwordReset(passwordReset: PasswordResetRequest): Observable<PasswordResetResponse> | Observable<HttpErrorResponse> {
+        return this.apiClient.post<PasswordResetResponse>(`${this.baseUrl}/passwordreset`, passwordReset);
+    }
 }

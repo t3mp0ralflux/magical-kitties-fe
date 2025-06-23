@@ -29,12 +29,12 @@ export class LoginComponent {
     hidePassword: boolean = true;
 
     private _snackBar = inject(MatSnackBar);
+    private fb: FormBuilder = inject(FormBuilder);
+    private authService: AuthService = inject(AuthService);
+    private router: Router = inject(Router);
 
-    constructor(
-        private fb: FormBuilder,
-        private authService: AuthService,
-        private router: Router) {
-        this.formGroup = fb.group({
+    constructor() {
+        this.formGroup = this.fb.group({
             email: new FormControl(null, [Validators.required]),
             password: new FormControl(null, [Validators.required])
         })
