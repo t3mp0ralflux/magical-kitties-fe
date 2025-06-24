@@ -20,14 +20,19 @@
             matInput
             type="search"
             placeholder="Search by name or level"
+            (keyup)="search(getValue($event))"
         />
         <mat-icon matPrefix>search</mat-icon>
     </mat-form-field>
     <mat-form-field
         class="ml-3"
         subscriptSizing="dynamic"
+        *ngIf="sortOption$ | async as option"
     >
-        <mat-select [(value)]="sortOption">
+        <mat-select
+            value="{{ option }}"
+            (selectionChange)="sort($event)"
+        >
             <mat-option value="name">Name: A-Z</mat-option>
             <mat-option value="-name">Name: Z-A</mat-option>
             <mat-option value="level">Level: Low to High</mat-option>
@@ -36,48 +41,53 @@
     </mat-form-field>
 </div>
 <div
-    class="flex"
+    class="flex justify-between flex-wrap"
     *ngIf="characters$ | async as characters"
 >
-    <mat-card *ngFor="let character of characters.items">
-        <mat-card-content>
-            <div class="flex">
-                <div class="flex justify-center items-center mr-3 h-10 w-10"><mat-icon>person</mat-icon></div>
-                <div class="flex flex-col">
-                    <span class="text-xl">{{ character.name }}</span>
-                    <span class="text">Level: {{ character.level }} | Human: {{ character.humanName ?? "Unknown" }}</span>
+    <div
+        *ngFor="let character of characters.items"
+        class="w-1/3 p-2.5"
+    >
+        <mat-card>
+            <mat-card-content>
+                <div class="flex h-20">
+                    <div class="flex justify-center items-center mr-3 h-10 w-10"><mat-icon>person</mat-icon></div>
+                    <div class="flex flex-col">
+                        <span class="text-xl">{{ character.name }}</span>
+                        <span class="text">Level: {{ character.level }} | Human: {{ character.humanName ?? "Unknown" }}</span>
+                    </div>
                 </div>
-            </div>
-        </mat-card-content>
-        <mat-card-actions class="flex justify-between">
-            <button
-                class="mr-1"
-                mat-button
-                (click)="viewCharacter(character.id)"
-            >
-                <span class="text-lg">View</span>
-            </button>
-            <button
-                class="mr-1"
-                mat-button
-                (click)="editCharacter(character.id)"
-            >
-                <span class="text-lg">Edit</span>
-            </button>
-            <button
-                class="mr-1"
-                mat-button
-                (click)="copyCharacter(character.id)"
-            >
-                <span class="text-lg">Copy</span>
-            </button>
-            <button
-                class="mr-1"
-                mat-button
-                (click)="deleteCharacter(character)"
-            >
-                <span class="text-lg">Delete</span>
-            </button>
-        </mat-card-actions>
-    </mat-card>
+            </mat-card-content>
+            <mat-card-actions class="flex justify-between">
+                <button
+                    class="mr-1"
+                    mat-button
+                    (click)="viewCharacter(character.id)"
+                >
+                    <span class="text-lg">View</span>
+                </button>
+                <button
+                    class="mr-1"
+                    mat-button
+                    (click)="editCharacter(character.id)"
+                >
+                    <span class="text-lg">Edit</span>
+                </button>
+                <button
+                    class="mr-1"
+                    mat-button
+                    (click)="copyCharacter(character.id)"
+                >
+                    <span class="text-lg">Copy</span>
+                </button>
+                <button
+                    class="mr-1"
+                    mat-button
+                    (click)="deleteCharacter(character)"
+                >
+                    <span class="text-lg">Delete</span>
+                </button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
 </div>

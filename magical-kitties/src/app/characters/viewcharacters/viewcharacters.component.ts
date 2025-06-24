@@ -8,9 +8,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSelectModule } from '@angular/material/select';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { Router } from '@angular/router';
-import { map, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, catchError, combineLatest, debounceTime, EMPTY, Observable, Subscription, switchMap } from 'rxjs';
+import { getValue } from '../../login/utilities';
 import { CharactersResponse } from '../../models/Characters/charactersresponse.model';
 import { GetAllCharactersResponse } from '../../models/Characters/getallcharactersresponse.model';
 import { NavigationExtras } from '../../models/Login/navigationExtras.model';
@@ -22,7 +23,7 @@ import { DeleteModalComponent } from './delete-modal/delete-modal.component';
     selector: 'app-viewcharacters',
     imports: [CommonModule, MatButtonModule, MatCardModule, MatIconModule, MatFormFieldModule, MatInputModule, MatPaginatorModule, MatSelectModule, MatDividerModule],
     templateUrl: './viewcharacters.component.html',
-    styleUrl: './viewcharacters.component.scss'
+    styleUrl: './viewcharacters.component.scss',
 })
 export class ViewCharactersComponent implements OnInit, OnDestroy {
     private router: Router = inject(Router);
@@ -30,12 +31,22 @@ export class ViewCharactersComponent implements OnInit, OnDestroy {
     private apiService: CharacterAPIService = inject(CharacterAPIService);
     dialog = inject(MatDialog);
     isLoading: boolean = false;
-    sortOption: string = "name";
     loggedOutSubscription: Subscription;
+    private searchText$: BehaviorSubject<string> = new BehaviorSubject<string>("");
+    sortOption$: BehaviorSubject<string> = new BehaviorSubject<string>("name");
 
-    characters$: Observable<CharactersResponse> = this.apiService.getCharacters().pipe(
-        map((response: CharactersResponse) => {
-            return response;
+    private searchInformation$: Observable<{ input: string, sort: string }> = combineLatest({ input: this.searchText$, sort: this.sortOption$ });
+
+    getValue = getValue;
+
+    characters$: Observable<CharactersResponse> = this.searchInformation$.pipe(
+        debounceTime(200),
+        switchMap(characterSearch =>
+            this.apiService.getCharacters(characterSearch.sort, characterSearch.input)
+        ),
+        catchError((err: any) => {
+            debugger;
+            return EMPTY;
         })
     )
 
@@ -55,13 +66,20 @@ export class ViewCharactersComponent implements OnInit, OnDestroy {
         }
     }
     ngOnInit(): void {
-
     }
 
     ngOnDestroy(): void {
         if (this.loggedOutSubscription) {
             this.loggedOutSubscription.unsubscribe();
         }
+    }
+
+    search(characterSearch: string) {
+        this.searchText$.next(characterSearch);
+    }
+
+    sort(event: MatSelectChange) {
+        this.sortOption$.next(event.value);
     }
 
     createCharacter(): void {

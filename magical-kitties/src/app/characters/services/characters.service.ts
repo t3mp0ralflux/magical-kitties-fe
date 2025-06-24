@@ -20,8 +20,13 @@ export class CharacterAPIService {
     // register(request: AccountCreateRequest): Observable<Account> | Observable<HttpErrorResponse> {
     //     return this.apiClient.post<Account>(`${this.baseUrl}/accounts`, request);
     // }
-    getCharacters(): Observable<CharactersResponse> {
-        return this.apiClient.get(`${this.baseUrl}/characters`);
+    getCharacters(sortOption: string, searchValue?: string): Observable<CharactersResponse> {
+        let endpoint = `characters?sortBy=${sortOption}`;
+        if (searchValue) {
+            endpoint = `${endpoint}&searchInput=${searchValue}`
+        }
+
+        return this.apiClient.get(`${this.baseUrl}/${endpoint}`);
     }
 
     createCharacter(): Observable<HttpResponse<Character>>;
