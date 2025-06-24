@@ -27,10 +27,9 @@
     <mat-form-field
         class="ml-3"
         subscriptSizing="dynamic"
-        *ngIf="sortOption$ | async as option"
     >
         <mat-select
-            value="{{ option }}"
+            value="name"
             (selectionChange)="sort($event)"
         >
             <mat-option value="name">Name: A-Z</mat-option>

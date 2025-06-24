@@ -30,10 +30,9 @@ export class ViewCharactersComponent implements OnInit, OnDestroy {
     private authService: AuthService = inject(AuthService);
     private apiService: CharacterAPIService = inject(CharacterAPIService);
     dialog = inject(MatDialog);
-    isLoading: boolean = false;
     loggedOutSubscription: Subscription;
     private searchText$: BehaviorSubject<string> = new BehaviorSubject<string>("");
-    sortOption$: BehaviorSubject<string> = new BehaviorSubject<string>("name");
+    private sortOption$: BehaviorSubject<string> = new BehaviorSubject<string>("name");
 
     private searchInformation$: Observable<{ input: string, sort: string }> = combineLatest({ input: this.searchText$, sort: this.sortOption$ });
 
