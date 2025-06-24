@@ -44,8 +44,10 @@ export class LoginComponent {
         })
 
         const returnUrlState = this.router.lastSuccessfulNavigation?.extras.state;
-        this.returnUrl = returnUrlState!['resumeUrl'];
-        this.resumeNavigation = returnUrlState!['resumeNavigation'];
+        if (returnUrlState) {
+            this.returnUrl = returnUrlState!['resumeUrl'];
+            this.resumeNavigation = returnUrlState!['resumeNavigation'];
+        }
     }
 
     openSnackBar(message: string, action: string) {

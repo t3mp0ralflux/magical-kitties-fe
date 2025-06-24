@@ -6,7 +6,21 @@ button {
             protected-container-color: var(--mat-sys-secondary),
             protected-label-text-color: var(--mat-sys-on-secondary),
             protected-container-shape: square,
+            text-container-shape: square,
             protected-label-text-size: 1rem,
         )
     );
+}
+
+mat-form-field {
+    @include mat.form-field-overrides(
+        (
+            filled-container-color: var(--mat-sys-on-primary),
+        )
+    );
+}
+
+::ng-deep .mdc-text-field {
+    border-bottom-right-radius: var(--mat-sys-corner-extra-small) !important;
+    border-bottom-left-radius: var(--mat-sys-corner-extra-small) !important;
 }

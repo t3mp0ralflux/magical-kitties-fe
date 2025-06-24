@@ -1,12 +1,83 @@
-<div class="flex pt-12">
+<div class="flex pt-12 mb-5">
     <div><span class="text-3xl font-bold primary-text">My Characters</span></div>
 
     <div class="ml-auto">
         <button
             mat-raised-button
             class="create"
+            (click)="createCharacter()"
         >
             Create a Character
         </button>
     </div>
+</div>
+<div class="flex primary p-2 mb-5">
+    <mat-form-field
+        class="mr-auto grow"
+        subscriptSizing="dynamic"
+    >
+        <input
+            matInput
+            type="search"
+            placeholder="Search by name or level"
+        />
+        <mat-icon matPrefix>search</mat-icon>
+    </mat-form-field>
+    <mat-form-field
+        class="ml-3"
+        subscriptSizing="dynamic"
+    >
+        <mat-select [(value)]="sortOption">
+            <mat-option value="name">Name: A-Z</mat-option>
+            <mat-option value="-name">Name: Z-A</mat-option>
+            <mat-option value="level">Level: Low to High</mat-option>
+            <mat-option value="-level">Level: High to Low</mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+<div
+    class="flex"
+    *ngIf="characters$ | async as characters"
+>
+    <mat-card *ngFor="let character of characters.items">
+        <mat-card-content>
+            <div class="flex">
+                <div class="flex justify-center items-center mr-3 h-10 w-10"><mat-icon>person</mat-icon></div>
+                <div class="flex flex-col">
+                    <span class="text-xl">{{ character.name }}</span>
+                    <span class="text">Level: {{ character.level }} | Human: {{ character.humanName ?? "Unknown" }}</span>
+                </div>
+            </div>
+        </mat-card-content>
+        <mat-card-actions class="flex justify-between">
+            <button
+                class="mr-1"
+                mat-button
+                (click)="viewCharacter(character.id)"
+            >
+                <span class="text-lg">View</span>
+            </button>
+            <button
+                class="mr-1"
+                mat-button
+                (click)="editCharacter(character.id)"
+            >
+                <span class="text-lg">Edit</span>
+            </button>
+            <button
+                class="mr-1"
+                mat-button
+                (click)="copyCharacter(character.id)"
+            >
+                <span class="text-lg">Copy</span>
+            </button>
+            <button
+                class="mr-1"
+                mat-button
+                (click)="deleteCharacter(character)"
+            >
+                <span class="text-lg">Delete</span>
+            </button>
+        </mat-card-actions>
+    </mat-card>
 </div>

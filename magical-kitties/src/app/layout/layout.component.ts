@@ -43,7 +43,6 @@ export class LayoutComponent implements OnInit {
                                 this.loading = false;
                             },
                             error: (err) => {
-                                // TODO: clear out storage and call it good.
                                 localStorage.clear();
                                 this.loading = false;
                             }

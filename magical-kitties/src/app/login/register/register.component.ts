@@ -12,7 +12,6 @@ import { Account } from '../../models/Account/account.model';
 import { AccountCreateRequest } from '../../models/Account/accountcreaterequest.model';
 import { ValidationError } from '../../models/Errors/Error.model';
 import { ValidationErrorResponse } from '../../models/Errors/ValidationErrorResponse.model';
-import { AuthService } from '../../services/authService.service';
 import { LoginAPIService } from '../services/login.service';
 import { MatchValidator } from '../utilities';
 
@@ -24,7 +23,7 @@ import { MatchValidator } from '../utilities';
 })
 export class RegisterComponent {
     private _snackBar = inject(MatSnackBar);
-    private authService: AuthService = inject(AuthService);
+    private fb: FormBuilder = inject(FormBuilder);
     private loginService: LoginAPIService = inject(LoginAPIService);
     formGroup: FormGroup;
     hidePassword: boolean = true;
@@ -32,8 +31,8 @@ export class RegisterComponent {
     registrationComplete: boolean = false;
 
 
-    constructor(fb: FormBuilder) {
-        this.formGroup = fb.group(
+    constructor() {
+        this.formGroup = this.fb.group(
             {
                 firstName: new FormControl("", [Validators.required]),
                 lastName: new FormControl("", [Validators.required]),
