@@ -1,6 +1,6 @@
 import { HttpErrorResponse, HttpResponse } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { map, Observable, tap } from "rxjs";
+import { map, Observable, Subject, tap } from "rxjs";
 import { environment } from "../../environments/environment";
 import { Constants } from "../Constants";
 import { Account } from "../models/Account/account.model";
@@ -16,6 +16,7 @@ export class AuthService {
     account?: Account;
     apiClient: ApiClient = inject(ApiClient);
     baseUrl: string = "";
+    loggedOut: Subject<boolean> = new Subject<boolean>();
 
     constructor() {
         this.baseUrl = `${environment.baseUrl}/auth`;

@@ -1,0 +1,17 @@
+<mat-dialog-content>Are you sure you want to copy this character?</mat-dialog-content>
+<mat-dialog-actions>
+    <button
+        mat-raised-button
+        mat-dialog-close
+        class="cancel"
+    >
+        Cancel
+    </button>
+    <button
+        mat-raised-button
+        class="secondary"
+        [mat-dialog-close]="true"
+    >
+        Yes
+    </button>
+</mat-dialog-actions>

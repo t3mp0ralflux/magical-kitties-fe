@@ -60,3 +60,12 @@ body {
 .logo {
     height: inherit;
 }
+
+.clickable {
+    cursor: pointer;
+}
+
+mat-toolbar-row {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}

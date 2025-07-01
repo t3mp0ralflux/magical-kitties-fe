@@ -1,4 +1,7 @@
 import { Routes } from '@angular/router';
+import { BuildCharacterComponent } from './characters/buildcharacter/buildcharacter.component';
+import { DisplayCharacterComponent } from './characters/displaycharacter/displaycharacter.component';
+import { ViewCharactersComponent } from './characters/viewcharacters/viewcharacters.component';
 import { LandingComponent } from './landing/landing.component';
 import { LayoutComponent } from './layout/layout.component';
 import { AccountActivationComponent } from './login/accountactivation/accountactivation.component';
@@ -34,9 +37,18 @@ export const routes: Routes = [
             { path: 'activation/resend/:encodedInfo', component: AccountActivationComponent }
         ]
     },
-    // {
-    //     path: '**',
-    //     redirectTo: '',
-    //     pathMatch: 'full'
-    // }
+    {
+        path: 'characters',
+        component: LayoutComponent,
+        children: [
+            { path: '', component: ViewCharactersComponent },
+            { path: ':id', component: DisplayCharacterComponent },
+            { path: ':id/builder', component: BuildCharacterComponent }
+        ]
+    },
+    {
+        path: '**',
+        redirectTo: '',
+        pathMatch: 'full'
+    }
 ];

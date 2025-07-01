@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { catchError, Observable, throwError } from "rxjs";
+import { catchError, Observable, tap, throwError } from "rxjs";
 import { ValidationErrorResponse } from "../models/Errors/ValidationErrorResponse.model";
 
 @Injectable({ providedIn: 'root' })
@@ -11,12 +11,19 @@ export class ApiClient {
 
     post<T>(url: string, payload?: any, options?: object): Observable<T> {
         return this.http.post<T>(url, payload, options).pipe(
+            tap(x => x),
             catchError((err) => this.handleError(err))
         );
     }
 
     get<T>(url: string, options?: object): Observable<T> {
         return this.http.get<T>(url, options).pipe(
+            catchError((err) => this.handleError(err))
+        )
+    }
+
+    delete<T>(url: string, options?: object): Observable<T> {
+        return this.http.delete<T>(url, options).pipe(
             catchError((err) => this.handleError(err))
         )
     }

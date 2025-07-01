@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { Constants } from '../Constants';
 import { LoginResponse } from '../models/Login/loginresponse.model';
@@ -17,19 +17,19 @@ import { HeaderComponent } from './header/header.component';
 export class LayoutComponent implements OnInit {
     menuOpen: boolean = false;
     loading: boolean = true;
+    private route: ActivatedRoute = inject(ActivatedRoute);
+    private authService: AuthService = inject(AuthService);
 
     menuOpened(event: any) {
         this.menuOpen = event.value;
     }
 
-    constructor(private router: ActivatedRoute, private authService: AuthService) {}
-
     ngOnInit(): void {
-        this.router.params.subscribe({
+        this.route.params.subscribe({
             next: () => {
                 // attempt to re-login if a valid token is present.
                 if (this.authService.account === undefined) {
-                    var request = new TokenRequest({
+                    const request = new TokenRequest({
                         accessToken: localStorage.getItem(Constants.JWTToken)!,
                         refreshToken: localStorage.getItem(Constants.RefreshToken)!
                     });
@@ -43,7 +43,6 @@ export class LayoutComponent implements OnInit {
                                 this.loading = false;
                             },
                             error: (err) => {
-                                // TODO: clear out storage and call it good.
                                 localStorage.clear();
                                 this.loading = false;
                             }

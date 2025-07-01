@@ -21,3 +21,7 @@ export function MatchValidator(controlName: string, matchingControlName: string)
         }
     }
 };
+
+export function getValue(event: Event): string {
+    return (event.target as HTMLInputElement).value;
+}

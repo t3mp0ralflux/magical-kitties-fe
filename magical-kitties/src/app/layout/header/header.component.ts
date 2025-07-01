@@ -39,6 +39,7 @@ export class HeaderComponent {
     logout(): void {
         this.authService.logout().subscribe({
             next: (response) => {
+                this.authService.loggedOut.next(true);
             },
             error: (err) => {
 

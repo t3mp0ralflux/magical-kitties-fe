@@ -47,7 +47,12 @@
     <div class="content">
         <mat-toolbar class="bottom">
             <mat-toolbar-row>
-                <button mat-button>Characters</button>
+                <button
+                    mat-button
+                    (click)="navigate('characters')"
+                >
+                    Characters
+                </button>
                 <button mat-button>Game Rules</button>
                 <button mat-button>Source</button>
                 <button mat-button>Learn to Play</button>
