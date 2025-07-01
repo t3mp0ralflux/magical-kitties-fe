@@ -35,6 +35,12 @@ export class CharacterAPIService {
         return this.apiClient.post<HttpResponse<Character>>(`${this.baseUrl}/characters`, null, { observe: 'response' });
     }
 
+    copyCharacter(characterId: string): Observable<HttpResponse<Character>>;
+    copyCharacter(characterId: string): Observable<HttpErrorResponse>;
+    copyCharacter(characterId: string): Observable<HttpResponse<Character>> | Observable<HttpErrorResponse> {
+        return this.apiClient.post<HttpResponse<Character>>(`${this.baseUrl}/characters/${characterId}`, null, { observe: 'response' });
+    }
+
     deleteCharacter(characterId: string): Observable<HttpResponse<any>>;
     deleteCharacter(characterId: string): Observable<HttpErrorResponse>;
     deleteCharacter(characterId: string): Observable<HttpResponse<any>> | Observable<HttpErrorResponse> {
