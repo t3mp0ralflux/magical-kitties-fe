@@ -58,6 +58,7 @@ export class ViewCharactersComponent implements OnInit, OnDestroy {
                 this.router.navigateByUrl("");
             }
         })
+
         if (this.authService.account === undefined) {
             const extras = new NavigationExtras({
                 resumeUrl: "characters",

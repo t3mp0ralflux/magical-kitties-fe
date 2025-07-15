@@ -3,8 +3,6 @@
     class="background min-h-10/12"
     *ngIf="!loading"
 >
-    <div class="content">
-        <router-outlet></router-outlet>
-    </div>
+    <router-outlet></router-outlet>
 </main>
 <app-footer *ngIf="!loading"></app-footer>

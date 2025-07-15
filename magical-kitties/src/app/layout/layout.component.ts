@@ -1,9 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
-import { Constants } from '../Constants';
-import { LoginResponse } from '../models/Login/loginresponse.model';
-import { TokenRequest } from '../models/Login/tokenrequest.model';
+import { Account } from '../models/Account/account.model';
 import { AuthService } from '../services/authService.service';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
@@ -29,30 +27,23 @@ export class LayoutComponent implements OnInit {
             next: () => {
                 // attempt to re-login if a valid token is present.
                 if (this.authService.account === undefined) {
-                    const request = new TokenRequest({
-                        accessToken: localStorage.getItem(Constants.JWTToken)!,
-                        refreshToken: localStorage.getItem(Constants.RefreshToken)!
+                    this.authService.refreshLogin().subscribe({
+                        next: (response: Account) => {
+                            this.loading = false;
+                        },
+                        error: (err) => {
+                            this.loading = false;
+                        },
+                        complete: () => {
+                            this.loading = false;
+                        }
                     });
-
-                    if (request.accessToken && request.refreshToken) {
-                        this.authService.loginByToken(request).subscribe({
-                            next: (result: LoginResponse) => {
-                                this.authService.account = result.account;
-                                localStorage.setItem(Constants.JWTToken, result.accessToken); // refresh that thang.
-                                localStorage.setItem(Constants.RefreshToken, result.refreshToken);
-                                this.loading = false;
-                            },
-                            error: (err) => {
-                                localStorage.clear();
-                                this.loading = false;
-                            }
-                        });
-                    } else {
-                        this.loading = false;
-                    }
                 } else {
                     this.loading = false;
                 }
+            },
+            error: (err) => {
+                console.log("route params error " + err);
             }
         })
     }

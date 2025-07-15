@@ -1,0 +1,23 @@
+<div class="flex items-baseline">
+    <div class="flex flex-col">
+        <span class="text-xl font-semibold">Character Level: {{ character?.level }}</span>
+    </div>
+    <div class="ml-auto">
+        <mat-form-field class="max-w-20">
+            <mat-select
+                [formControl]="levelControl"
+                (selectionChange)="updateLevel($event)"
+            >
+                <mat-option
+                    *ngFor="let item of levelOptions"
+                    [value]="item"
+                >
+                    {{ item }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>
+<div>
+    <mat-divider class="editor"></mat-divider>
+</div>
