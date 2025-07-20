@@ -82,3 +82,22 @@ mat-divider.editor {
         )
     );
 }
+
+.cancel {
+    @include mat.button-overrides(
+        (
+            protected-container-color: var(--mat-sys-error),
+            protected-label-text-color: var(--mat-sys-on-error),
+        )
+    );
+}
+
+.snackbar-error {
+    @include mat.snack-bar-overrides(
+        (
+            container-color: var(--mat-sys-error),
+            supporting-text-color: var(--mat-sys-on-error),
+            button-color: var(--mat-sys-on-error),
+        )
+    );
+}

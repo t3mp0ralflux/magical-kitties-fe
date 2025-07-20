@@ -1,14 +1,5 @@
 @use "@angular/material" as mat;
 
-.cancel {
-    @include mat.button-overrides(
-        (
-            protected-container-color: var(--mat-sys-error),
-            protected-label-text-color: var(--mat-sys-on-error),
-        )
-    );
-}
-
 .secondary {
     background: var(--mat-sys-secondary);
     color: var(--mat-sys-on-secondary);

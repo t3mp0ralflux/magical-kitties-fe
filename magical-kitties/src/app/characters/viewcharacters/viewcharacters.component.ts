@@ -30,7 +30,7 @@ export class ViewCharactersComponent implements OnInit, OnDestroy {
     private router: Router = inject(Router);
     private authService: AuthService = inject(AuthService);
     private apiService: CharacterAPIService = inject(CharacterAPIService);
-    dialog = inject(MatDialog);
+    dialog: MatDialog = inject(MatDialog);
     loggedOutSubscription: Subscription;
     private refreshSearch: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private searchText: BehaviorSubject<string> = new BehaviorSubject<string>("");
@@ -103,7 +103,7 @@ export class ViewCharactersComponent implements OnInit, OnDestroy {
     }
 
     editCharacter(characterId: string): void {
-        this.router.navigateByUrl(`/characters/${characterId}/builder`);
+        this.router.navigateByUrl(`/characters/${characterId}/builder/kitty`);
     }
 
     copyCharacter(characterId: string): void {

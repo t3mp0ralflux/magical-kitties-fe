@@ -5,7 +5,6 @@ import { catchError, EMPTY, finalize, map, Observable, Subject, switchMap, tap, 
 import { environment } from "../../environments/environment";
 import { Constants } from "../Constants";
 import { Account } from "../models/Account/account.model";
-import { ValidationErrorResponse } from "../models/Errors/ValidationErrorResponse.model";
 import { LoginModel } from "../models/Login/login.model";
 import { LoginResponse } from "../models/Login/loginresponse.model";
 
@@ -103,13 +102,14 @@ export class ApiClient implements HttpInterceptor {
                 )
             case 400:
             case 404:
-                if (response.error instanceof ValidationErrorResponse) {
-                    return throwError(() => response.error.errors);
+                const error = JSON.parse(response.error);
+                if (error.errors) {
+                    return throwError(() => error.errors);
                 }
 
-                break;
+                return throwError(() => response);
             default:
-                this._snackBar.open("Unknown server error. Contact Support.", "Close", { duration: 2000 });
+                this._snackBar.open("Unknown server error. Contact Support.", "Close", { duration: 10000 });
                 break;
         }
 

@@ -10,5 +10,6 @@ export enum AttributeOption {
     currenttreats,
     currentinjuries,
     incapacitated,
-    magicalpowerbonus
+    magicalpowerbonus,
+    xp
 }

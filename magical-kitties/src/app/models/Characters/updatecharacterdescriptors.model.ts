@@ -3,5 +3,4 @@ export interface UpdateCharacterDescriptors {
     name?: string;
     description?: string;
     hometown?: string;
-    xp?: number;
 }

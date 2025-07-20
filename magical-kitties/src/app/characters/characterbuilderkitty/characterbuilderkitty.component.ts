@@ -1,10 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { getValue } from '../../login/utilities';
 import { Character } from '../../models/Characters/character.model';
+import { UpdateCharacterAttributes } from '../../models/Characters/updateacharacterattributes.model';
+import { ConfirmModalComponent } from '../../sharedcomponents/confirm-modal/confirm-modal.component';
 import { CharacterAPIService } from '../services/characters.service';
 
 @Component({
@@ -14,10 +19,14 @@ import { CharacterAPIService } from '../services/characters.service';
     styleUrl: './characterbuilderkitty.component.scss'
 })
 export class CharacterBuilderKittyComponent {
+    private _snackBar: MatSnackBar = inject(MatSnackBar);
     characterApi: CharacterAPIService = inject(CharacterAPIService);
     character?: Character;
     levelOptions: number[] = Array(10).fill(1).map((_, i) => i + 1);
+    dialog: MatDialog = inject(MatDialog);
+    getValue = getValue;
     levelControl: FormControl = new FormControl();
+    xpControl: FormControl = new FormControl();
 
     constructor() {
         this.characterApi.character$.subscribe({
@@ -25,14 +34,74 @@ export class CharacterBuilderKittyComponent {
                 this.character = character;
 
                 this.levelControl.setValue(character?.level);
+                this.xpControl.setValue(character?.currentXp);
             })
         })
     }
 
-    updateLevel(event: MatSelectChange) {
-        if (event.value < this.character!.level) {
-            alert("Going down!");
+    updateXP(xp: string): void {
+        let numberOfXp: number;
+
+        try {
+            numberOfXp = Number.parseInt(xp);
+        } catch {
+            // show error
+            return;
         }
-        // TODO: call api and update level, then make the magic happen to update ALL the things below the level line.
+
+        const payload: UpdateCharacterAttributes = {
+            characterId: this.character?.id!,
+            xp: numberOfXp
+        }
+
+        this.characterApi.updateXP(payload).subscribe({
+            next: (response) => {},
+            error: (errors: any) => {
+                const config = new MatSnackBarConfig();
+
+                config.horizontalPosition = "end";
+                config.verticalPosition = "top";
+                config.panelClass = "snackbar-error";
+
+                if (!errors.length) {
+                    this._snackBar.open("Internal Server Error. Contact Support or try again.", "OK");
+                } else {
+                    this._snackBar.open(errors[0].message, "Sorry", config);
+                }
+            }
+        })
+    }
+
+    updateLevel(event: MatSelectChange): void {
+        const payload: UpdateCharacterAttributes = {
+            characterId: this.character?.id!,
+            level: this.levelControl.value
+        };
+
+        if (event.value < this.character!.level) {
+            const dialogData = { message: "You are about to lower your level. Any accrued XP for this level along with any relevant upgrade choices will be removed. Are you sure you want to do this?" };
+
+            this.dialog.open(ConfirmModalComponent, { data: dialogData }).afterClosed().subscribe({
+                next: (result) => {
+                    if (result) {
+                        this.submitLevelUp(payload);
+                        this.character!.currentXp = 0;
+                    }
+                },
+                error: (err) => {
+
+                }
+            })
+        } else {
+            this.submitLevelUp(payload);
+        }
+    }
+
+    private submitLevelUp(payload: UpdateCharacterAttributes) {
+        this.characterApi.updateLevel(payload).subscribe({
+            next: (response) => {
+                this.character!.level = this.levelControl.value;
+            }
+        });
     }
 }

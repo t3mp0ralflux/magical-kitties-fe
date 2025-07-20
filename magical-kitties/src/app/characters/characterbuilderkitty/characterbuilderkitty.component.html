@@ -3,7 +3,26 @@
         <span class="text-xl font-semibold">Character Level: {{ character?.level }}</span>
     </div>
     <div class="ml-auto">
-        <mat-form-field class="max-w-20">
+        <span class="mr-2 font-semibold">XP</span>
+        <mat-form-field
+            class="max-w-24"
+            appearance="outline"
+        >
+            <input
+                matInput
+                type="number"
+                min="0"
+                [formControl]="xpControl"
+                (blur)="updateXP(getValue($event))"
+            />
+        </mat-form-field>
+    </div>
+    <div class="ml-8">
+        <span class="mr-2 font-semibold">Level</span>
+        <mat-form-field
+            class="max-w-20"
+            appearance="outline"
+        >
             <mat-select
                 [formControl]="levelControl"
                 (selectionChange)="updateLevel($event)"
