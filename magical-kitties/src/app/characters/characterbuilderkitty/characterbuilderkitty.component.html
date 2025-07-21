@@ -40,3 +40,56 @@
 <div>
     <mat-divider class="editor"></mat-divider>
 </div>
+<div class="flex justify-around mt-4">
+    <div class="flex flex-col">
+        <span class="ml-auto mr-auto text-xl font-semibold">Cute</span>
+        <mat-form-field
+            class="mt-1 max-w-28"
+            appearance="outline"
+        >
+            <mat-select [formControl]="cuteControl">
+                <mat-option [value]="0">-</mat-option>
+                <mat-option
+                    *ngFor="let item of statArray"
+                    [class.hide]="isFiltered(item)"
+                    [value]="item"
+                    >{{ item }}</mat-option
+                >
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="flex flex-col">
+        <span class="ml-auto mr-auto text-xl font-semibold">Cunning</span>
+        <mat-form-field
+            class="mt-1 max-w-28"
+            appearance="outline"
+        >
+            <mat-select [formControl]="cunningControl">
+                <mat-option [value]="0">-</mat-option>
+                <mat-option
+                    *ngFor="let item of statArray"
+                    [value]="item"
+                    [class.hide]="isFiltered(item)"
+                    >{{ item }}</mat-option
+                >
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="flex flex-col">
+        <span class="ml-auto mr-auto text-xl font-semibold">Fierce</span>
+        <mat-form-field
+            class="mt-1 max-w-28"
+            appearance="outline"
+        >
+            <mat-select [formControl]="fierceControl">
+                <mat-option [value]="0">-</mat-option>
+                <mat-option
+                    *ngFor="let item of statArray"
+                    [value]="item"
+                    [class.hide]="isFiltered(item)"
+                    >{{ item }}</mat-option
+                >
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>

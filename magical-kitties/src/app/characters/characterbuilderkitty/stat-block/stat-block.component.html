@@ -1,0 +1,19 @@
+<div class="flex flex-col">
+    <span class="ml-auto mr-auto text-xl font-semibold">{{ statName }}</span>
+    <mat-form-field
+        class="mt-1 max-w-28"
+        appearance="outline"
+    >
+        <mat-select
+            [formControl]="control"
+            (selectionChange)="updateAvailableNumbers($event)"
+        >
+            <mat-option [value]="0">-</mat-option>
+            <mat-option
+                *ngFor="let item of availableValues"
+                [value]="item"
+                >{{ item }}</mat-option
+            >
+        </mat-select>
+    </mat-form-field>
+</div>

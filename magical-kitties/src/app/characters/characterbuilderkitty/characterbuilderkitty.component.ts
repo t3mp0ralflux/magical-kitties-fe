@@ -6,15 +6,17 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { pairwise, startWith, tap } from 'rxjs';
 import { getValue } from '../../login/utilities';
 import { Character } from '../../models/Characters/character.model';
 import { UpdateCharacterAttributes } from '../../models/Characters/updateacharacterattributes.model';
 import { ConfirmModalComponent } from '../../sharedcomponents/confirm-modal/confirm-modal.component';
 import { CharacterAPIService } from '../services/characters.service';
+import { StatBlockComponent } from "./stat-block/stat-block.component";
 
 @Component({
     selector: 'app-characterbuilderkitty',
-    imports: [CommonModule, MatDividerModule, MatInputModule, MatSelectModule, ReactiveFormsModule],
+    imports: [CommonModule, MatDividerModule, MatInputModule, MatSelectModule, ReactiveFormsModule, StatBlockComponent],
     templateUrl: './characterbuilderkitty.component.html',
     styleUrl: './characterbuilderkitty.component.scss'
 })
@@ -26,17 +28,82 @@ export class CharacterBuilderKittyComponent {
     dialog: MatDialog = inject(MatDialog);
     getValue = getValue;
     levelControl: FormControl = new FormControl();
+    statArray: number[] = [1, 2, 3]
+    filteredStatArray: number[] = [];
+    availableStats: number[] = [];
     xpControl: FormControl = new FormControl();
+    cuteControl: FormControl = new FormControl();
+    cunningControl: FormControl = new FormControl();
+    fierceControl: FormControl = new FormControl();
 
     constructor() {
         this.characterApi.character$.subscribe({
             next: ((character: Character | undefined) => {
-                this.character = character;
+                if (character === undefined) {
+                    return;
+                }
 
                 this.levelControl.setValue(character?.level);
                 this.xpControl.setValue(character?.currentXp);
+                this.cuteControl.setValue(character.cute);
+                this.cunningControl.setValue(character.cunning);
+                this.fierceControl.setValue(character.fierce);
+
+                if (character.cunning !== 0) {
+                    this.filteredStatArray.push(character.cunning);
+                }
+
+                if (character.cute !== 0) {
+                    this.filteredStatArray.push(character.cute);
+                }
+
+                if (character.fierce !== 0) {
+                    this.filteredStatArray.push(character.fierce);
+                }
+
+                this.character = character;
             })
-        })
+        });
+
+        this.cuteControl.valueChanges.pipe(
+            startWith(this.cuteControl.value),
+            pairwise(),
+            tap(([previous, next]) => {
+                this.applyFilter(previous, next);
+            })
+        ).subscribe();
+
+        this.cunningControl.valueChanges.pipe(
+            startWith(this.cunningControl.value),
+            pairwise(),
+            tap(([previous, next]) => {
+                this.applyFilter(previous, next);
+            })
+        ).subscribe();
+
+        this.fierceControl.valueChanges.pipe(
+            startWith(this.fierceControl.value),
+            pairwise(),
+            tap(([previous, next]) => {
+                this.applyFilter(previous, next);
+            })
+        ).subscribe();
+    }
+
+    applyFilter(previous: number, next: number) {
+        if (previous !== undefined && previous !== 0) {
+            this.filteredStatArray.splice(this.filteredStatArray.indexOf(previous), 1);
+        }
+
+        if (next !== 0) {
+            this.filteredStatArray.push(next);
+        }
+
+        this.filteredStatArray.sort();
+    }
+
+    isFiltered(value: number) {
+        return this.filteredStatArray.includes(value);
     }
 
     updateXP(xp: string): void {
@@ -55,7 +122,7 @@ export class CharacterBuilderKittyComponent {
         }
 
         this.characterApi.updateXP(payload).subscribe({
-            next: (response) => {},
+            next: () => {},
             error: (errors: any) => {
                 const config = new MatSnackBarConfig();
 

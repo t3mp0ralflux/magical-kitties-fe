@@ -107,7 +107,6 @@ export class CharacterAPIService {
     updateXP(payload: UpdateCharacterAttributes): Observable<string> {
         return this.apiClient.request<any>({
             path: `${this.baseUrl}/characters/attributes/${AttributeOption.xp}`,
-            // path: `${this.baseUrl}/characters/attributes/69`,
             method: HttpMethod.PUT,
             body: payload,
             headerResponse: true,
