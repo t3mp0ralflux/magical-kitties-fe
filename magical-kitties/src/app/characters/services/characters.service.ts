@@ -8,6 +8,7 @@ import { CharactersResponse } from "../../models/Characters/charactersresponse.m
 import { DescriptionOption } from "../../models/Characters/descriptionoption.model";
 import { UpdateCharacterAttributes } from "../../models/Characters/updateacharacterattributes.model";
 import { UpdateCharacterDescriptors } from "../../models/Characters/updatecharacterdescriptors.model";
+import { Rules } from "../../models/System/rules.model";
 import { ApiClient, HttpMethod } from "../../services/apiClient.service";
 
 @Injectable({ providedIn: "root" })
@@ -17,9 +18,19 @@ export class CharacterAPIService {
     private character: BehaviorSubject<Character | undefined> = new BehaviorSubject<Character | undefined>(undefined);
     private levelUpSubject: Subject<number> = new Subject<number>();
     levelUp$: Observable<number> = this.levelUpSubject.asObservable();
+    rules?: Rules;
 
     constructor() {
         this.baseUrl = `${environment.baseUrl}/api`;
+    }
+
+    getRules(): Observable<any> {
+        return this.apiClient.request<any>({
+            path: `${this.baseUrl}/rules`,
+            method: HttpMethod.GET
+        }).pipe(
+            tap(x => this.rules = x)
+        );
     }
 
     getCharacters(sortOption: string, searchValue?: string): Observable<CharactersResponse> {
@@ -112,5 +123,35 @@ export class CharacterAPIService {
             headerResponse: true,
             responseType: "text"
         });
+    }
+
+    updateFlaw(payload: UpdateCharacterAttributes): Observable<string> {
+        return this.apiClient.request<string>({
+            path: `${this.baseUrl}/characters/attributes/${AttributeOption.flaw}`,
+            method: HttpMethod.PUT,
+            body: payload,
+            headerResponse: true,
+            responseType: "text"
+        });
+    }
+
+    updateTalent(payload: UpdateCharacterAttributes): Observable<string> {
+        return this.apiClient.request<string>({
+            path: `${this.baseUrl}/characters/attributes/${AttributeOption.talent}`,
+            method: HttpMethod.PUT,
+            body: payload,
+            headerResponse: true,
+            responseType: "text"
+        });
+    }
+
+    updateMagicalPower(payload: UpdateCharacterAttributes): Observable<string> {
+        return this.apiClient.request<string>({
+            path: `${this.baseUrl}/characters/attributes/${AttributeOption.magicalpower}`,
+            method: HttpMethod.PUT,
+            body: payload,
+            headerResponse: true,
+            responseType: "text"
+        })
     }
 }

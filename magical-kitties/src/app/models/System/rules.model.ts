@@ -1,0 +1,34 @@
+import { Flaw } from "../Characters/flaw.model";
+import { MagicalPower } from "../Characters/magicalpower.model";
+import { Talent } from "../Characters/talent.model";
+import { Upgrade } from "../Characters/upgrade.model";
+import { DiceDifficulty } from "./dicedifficulty.model";
+import { DiceSuccess } from "./dicesuccess.model";
+import { Emotion } from "./emotion.model";
+import { ProblemSource } from "./problemsource.model";
+
+export class Rules {
+    maxLevel!: number;
+    minAttributeValue!: number;
+    maxAttributeValue!: number;
+    minInjuries!: number;
+    maxInjuries!: number;
+    levelExperiencePoints!: number[];
+    attributes!: string[];
+    flaws!: Flaw[];
+    talents!: Talent[];
+    magicalPowers!: MagicalPower[];
+    upgrades!: Upgrade[];
+    problemSource: ProblemSource[] = [];
+    emotion: Emotion[] = [];
+    diceRules: string[] = [];
+    diceDifficulties: DiceDifficulty[] = [];
+    diceSuccesses: DiceSuccess[] = [];
+    rollComplications: string[] = [];
+    rollBonus: string[] = [];
+    rollSuperBonus: string[] = [];
+    spendingKittyTreats: string[] = [];
+    healing: string[] = [];
+    endOfEpisodeInfo!: string;
+    endEpisodeQuestions: string[] = [];
+}

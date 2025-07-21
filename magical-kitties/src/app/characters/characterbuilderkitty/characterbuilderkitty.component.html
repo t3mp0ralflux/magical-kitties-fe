@@ -93,3 +93,120 @@
         </mat-form-field>
     </div>
 </div>
+<div class="flex items-baseline mt-4">
+    <mat-card
+        class="min-w-full"
+        appearance="outlined"
+    >
+        <mat-card-header>
+            <span class="text-xl font-semibold mb-2">Flaw</span>
+            <mat-icon
+                class="ml-auto cursor-pointer"
+                (click)="openInfoDialog(characterApi.rules?.flaws)"
+                >help</mat-icon
+            >
+        </mat-card-header>
+        <mat-card-content>
+            <div class="flex">
+                <mat-form-field
+                    appearance="outline"
+                    class="w-1/3"
+                >
+                    <mat-select
+                        [formControl]="flawControl"
+                        (selectionChange)="updateFlaw($event)"
+                    >
+                        <mat-option
+                            *ngFor="let flaw of characterApi.rules?.flaws"
+                            [value]="flaw.id"
+                        >
+                            {{ flaw.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <markdown
+                    class="max-w-1/2 wrap-normal ml-auto"
+                    [data]="getFlawDescription(flawControl.value)"
+                >
+                </markdown>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>
+<div class="flex items-baseline mt-4">
+    <mat-card
+        class="min-w-full"
+        appearance="outlined"
+    >
+        <mat-card-header>
+            <span class="text-xl font-semibold mb-2">Talent</span>
+            <mat-icon
+                class="ml-auto cursor-pointer"
+                (click)="openInfoDialog(characterApi.rules?.talents)"
+                >help</mat-icon
+            >
+        </mat-card-header>
+        <mat-card-content>
+            <div class="flex">
+                <mat-form-field
+                    appearance="outline"
+                    class="w-1/3"
+                >
+                    <mat-select
+                        [formControl]="talentControl"
+                        (selectionChange)="updateTalent($event)"
+                    >
+                        <mat-option
+                            *ngFor="let talent of characterApi.rules?.talents"
+                            [value]="talent.id"
+                        >
+                            {{ talent.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <markdown
+                    class="max-w-1/2 wrap-normal ml-auto"
+                    [data]="getTalentDescription(talentControl.value)"
+                >
+                </markdown>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>
+<div class="flex items-baseline mt-4 mb-4">
+    <mat-card
+        class="min-w-full"
+        appearance="outlined"
+    >
+        <mat-card-header>
+            <span class="text-xl font-semibold mb-2">Magical Power</span>
+            <mat-icon
+                class="ml-auto cursor-pointer"
+                (click)="openInfoDialog(characterApi.rules?.magicalPowers)"
+                >help</mat-icon
+            >
+        </mat-card-header>
+        <mat-card-content class="h-40">
+            <div class="flex">
+                <div class="w-1/3">
+                    <mat-form-field appearance="outline">
+                        <mat-select
+                            [formControl]="magicalPowerControl"
+                            (selectionChange)="updateMagicalPower($event)"
+                        >
+                            <mat-option
+                                *ngFor="let magicalPower of characterApi.rules?.magicalPowers"
+                                [value]="magicalPower.id"
+                            >
+                                {{ magicalPower.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="w-1/2 ml-auto max-h-36 overflow-auto">
+                    <markdown [data]="getMagicalPowerDescription(magicalPowerControl.value)"> </markdown>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

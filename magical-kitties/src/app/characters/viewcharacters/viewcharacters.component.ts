@@ -10,7 +10,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { Router } from '@angular/router';
-import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { BehaviorSubject, catchError, combineLatest, debounceTime, EMPTY, Observable, Subscription, switchMap } from 'rxjs';
 import { getValue } from '../../login/utilities';
 import { CharactersResponse } from '../../models/Characters/charactersresponse.model';
@@ -22,7 +21,7 @@ import { CopyCharacterModalComponent } from './copy-modal/copy-modal.component';
 import { DeleteModalComponent } from './delete-modal/delete-modal.component';
 @Component({
     selector: 'app-viewcharacters',
-    imports: [CommonModule, MatButtonModule, MatCardModule, MatIconModule, MatFormFieldModule, MatInputModule, MatPaginatorModule, MatSelectModule, MatDividerModule, NgxSkeletonLoaderModule],
+    imports: [CommonModule, MatButtonModule, MatCardModule, MatIconModule, MatFormFieldModule, MatInputModule, MatPaginatorModule, MatSelectModule, MatDividerModule],
     templateUrl: './viewcharacters.component.html',
     styleUrl: './viewcharacters.component.scss',
 })

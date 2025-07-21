@@ -1,3 +1,5 @@
+import { EndowmentUpdate } from "./endowmentupdate.model";
+
 export interface UpdateCharacterAttributes {
     characterId: string;
     cute?: number;
@@ -9,4 +11,7 @@ export interface UpdateCharacterAttributes {
     currentTreats?: number;
     currentInjuries?: number;
     incapacitated?: boolean;
+    flawChange?: EndowmentUpdate;
+    talentChange?: EndowmentUpdate;
+    magicalPowerChange?: EndowmentUpdate;
 }
