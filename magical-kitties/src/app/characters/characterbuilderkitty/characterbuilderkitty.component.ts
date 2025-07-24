@@ -79,11 +79,20 @@ export class CharacterBuilderKittyComponent {
                 }
 
                 if (character.talents.length > 0) {
-                    this.talentControl.setValue(character.talents[0].id);
+                    const primaryTalent = character.talents.find(x => x.isPrimary === true);
+
+                    if (primaryTalent) {
+                        this.talentControl.setValue(primaryTalent.id);
+                    }
+
                 }
 
                 if (character.magicalPowers.length > 0) {
-                    this.magicalPowerControl.setValue(character.magicalPowers[0].id);
+                    const primaryMagicalPower = character.magicalPowers.find(x => x.isPrimary === true);
+
+                    if (primaryMagicalPower) {
+                        this.magicalPowerControl.setValue(primaryMagicalPower.id);
+                    }
                 }
 
                 this.character = character;
@@ -235,7 +244,8 @@ export class CharacterBuilderKittyComponent {
 
         const talentUpdate = new EndowmentUpdate({
             previousId: this.character?.talents[0]?.id ?? updatedTalent.id,
-            newId: updatedTalent.id
+            newId: updatedTalent.id,
+            isPrimary: true
         });
 
         const payload: UpdateCharacterAttributes = {
@@ -256,7 +266,8 @@ export class CharacterBuilderKittyComponent {
 
         const magicalPowerUpdate = new EndowmentUpdate({
             previousId: this.character?.magicalPowers[0]?.id ?? updatedMagicalPower.id,
-            newId: updatedMagicalPower.id
+            newId: updatedMagicalPower.id,
+            isPrimary: true
         });
 
         const payload: UpdateCharacterAttributes = {
