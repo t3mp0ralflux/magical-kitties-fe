@@ -1,11 +1,11 @@
 import { Flaw } from "../Characters/flaw.model";
 import { MagicalPower } from "../Characters/magicalpower.model";
 import { Talent } from "../Characters/talent.model";
-import { Upgrade } from "../Characters/upgrade.model";
 import { DiceDifficulty } from "./dicedifficulty.model";
 import { DiceSuccess } from "./dicesuccess.model";
 import { Emotion } from "./emotion.model";
 import { ProblemSource } from "./problemsource.model";
+import { UpgradeRule } from "./upgraderule.model";
 
 export class Rules {
     maxLevel!: number;
@@ -18,7 +18,7 @@ export class Rules {
     flaws!: Flaw[];
     talents!: Talent[];
     magicalPowers!: MagicalPower[];
-    upgrades!: Upgrade[];
+    upgrades!: UpgradeRule[];
     problemSource: ProblemSource[] = [];
     emotion: Emotion[] = [];
     diceRules: string[] = [];

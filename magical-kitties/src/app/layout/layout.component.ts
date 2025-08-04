@@ -15,8 +15,8 @@ import { HeaderComponent } from './header/header.component';
 export class LayoutComponent implements OnInit {
     menuOpen: boolean = false;
     loading: boolean = true;
-    private route: ActivatedRoute = inject(ActivatedRoute);
-    private authService: AuthService = inject(AuthService);
+    route: ActivatedRoute = inject(ActivatedRoute);
+    authService: AuthService = inject(AuthService);
 
     menuOpened(event: any) {
         this.menuOpen = event.value;

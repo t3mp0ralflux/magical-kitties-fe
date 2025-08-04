@@ -1,0 +1,25 @@
+<div class="flex items-baseline">
+    <div ngClass="{{ disabled ? 'disabled' : '' }}">
+        {{ systemUpgrade?.value }}
+    </div>
+    <div class="ml-3">
+        <mat-form-field
+            appearance="outline"
+            class="flex items-baseline"
+            subscriptSizing="dynamic"
+        >
+            <mat-select
+                [formControl]="magicalPowerChoice"
+                (selectionChange)="changeMagicalPower($event)"
+                class="h-2"
+            >
+                <mat-option [value]="undefined">-</mat-option>
+                <mat-option
+                    *ngFor="let item of characterCurrentPowers"
+                    [value]="item.id"
+                    >{{ item.name }}</mat-option
+                >
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>

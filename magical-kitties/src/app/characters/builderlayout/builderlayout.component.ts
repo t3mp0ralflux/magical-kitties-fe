@@ -6,10 +6,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from "@angular/material/toolbar";
-import { ActivatedRoute, Router, RouterEvent, RouterOutlet } from '@angular/router';
+import { Router, RouterEvent, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
 import { FooterComponent } from '../../layout/footer/footer.component';
 import { HeaderComponent } from '../../layout/header/header.component';
+import { LayoutComponent } from '../../layout/layout.component';
 import { Character } from '../../models/Characters/character.model';
 import { UpdateCharacterDescriptors } from '../../models/Characters/updatecharacterdescriptors.model';
 import { CharacterAPIService } from '../services/characters.service';
@@ -20,9 +21,9 @@ import { CharacterAPIService } from '../services/characters.service';
     templateUrl: './builderlayout.component.html',
     styleUrl: './builderlayout.component.scss'
 })
-export class BuilderlayoutComponent {
+export class BuilderlayoutComponent extends LayoutComponent {
     router: Router = inject(Router);
-    route: ActivatedRoute = inject(ActivatedRoute);
+    //route: ActivatedRoute = inject(ActivatedRoute);
     characterApi: CharacterAPIService = inject(CharacterAPIService);
     characterId: string;
     nameInput: FormControl = new FormControl("", [Validators.required]);
@@ -30,6 +31,7 @@ export class BuilderlayoutComponent {
     character?: Character;
 
     constructor() {
+        super();
         this.characterId = this.route.snapshot.params["id"];
 
         this.characterApi.getCharacterInformation(this.characterId).subscribe({

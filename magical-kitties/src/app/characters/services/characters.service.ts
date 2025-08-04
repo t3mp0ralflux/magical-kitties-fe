@@ -24,8 +24,8 @@ export class CharacterAPIService {
         this.baseUrl = `${environment.baseUrl}/api`;
     }
 
-    getRules(): Observable<any> {
-        return this.apiClient.request<any>({
+    getRules(): Observable<Rules> {
+        return this.apiClient.request<Rules>({
             path: `${this.baseUrl}/rules`,
             method: HttpMethod.GET
         }).pipe(

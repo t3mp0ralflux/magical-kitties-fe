@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
+import { MatCheckbox, MatCheckboxChange } from "@angular/material/checkbox";
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
@@ -11,28 +13,32 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { MarkdownComponent } from "ngx-markdown";
 import { combineLatest, pairwise, startWith, tap } from 'rxjs';
 import { getValue } from '../../login/utilities';
+import { AttributeOption } from '../../models/Characters/attributeoption.model';
 import { Character } from '../../models/Characters/character.model';
 import { EndowmentUpdate } from '../../models/Characters/endowmentupdate.model';
 import { Flaw } from '../../models/Characters/flaw.model';
 import { MagicalPower } from '../../models/Characters/magicalpower.model';
 import { Talent } from '../../models/Characters/talent.model';
 import { UpdateCharacterAttributes } from '../../models/Characters/updateacharacterattributes.model';
+import { Upgrade } from '../../models/Characters/upgrade.model';
 import { ConfirmModalComponent } from '../../sharedcomponents/confirm-modal/confirm-modal.component';
 import { CharacterAPIService } from '../services/characters.service';
+import { BonusFeatureComponent } from "./bonus-feature/bonus-feature.component";
 import { InformationDisplayComponent } from './information-display/information-display.component';
 
 @Component({
     selector: 'app-characterbuilderkitty',
-    imports: [CommonModule, MatDividerModule, MatInputModule, MatSelectModule, ReactiveFormsModule, MatIconModule, MatCardModule, MarkdownComponent],
+    imports: [CommonModule, MatDividerModule, MatInputModule, MatSelectModule, ReactiveFormsModule, MatIconModule, MatCardModule, MarkdownComponent, MatExpansionModule, MatCheckbox, BonusFeatureComponent],
     templateUrl: './characterbuilderkitty.component.html',
     styleUrl: './characterbuilderkitty.component.scss'
 })
 export class CharacterBuilderKittyComponent {
     private _snackBar: MatSnackBar = inject(MatSnackBar);
     characterApi: CharacterAPIService = inject(CharacterAPIService);
+    dialog: MatDialog = inject(MatDialog);
+    formBuilder: FormBuilder = inject(FormBuilder);
     character?: Character;
     levelOptions: number[] = Array(10).fill(1).map((_, i) => i + 1);
-    dialog: MatDialog = inject(MatDialog);
     getValue = getValue;
     levelControl: FormControl = new FormControl();
     statArray: number[] = [1, 2, 3]
@@ -46,6 +52,27 @@ export class CharacterBuilderKittyComponent {
     talentControl: FormControl = new FormControl();
     magicalPowerControl: FormControl = new FormControl();
 
+    selectedUpgrades: FormGroup = this.formBuilder.group({
+        block1magicalpowerbonus: new FormControl(""),
+        block1Attribute: new FormControl(""),
+        block1Owie: new FormControl(""),
+        block1Treat: new FormControl(""),
+        block2Talent: new FormControl(""),
+        block2Bonus: new FormControl(""),
+        block2Attribute: new FormControl(""),
+        block2Owie: new FormControl(""),
+        block2Treat: new FormControl(""),
+        block3MagicalPower: new FormControl(""),
+        block3Bonus: new FormControl(""),
+        block3Attribute: new FormControl(""),
+        block3Owie: new FormControl(""),
+        block3Treat: new FormControl(""),
+    });
+
+    get block1Bonus() {
+        return this.selectedUpgrades.controls['block1magicalpowerbonus'];
+    }
+
     constructor() {
         combineLatest({
             character: this.characterApi.character$,
@@ -55,6 +82,10 @@ export class CharacterBuilderKittyComponent {
                 if (character === undefined) {
                     return;
                 }
+
+                rules.upgrades.forEach(element => {
+                    this.selectedUpgrades.addControl(element.id, new FormControl());
+                });
 
                 this.levelControl.setValue(character?.level);
                 this.xpControl.setValue(character?.currentXp);
@@ -84,7 +115,6 @@ export class CharacterBuilderKittyComponent {
                     if (primaryTalent) {
                         this.talentControl.setValue(primaryTalent.id);
                     }
-
                 }
 
                 if (character.magicalPowers.length > 0) {
@@ -95,7 +125,19 @@ export class CharacterBuilderKittyComponent {
                     }
                 }
 
+                character.upgrades.forEach((upgrade) => {
+                    const controlName = `block${upgrade.block}${AttributeOption[upgrade.option!]}`;
+
+                    this.selectedUpgrades.controls[controlName].setValue(true);
+                });
+
                 this.character = character;
+
+                if (this.upgradesDisabled()) {
+                    this.disabledControls();
+                } else {
+                    this.enableControls();
+                }
             }
         });
 
@@ -122,6 +164,79 @@ export class CharacterBuilderKittyComponent {
                 this.applyFilter(previous, next);
             })
         ).subscribe();
+    }
+
+    getUpgradeFromCharacter(id?: string) {
+        if (!id) {
+            return;
+        }
+
+        const characterUpgrade = this.character?.upgrades.find(x => x.id === id);
+
+        return characterUpgrade;
+    }
+
+    getUpgradeIdFromRules(block: number, name: string) {
+        const foundUpgrade = this.characterApi.rules?.upgrades.find(x => x.block === block && x.value.toLowerCase().includes(name));
+
+        return foundUpgrade?.id;
+    }
+
+    upgradeChanged(changedUpgrade: Upgrade) {
+        // save changes to DB.
+        console.log(JSON.stringify(changedUpgrade));
+    }
+
+    checkChange(event: MatCheckboxChange) {
+        if (event.checked) {
+            // TODO: send update to backend.
+            const upgradeRule = this.characterApi.rules?.upgrades.find(x => x.id === event.source.value);
+
+            if (upgradeRule) {
+                this.character?.upgrades.push(new Upgrade({ id: upgradeRule.id, option: AttributeOption.magicalpowerbonus, block: upgradeRule.block }));
+            }
+
+
+        } else {
+            // TODO: send update to backend.
+            const existingUpgrade = this.character?.upgrades.find(x => x.id === event.source.value);
+
+            if (existingUpgrade) {
+                this.character?.upgrades.splice(this.character.upgrades.indexOf(existingUpgrade), 1);
+            }
+        }
+
+        if (this.upgradesDisabled()) {
+            this.disabledControls();
+        } else {
+            this.enableControls();
+        }
+    }
+
+    disabledControls(): void {
+        Object.keys(this.selectedUpgrades.controls).forEach((key: string) => {
+            const control = this.selectedUpgrades.controls[key];
+            if (control.value !== true) {
+                control.disable();
+            }
+        });
+    }
+
+    enableControls(): void {
+        Object.keys(this.selectedUpgrades.controls).forEach((key: string) => {
+            const control = this.selectedUpgrades.controls[key];
+            control.enable();
+        });
+    }
+
+    upgradesDisabled(): boolean {
+        const selectedValues = Object.values(this.selectedUpgrades.value);
+
+        return selectedValues.filter(x => x === true).length >= this.character!.level - 1; // nothing at level 1, so minus one to ensure off-by-one error reduction
+    }
+
+    upgradeSelected(upgradeId: string): boolean {
+        return this.selectedUpgrades.controls[upgradeId].value;
     }
 
     applyFilter(previous: number, next: number) {
@@ -158,6 +273,9 @@ export class CharacterBuilderKittyComponent {
         return power?.description;
     }
 
+    getBlockRules(block: number): Upgrade[] {
+        return this.characterApi.rules?.upgrades?.filter(x => x.block === block) ?? [];
+    }
 
     updateXP(xp: string): void {
         let numberOfXp: number;

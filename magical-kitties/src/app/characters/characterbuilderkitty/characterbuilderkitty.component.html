@@ -210,3 +210,93 @@
         </mat-card-content>
     </mat-card>
 </div>
+<div
+    class="mb-5"
+    *ngIf="character ? character.level > 1 : false"
+>
+    <div
+        class="flex flex-col"
+        [formGroup]="selectedUpgrades"
+    >
+        <mat-label class="font-semibold">Level 2-4</mat-label>
+        <div class="flex items-baseline">
+            <mat-checkbox
+                formControlName="block1magicalpowerbonus"
+                (change)="checkChange($event)"
+                [value]="getUpgradeIdFromRules(1, 'bonus')!"
+            >
+            </mat-checkbox>
+            <app-bonus-feature
+                [id]="getUpgradeIdFromRules(1, 'bonus')"
+                [disabled]="block1Bonus.disabled"
+                [upgrade]="getUpgradeFromCharacter(getUpgradeIdFromRules(1, 'bonus'))"
+                [characterCurrentPowers]="character?.magicalPowers ?? []"
+                (upgradeChanged)="upgradeChanged($event)"
+            ></app-bonus-feature>
+        </div>
+        <div>
+            <mat-checkbox
+                formControlName="block1Attribute"
+                (change)="checkChange($event)"
+            >
+                <mat-select>
+                    <mat-option>1</mat-option>
+                    <mat-option>2</mat-option>
+                </mat-select>
+            </mat-checkbox>
+        </div>
+    </div>
+</div>
+<!-- <div
+    class="mb-5"
+    *ngIf="character ? character.level < 8 : true"
+>
+    <mat-accordion>
+        <mat-expansion-panel
+            hideToggle
+            class="max-w-2/3"
+        >
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <span class="text-xl font-semibold">Upgrades</span>
+                    <mat-icon class="ml-auto">add</mat-icon>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="flex flex-col">
+                <div
+                    class="flex flex-col"
+                    *ngIf="character ? character.level < 2 : true"
+                >
+                    <mat-label class="font-semibold">Level 2-4</mat-label>
+                    <mat-checkbox
+                        [disabled]="true"
+                        *ngFor="let item of getBlockRules(1)"
+                        >{{ item.value }}</mat-checkbox
+                    >
+                </div>
+                <div
+                    class="flex flex-col"
+                    *ngIf="character ? character.level < 5 : true"
+                >
+                    <mat-label class="font-semibold">Level 5-7</mat-label>
+                    <mat-checkbox
+                        [disabled]="true"
+                        *ngFor="let item of getBlockRules(2)"
+                        >{{ item.value }}</mat-checkbox
+                    >
+                </div>
+                <div
+                    class="flex flex-col"
+                    *ngIf="character ? character.level < 8 : true"
+                >
+                    <mat-label class="font-semibold">Level 8-10</mat-label>
+                    <mat-checkbox
+                        [disabled]="true"
+                        *ngFor="let item of getBlockRules(3)"
+                        >{{ item.value }}</mat-checkbox
+                    >
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div> -->

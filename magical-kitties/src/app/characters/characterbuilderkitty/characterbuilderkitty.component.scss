@@ -12,3 +12,11 @@ mat-card {
         )
     );
 }
+
+mat-accordion {
+    @include mat.expansion-overrides(
+        (
+            container-background-color: var(--primary-background),
+        )
+    );
+}
