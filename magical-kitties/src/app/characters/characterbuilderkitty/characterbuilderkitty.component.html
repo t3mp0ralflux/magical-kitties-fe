@@ -220,25 +220,15 @@
     >
         <mat-label class="font-semibold">Level 2-4</mat-label>
         <div class="flex items-baseline">
-            <mat-checkbox
-                formControlName="block1magicalpowerbonus"
-                (change)="checkChange($event)"
-                [value]="getUpgradeIdFromRules(1, 'bonus')!"
-            >
-            </mat-checkbox>
             <app-bonus-feature
                 [id]="getUpgradeIdFromRules(1, 'bonus')"
                 [disabled]="block1Bonus.disabled"
-                [upgrade]="getUpgradeFromCharacter(getUpgradeIdFromRules(1, 'bonus'))"
-                [characterCurrentPowers]="character?.magicalPowers ?? []"
-                (upgradeChanged)="upgradeChanged($event)"
+                [parentControl]="block1Bonus"
+                (upgradeSelected)="checkChange()"
             ></app-bonus-feature>
         </div>
         <div>
-            <mat-checkbox
-                formControlName="block1Attribute"
-                (change)="checkChange($event)"
-            >
+            <mat-checkbox formControlName="block1Attribute">
                 <mat-select>
                     <mat-option>1</mat-option>
                     <mat-option>2</mat-option>

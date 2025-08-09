@@ -8,6 +8,8 @@ import { CharactersResponse } from "../../models/Characters/charactersresponse.m
 import { DescriptionOption } from "../../models/Characters/descriptionoption.model";
 import { UpdateCharacterAttributes } from "../../models/Characters/updateacharacterattributes.model";
 import { UpdateCharacterDescriptors } from "../../models/Characters/updatecharacterdescriptors.model";
+import { UpgradeRemoveRequest } from "../../models/Characters/upgraderemoverequest.model";
+import { UpsertUpgradeRequest } from "../../models/Characters/upsertupgraderequest.model";
 import { Rules } from "../../models/System/rules.model";
 import { ApiClient, HttpMethod } from "../../services/apiClient.service";
 
@@ -152,6 +154,26 @@ export class CharacterAPIService {
             body: payload,
             headerResponse: true,
             responseType: "text"
-        })
+        });
+    }
+
+    createUpgrade(characterId: string, upgrade: UpsertUpgradeRequest) {
+        return this.apiClient.request<string>({
+            path: `${this.baseUrl}/characters/${characterId}/upgrade/upsert`,
+            method: HttpMethod.PUT,
+            body: upgrade,
+            headerResponse: true,
+            responseType: "text"
+        });
+    }
+
+    removeUpgrade(characterId: string, upgrade: UpgradeRemoveRequest) {
+        return this.apiClient.request<string>({
+            path: `${this.baseUrl}/characters/${characterId}/upgrade/remove`,
+            method: HttpMethod.PUT,
+            body: upgrade,
+            headerResponse: true,
+            responseType: "text"
+        });
     }
 }

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
-import { MatCheckbox, MatCheckboxChange } from "@angular/material/checkbox";
+import { MatCheckbox } from "@angular/material/checkbox";
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -11,7 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { MarkdownComponent } from "ngx-markdown";
-import { combineLatest, pairwise, startWith, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, pairwise, startWith, tap } from 'rxjs';
 import { getValue } from '../../login/utilities';
 import { AttributeOption } from '../../models/Characters/attributeoption.model';
 import { Character } from '../../models/Characters/character.model';
@@ -20,7 +20,7 @@ import { Flaw } from '../../models/Characters/flaw.model';
 import { MagicalPower } from '../../models/Characters/magicalpower.model';
 import { Talent } from '../../models/Characters/talent.model';
 import { UpdateCharacterAttributes } from '../../models/Characters/updateacharacterattributes.model';
-import { Upgrade } from '../../models/Characters/upgrade.model';
+import { UpgradeRule } from '../../models/System/upgraderule.model';
 import { ConfirmModalComponent } from '../../sharedcomponents/confirm-modal/confirm-modal.component';
 import { CharacterAPIService } from '../services/characters.service';
 import { BonusFeatureComponent } from "./bonus-feature/bonus-feature.component";
@@ -51,6 +51,9 @@ export class CharacterBuilderKittyComponent {
     flawControl: FormControl = new FormControl();
     talentControl: FormControl = new FormControl();
     magicalPowerControl: FormControl = new FormControl();
+    upgradeCheckedSubject: BehaviorSubject<{ checked: boolean, id: string }> = new BehaviorSubject<{ checked: boolean, id: string }>({ checked: false, id: "" });
+    upgradeChecked$: Observable<{ checked: boolean, id: string }> = this.upgradeCheckedSubject.asObservable();
+
 
     selectedUpgrades: FormGroup = this.formBuilder.group({
         block1magicalpowerbonus: new FormControl(""),
@@ -182,30 +185,7 @@ export class CharacterBuilderKittyComponent {
         return foundUpgrade?.id;
     }
 
-    upgradeChanged(changedUpgrade: Upgrade) {
-        // save changes to DB.
-        console.log(JSON.stringify(changedUpgrade));
-    }
-
-    checkChange(event: MatCheckboxChange) {
-        if (event.checked) {
-            // TODO: send update to backend.
-            const upgradeRule = this.characterApi.rules?.upgrades.find(x => x.id === event.source.value);
-
-            if (upgradeRule) {
-                this.character?.upgrades.push(new Upgrade({ id: upgradeRule.id, option: AttributeOption.magicalpowerbonus, block: upgradeRule.block }));
-            }
-
-
-        } else {
-            // TODO: send update to backend.
-            const existingUpgrade = this.character?.upgrades.find(x => x.id === event.source.value);
-
-            if (existingUpgrade) {
-                this.character?.upgrades.splice(this.character.upgrades.indexOf(existingUpgrade), 1);
-            }
-        }
-
+    checkChange() {
         if (this.upgradesDisabled()) {
             this.disabledControls();
         } else {
@@ -273,7 +253,7 @@ export class CharacterBuilderKittyComponent {
         return power?.description;
     }
 
-    getBlockRules(block: number): Upgrade[] {
+    getBlockRules(block: number): UpgradeRule[] {
         return this.characterApi.rules?.upgrades?.filter(x => x.block === block) ?? [];
     }
 
