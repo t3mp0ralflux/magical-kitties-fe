@@ -224,6 +224,7 @@
                 [id]="getUpgradeIdFromRules(1, 'bonus')"
                 [disabled]="block1Bonus.disabled"
                 [parentControl]="block1Bonus"
+                [magicalPowerChanged]="magicalPowerChanged$"
                 (upgradeSelected)="checkChange()"
             ></app-bonus-feature>
         </div>

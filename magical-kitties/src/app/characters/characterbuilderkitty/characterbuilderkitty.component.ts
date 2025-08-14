@@ -53,6 +53,8 @@ export class CharacterBuilderKittyComponent {
     magicalPowerControl: FormControl = new FormControl();
     upgradeCheckedSubject: BehaviorSubject<{ checked: boolean, id: string }> = new BehaviorSubject<{ checked: boolean, id: string }>({ checked: false, id: "" });
     upgradeChecked$: Observable<{ checked: boolean, id: string }> = this.upgradeCheckedSubject.asObservable();
+    magicalPowerChangedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    magicalPowerChanged$: Observable<boolean> = this.magicalPowerChangedSubject.asObservable();
 
 
     selectedUpgrades: FormGroup = this.formBuilder.group({
@@ -376,6 +378,7 @@ export class CharacterBuilderKittyComponent {
         this.characterApi.updateMagicalPower(payload).subscribe({
             next: (response) => {
                 this.character!.magicalPowers[0] = updatedMagicalPower;
+                this.magicalPowerChangedSubject.next(true);
             }
         });
     }
