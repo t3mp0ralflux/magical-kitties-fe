@@ -59,7 +59,9 @@ export class CharacterAPIService {
         return this.apiClient.request<Character>({
             path: `${this.baseUrl}/characters/${characterId}`,
             method: HttpMethod.GET
-        });
+        }).pipe(
+            tap(character => this.character.next(character))
+        );
     }
 
     createCharacter(): Observable<HttpResponse<Character>>;
@@ -157,7 +159,7 @@ export class CharacterAPIService {
         });
     }
 
-    createUpgrade(characterId: string, upgrade: UpsertUpgradeRequest) {
+    upsertUpgrade(characterId: string, upgrade: UpsertUpgradeRequest) {
         return this.apiClient.request<string>({
             path: `${this.baseUrl}/characters/${characterId}/upgrade/upsert`,
             method: HttpMethod.PUT,

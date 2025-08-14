@@ -125,6 +125,13 @@ export class ApiClient implements HttpInterceptor {
                 map((response: LoginResponse) => {
                     this.storeTokens(response.accessToken, response.refreshToken);
                     return response.account;
+                }),
+                catchError((err) => {
+                    if (err.error.message.includes("Failed to fetch")) {
+                        return EMPTY;
+                    }
+
+                    return throwError(() => new Error());
                 })
             );
         } else {
@@ -160,9 +167,12 @@ export class ApiClient implements HttpInterceptor {
                         this.tokenRefreshedSource.next(account);
                     }),
                     catchError((err) => {
-                        this.tokenRefreshedSource.next(new Account());
-                        this.refreshTokenInProgress = false;
-                        this.clearTokens();
+                        if (err.error.message) {
+
+                        }
+                        // this.tokenRefreshedSource.next(new Account());
+                        // this.refreshTokenInProgress = false;
+                        // this.clearTokens();
 
                         return throwError(() => new Error('Session expired, please log in again.'));
                     })

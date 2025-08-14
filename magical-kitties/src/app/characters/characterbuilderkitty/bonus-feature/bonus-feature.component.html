@@ -48,7 +48,7 @@
                     >-</mat-option
                 >
                 <mat-option
-                    *ngFor="let item of bonusFeatures"
+                    *ngFor="let item of getAvailableBonusFeatures()"
                     [value]="item.id"
                     >{{ item.name }}</mat-option
                 >
