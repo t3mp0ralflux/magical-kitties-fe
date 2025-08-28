@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
-import { MatCheckbox } from "@angular/material/checkbox";
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -13,22 +12,23 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { MarkdownComponent } from "ngx-markdown";
 import { BehaviorSubject, combineLatest, Observable, pairwise, startWith, tap } from 'rxjs';
 import { getValue } from '../../login/utilities';
-import { AttributeOption } from '../../models/Characters/attributeoption.model';
 import { Character } from '../../models/Characters/character.model';
 import { EndowmentUpdate } from '../../models/Characters/endowmentupdate.model';
 import { Flaw } from '../../models/Characters/flaw.model';
 import { MagicalPower } from '../../models/Characters/magicalpower.model';
 import { Talent } from '../../models/Characters/talent.model';
 import { UpdateCharacterAttributes } from '../../models/Characters/updateacharacterattributes.model';
+import { UpgradeOption } from '../../models/Characters/upgradeoption.model';
 import { UpgradeRule } from '../../models/System/upgraderule.model';
 import { ConfirmModalComponent } from '../../sharedcomponents/confirm-modal/confirm-modal.component';
 import { CharacterAPIService } from '../services/characters.service';
+import { AttributeIncreaseComponent } from "./attribute-increase/attribute-increase.component";
 import { BonusFeatureComponent } from "./bonus-feature/bonus-feature.component";
 import { InformationDisplayComponent } from './information-display/information-display.component';
 
 @Component({
     selector: 'app-characterbuilderkitty',
-    imports: [CommonModule, MatDividerModule, MatInputModule, MatSelectModule, ReactiveFormsModule, MatIconModule, MatCardModule, MarkdownComponent, MatExpansionModule, MatCheckbox, BonusFeatureComponent],
+    imports: [CommonModule, MatDividerModule, MatInputModule, MatSelectModule, ReactiveFormsModule, MatIconModule, MatCardModule, MarkdownComponent, MatExpansionModule, BonusFeatureComponent, AttributeIncreaseComponent],
     templateUrl: './characterbuilderkitty.component.html',
     styleUrl: './characterbuilderkitty.component.scss'
 })
@@ -40,6 +40,7 @@ export class CharacterBuilderKittyComponent {
     character?: Character;
     levelOptions: number[] = Array(10).fill(1).map((_, i) => i + 1);
     getValue = getValue;
+    UpgradeOption = UpgradeOption;
     levelControl: FormControl = new FormControl();
     statArray: number[] = [1, 2, 3]
     filteredStatArray: number[] = [];
@@ -58,25 +59,33 @@ export class CharacterBuilderKittyComponent {
 
 
     selectedUpgrades: FormGroup = this.formBuilder.group({
-        block1magicalpowerbonus: new FormControl(""),
-        block1Attribute: new FormControl(""),
-        block1Owie: new FormControl(""),
-        block1Treat: new FormControl(""),
-        block2Talent: new FormControl(""),
-        block2Bonus: new FormControl(""),
-        block2Attribute: new FormControl(""),
-        block2Owie: new FormControl(""),
-        block2Treat: new FormControl(""),
-        block3MagicalPower: new FormControl(""),
-        block3Bonus: new FormControl(""),
-        block3Attribute: new FormControl(""),
-        block3Owie: new FormControl(""),
-        block3Treat: new FormControl(""),
+        block1bonusFeature: new FormControl(""),
+        block1attribute3: new FormControl(""),
+        block1owieLimit: new FormControl(""),
+        block1treatsValue: new FormControl(""),
+        block2talent: new FormControl(""),
+        block2bonusFeature: new FormControl(""),
+        block2attribute4: new FormControl(""),
+        block2owieLimit: new FormControl(""),
+        block2treatsValue: new FormControl(""),
+        block3magicalPower: new FormControl(""),
+        block3bonusFeature: new FormControl(""),
+        block3attribute4: new FormControl(""),
+        block3owieLimit: new FormControl(""),
+        block3treatsValue: new FormControl(""),
     });
 
     get block1Bonus() {
-        return this.selectedUpgrades.controls['block1magicalpowerbonus'];
+        return this.selectedUpgrades.controls['block1bonusFeature'];
     }
+
+    get block1Attribute() {
+        return this.selectedUpgrades.controls['block1attribute3'];
+    }
+
+    // TODO: ok here's the skinny. Your project is UNRESPONSIVE to any changes. You need to fix the following:
+    // Updating any Attribute isn't working.
+    // When you update ANYTHING on the character, it should send new information to every component and update relevant values.
 
     constructor() {
         combineLatest({
@@ -131,7 +140,7 @@ export class CharacterBuilderKittyComponent {
                 }
 
                 character.upgrades.forEach((upgrade) => {
-                    const controlName = `block${upgrade.block}${AttributeOption[upgrade.option!]}`;
+                    const controlName = `block${upgrade.block}${UpgradeOption[upgrade.option!]}`;
 
                     this.selectedUpgrades.controls[controlName].setValue(true);
                 });
@@ -139,7 +148,7 @@ export class CharacterBuilderKittyComponent {
                 this.character = character;
 
                 if (this.upgradesDisabled()) {
-                    this.disabledControls();
+                    this.disableControls();
                 } else {
                     this.enableControls();
                 }
@@ -181,21 +190,21 @@ export class CharacterBuilderKittyComponent {
         return characterUpgrade;
     }
 
-    getUpgradeIdFromRules(block: number, name: string) {
-        const foundUpgrade = this.characterApi.rules?.upgrades.find(x => x.block === block && x.value.toLowerCase().includes(name));
+    getUpgradeIdFromRules(block: number, upgradeOption: UpgradeOption) {
+        const foundUpgrade = this.characterApi.rules?.upgrades.find(x => x.block === block && x.upgradeOption === upgradeOption);
 
         return foundUpgrade?.id;
     }
 
     checkChange() {
         if (this.upgradesDisabled()) {
-            this.disabledControls();
+            this.disableControls();
         } else {
             this.enableControls();
         }
     }
 
-    disabledControls(): void {
+    disableControls(): void {
         Object.keys(this.selectedUpgrades.controls).forEach((key: string) => {
             const control = this.selectedUpgrades.controls[key];
             if (control.value !== true) {
@@ -209,6 +218,15 @@ export class CharacterBuilderKittyComponent {
             const control = this.selectedUpgrades.controls[key];
             control.enable();
         });
+    }
+
+    resetUpgrades(): void {
+        Object.keys(this.selectedUpgrades.controls).forEach((key: string) => {
+            const control = this.selectedUpgrades.controls[key];
+            control?.setValue(false);
+        });
+
+        this.character!.upgrades = [];
     }
 
     upgradesDisabled(): boolean {
@@ -295,7 +313,8 @@ export class CharacterBuilderKittyComponent {
     updateLevel(event: MatSelectChange): void {
         const payload: UpdateCharacterAttributes = {
             characterId: this.character?.id!,
-            level: this.levelControl.value
+            level: this.levelControl.value,
+            xp: 0
         };
 
         if (event.value < this.character!.level) {
@@ -306,15 +325,18 @@ export class CharacterBuilderKittyComponent {
                     if (result) {
                         this.submitLevelUp(payload);
                         this.character!.currentXp = 0;
+                        this.resetUpgrades();
                     }
                 },
                 error: (err) => {
-
+                    debugger;
                 }
             })
         } else {
             this.submitLevelUp(payload);
         }
+
+        this.checkChange();
     }
 
     updateFlaw(event: MatSelectChange): void {

@@ -5,7 +5,6 @@ import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { Observable } from 'rxjs';
-import { AttributeOption } from '../../../models/Characters/attributeoption.model';
 import { Character } from '../../../models/Characters/character.model';
 import { Endowment } from '../../../models/Characters/endowment.model';
 import { Upgrade } from '../../../models/Characters/upgrade.model';
@@ -31,10 +30,10 @@ export class BonusFeatureComponent implements AfterContentInit {
     showOptions: Boolean = false;
     characterApi: CharacterAPIService = inject(CharacterAPIService);
     upgradeRule?: UpgradeRule;
-    private upgradeInformation?: Upgrade;
-    private bonusFeatureInformation?: BonusFeatureUpgrade;
     magicalPowerChoice: FormControl = new FormControl({ value: undefined, disabled: this.disabled })
     bonusFeatureChoice: FormControl = new FormControl({ value: undefined, disabled: this.disabled })
+    private upgradeInformation?: Upgrade;
+    private bonusFeatureInformation?: BonusFeatureUpgrade;
     private character?: Character;
 
     get characterCurrentPowers() {
@@ -83,8 +82,8 @@ export class BonusFeatureComponent implements AfterContentInit {
 
     checkChange(event: MatCheckboxChange) {
         if (event.checked) {
-            const newUpgrade = new Upgrade({ id: this.id, option: AttributeOption.magicalpowerbonus, block: this.upgradeRule!.block });
-            const upgradeRequest = new UpsertUpgradeRequest({ upgradeId: this.id, upgradeOption: UpgradeOption.bonusFeature, attributeOption: AttributeOption.magicalpowerbonus, block: this.upgradeRule!.block });
+            const newUpgrade = new Upgrade({ id: this.id, option: UpgradeOption.bonusFeature, block: this.upgradeRule!.block });
+            const upgradeRequest = new UpsertUpgradeRequest({ upgradeId: this.id, upgradeOption: UpgradeOption.bonusFeature, block: this.upgradeRule!.block });
             this.characterApi.upsertUpgrade(this.character!.id, upgradeRequest).subscribe({
                 next: (value: string) => {
                     this.character!.upgrades.push(newUpgrade);
@@ -107,6 +106,7 @@ export class BonusFeatureComponent implements AfterContentInit {
                     if (upgradeIndex !== undefined && upgradeIndex >= 0) {
                         this.character!.upgrades.splice(upgradeIndex, 1);
                         this.magicalPowerChoice.setValue(undefined);
+                        this.bonusFeatureChoice.setValue(undefined);
                     }
                     this.showOptions = false;
                 },
@@ -116,7 +116,6 @@ export class BonusFeatureComponent implements AfterContentInit {
             });
 
         }
-
 
         this.upgradeSelected.next(event.checked);
     }
@@ -130,12 +129,12 @@ export class BonusFeatureComponent implements AfterContentInit {
         this.bonusFeatureInformation.bonusFeatureId = undefined; // reset this cause it's wrong.
 
         if (!this.upgradeInformation) {
-            this.upgradeInformation = new Upgrade({ id: this.id, option: AttributeOption.magicalpowerbonus })
+            this.upgradeInformation = new Upgrade({ id: this.id, option: UpgradeOption.bonusFeature });
         }
 
         this.upgradeInformation!.choice = this.bonusFeatureInformation;
 
-        const upgradeRequest = new UpsertUpgradeRequest({ upgradeId: this.id, upgradeOption: UpgradeOption.bonusFeature, attributeOption: AttributeOption.magicalpower, block: this.upgradeRule!.block, value: JSON.stringify(this.bonusFeatureInformation) });
+        const upgradeRequest = new UpsertUpgradeRequest({ upgradeId: this.id, upgradeOption: UpgradeOption.bonusFeature, block: this.upgradeRule!.block, value: JSON.stringify(this.bonusFeatureInformation) });
 
         this.characterApi.upsertUpgrade(this.character!.id, upgradeRequest).subscribe({
             next: (_: string) => {
@@ -158,12 +157,12 @@ export class BonusFeatureComponent implements AfterContentInit {
         this.bonusFeatureInformation.bonusFeatureId = value.value;
 
         if (!this.upgradeInformation) {
-            this.upgradeInformation = new Upgrade({ id: this.id, option: AttributeOption.magicalpowerbonus })
+            this.upgradeInformation = new Upgrade({ id: this.id, option: UpgradeOption.bonusFeature })
         }
 
         this.upgradeInformation!.choice = this.bonusFeatureInformation;
 
-        const upgradeRequest = new UpsertUpgradeRequest({ upgradeId: this.id, upgradeOption: UpgradeOption.bonusFeature, attributeOption: AttributeOption.magicalpowerbonus, block: this.upgradeRule!.block, value: JSON.stringify(this.bonusFeatureInformation) });
+        const upgradeRequest = new UpsertUpgradeRequest({ upgradeId: this.id, upgradeOption: UpgradeOption.bonusFeature, block: this.upgradeRule!.block, value: JSON.stringify(this.bonusFeatureInformation) });
 
         this.characterApi.upsertUpgrade(this.character!.id, upgradeRequest).subscribe({
             next: (_: string) => {
@@ -188,7 +187,7 @@ export class BonusFeatureComponent implements AfterContentInit {
     }
 
     isFiltered(item: Endowment): boolean {
-        const relevantUpgrades = this.character?.upgrades.filter(x => x.option === AttributeOption.magicalpowerbonus);
+        const relevantUpgrades = this.character?.upgrades.filter(x => x.option === UpgradeOption.bonusFeature);
         if (relevantUpgrades) {
             relevantUpgrades.forEach((upgrade) => {
                 const choice = upgrade.choice as BonusFeatureUpgrade;

@@ -221,7 +221,7 @@
         <mat-label class="font-semibold">Level 2-4</mat-label>
         <div class="flex items-baseline">
             <app-bonus-feature
-                [id]="getUpgradeIdFromRules(1, 'bonus')"
+                [id]="getUpgradeIdFromRules(1, UpgradeOption.bonusFeature)"
                 [disabled]="block1Bonus.disabled"
                 [parentControl]="block1Bonus"
                 [magicalPowerChanged]="magicalPowerChanged$"
@@ -229,12 +229,13 @@
             ></app-bonus-feature>
         </div>
         <div>
-            <mat-checkbox formControlName="block1Attribute">
-                <mat-select>
-                    <mat-option>1</mat-option>
-                    <mat-option>2</mat-option>
-                </mat-select>
-            </mat-checkbox>
+            <app-attribute-increase
+                [id]="getUpgradeIdFromRules(1, UpgradeOption.attribute3)"
+                [disabled]="block1Attribute.disabled"
+                [parentControl]="block1Attribute"
+                (upgradeSelected)="checkChange()"
+            >
+            </app-attribute-increase>
         </div>
     </div>
 </div>

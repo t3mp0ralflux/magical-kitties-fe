@@ -1,0 +1,34 @@
+<div class="flex items-center min-h-14">
+    <mat-checkbox
+        [formControl]="parentControl"
+        (change)="checkChange($event)"
+    >
+    </mat-checkbox>
+    <div ngClass="{{ disabled ? 'disabled' : '' }}">
+        {{ upgradeRule?.value }}
+    </div>
+    <div class="ml-3">
+        <mat-form-field
+            appearance="outline"
+            class="flex items-baseline"
+            subscriptSizing="dynamic"
+            [hidden]="!showOptions"
+        >
+            <mat-select
+                [formControl]="attributeChoice"
+                (selectionChange)="changeAttribute($event)"
+            >
+                <mat-option
+                    [value]="undefined"
+                    disabled="true"
+                    >-</mat-option
+                >
+                <mat-option
+                    *ngFor="let item of Attributes"
+                    [value]="item"
+                    >{{ AttributeOption[item] | titlecase }}</mat-option
+                >
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>
