@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { AfterViewInit, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MarkdownComponent } from "ngx-markdown";
-import { Endowment } from '../../../models/Characters/endowment.model';
 
 @Component({
     selector: 'app-information-display',
@@ -11,6 +10,17 @@ import { Endowment } from '../../../models/Characters/endowment.model';
     templateUrl: './information-display.component.html',
     styleUrl: './information-display.component.scss'
 })
-export class InformationDisplayComponent {
-    data: Endowment[] = inject(MAT_DIALOG_DATA);
+export class InformationDisplayComponent implements AfterViewInit {
+    data: any = inject(MAT_DIALOG_DATA);
+
+    ngAfterViewInit(): void {
+        if (this.data.anchor) {
+            setTimeout(() => {
+                const targetElement = document.getElementById(this.data.anchor);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: "instant" });
+                }
+            });
+        }
+    }
 }

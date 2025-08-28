@@ -1,20 +1,49 @@
 <mat-dialog-content>
     <div
-        *ngFor="let item of data"
+        *ngFor="let item of data.data"
         class="flex flex-col mb-4"
+        id="{{ item.id }}"
     >
-        <span class="text-xl font-semibold">{{ item.name }}</span>
+        <span class="text-xl font-semibold underline">{{ item.name }}</span>
         <markdown
             ngPreserveWhitespaces
             [data]="item.description"
         ></markdown>
+        <div
+            class="ml-8"
+            *ngIf="item.bonusFeatures"
+        >
+            <span class="text-lg font-semibold underline">Bonus Features</span>
+            <ng-container
+                [ngTemplateOutlet]="bonusFeaturesTemplate"
+                [ngTemplateOutletContext]="{ features: item.bonusFeatures }"
+            ></ng-container>
+        </div>
     </div>
 </mat-dialog-content>
-<mat-dialog-actions
-    ><button
+<mat-dialog-actions>
+    <button
         mat-raised-button
         mat-dialog-close=""
     >
         Close
     </button></mat-dialog-actions
 >
+
+<ng-template
+    #bonusFeaturesTemplate
+    let-features="features"
+>
+    <ul class="ml-5 list-disc">
+        <li
+            class="mb-2"
+            *ngFor="let item of features"
+        >
+            <span class="font-semibold">{{ item.name }}</span>
+            <markdown
+                ngPreserveWhitespaces
+                [data]="item.description"
+            ></markdown>
+        </li>
+    </ul>
+</ng-template>
