@@ -4,13 +4,14 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
-import { Observable } from 'rxjs';
+import { AttributeOption } from '../../../models/Characters/attributeoption.model';
 import { Character } from '../../../models/Characters/character.model';
 import { Endowment } from '../../../models/Characters/endowment.model';
 import { Upgrade } from '../../../models/Characters/upgrade.model';
 import { UpgradeOption } from '../../../models/Characters/upgradeoption.model';
 import { UpgradeRemoveRequest } from '../../../models/Characters/upgraderemoverequest.model';
 import { UpsertUpgradeRequest } from '../../../models/Characters/upsertupgraderequest.model';
+import { CharacterUpdate } from '../../../models/System/characterupdate.model';
 import { UpgradeRule } from '../../../models/System/upgraderule.model';
 import { CharacterAPIService } from '../../services/characters.service';
 import { BonusFeatureUpgrade } from './models/bonus-feature.model';
@@ -25,7 +26,6 @@ export class BonusFeatureComponent implements AfterContentInit {
     @Input() id?: string;
     @Input() parentControl!: any;
     @Input() disabled!: boolean;
-    @Input() magicalPowerChanged!: Observable<boolean>;
     @Output() upgradeSelected = new EventEmitter<boolean>();
     showOptions: Boolean = false;
     characterApi: CharacterAPIService = inject(CharacterAPIService);
@@ -48,6 +48,26 @@ export class BonusFeatureComponent implements AfterContentInit {
                 }
             }
         });
+
+        this.characterApi.characterChanged$.subscribe({
+            next: (update: CharacterUpdate) => {
+                if (update.attributeOption === undefined) {
+                    return;
+                }
+
+                switch (update.attributeOption.valueOf()) {
+                    case AttributeOption.level:
+                        if (update.value === true) {
+                            this.magicalPowerChoice.setValue(undefined);
+                            this.bonusFeatureChoice.setValue(undefined);
+
+                            this.showOptions = false;
+                        }
+                        break;
+
+                }
+            }
+        })
     }
 
     get bonusFeatures() {
@@ -68,14 +88,19 @@ export class BonusFeatureComponent implements AfterContentInit {
 
         this.showOptions = this.parentControl.value === true;
 
-        // main magical power was changed.
-        this.magicalPowerChanged.subscribe({
-            next: (changed) => {
-                if (changed) {
-                    this.magicalPowerChoice.setValue(undefined);
-                    this.bonusFeatureChoice.setValue(undefined);
-                    this.getAvailableBonusFeatures();
+        this.characterApi.characterChanged$.subscribe({
+            next: (update: CharacterUpdate) => {
+                if (update.attributeOption === undefined) {
+                    return;
                 }
+
+                if (update.attributeOption !== AttributeOption.magicalpower) {
+                    return;
+                }
+
+                this.magicalPowerChoice.setValue(undefined);
+                this.bonusFeatureChoice.setValue(undefined);
+                this.getAvailableBonusFeatures();
             }
         });
     }

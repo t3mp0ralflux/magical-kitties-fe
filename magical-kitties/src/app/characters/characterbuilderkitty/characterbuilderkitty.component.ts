@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { AfterContentInit, Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -12,13 +12,16 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { MarkdownComponent } from "ngx-markdown";
 import { BehaviorSubject, combineLatest, Observable, pairwise, startWith, tap } from 'rxjs';
 import { getValue } from '../../login/utilities';
+import { AttributeOption } from '../../models/Characters/attributeoption.model';
 import { Character } from '../../models/Characters/character.model';
+import { DescriptionOption } from '../../models/Characters/descriptionoption.model';
 import { EndowmentUpdate } from '../../models/Characters/endowmentupdate.model';
 import { Flaw } from '../../models/Characters/flaw.model';
 import { MagicalPower } from '../../models/Characters/magicalpower.model';
 import { Talent } from '../../models/Characters/talent.model';
 import { UpdateCharacterAttributes } from '../../models/Characters/updateacharacterattributes.model';
 import { UpgradeOption } from '../../models/Characters/upgradeoption.model';
+import { CharacterUpdate } from '../../models/System/characterupdate.model';
 import { UpgradeRule } from '../../models/System/upgraderule.model';
 import { ConfirmModalComponent } from '../../sharedcomponents/confirm-modal/confirm-modal.component';
 import { CharacterAPIService } from '../services/characters.service';
@@ -32,7 +35,7 @@ import { InformationDisplayComponent } from './information-display/information-d
     templateUrl: './characterbuilderkitty.component.html',
     styleUrl: './characterbuilderkitty.component.scss'
 })
-export class CharacterBuilderKittyComponent {
+export class CharacterBuilderKittyComponent implements AfterContentInit {
     private _snackBar: MatSnackBar = inject(MatSnackBar);
     characterApi: CharacterAPIService = inject(CharacterAPIService);
     dialog: MatDialog = inject(MatDialog);
@@ -41,6 +44,7 @@ export class CharacterBuilderKittyComponent {
     levelOptions: number[] = Array(10).fill(1).map((_, i) => i + 1);
     getValue = getValue;
     UpgradeOption = UpgradeOption;
+    AttributeOption = AttributeOption;
     levelControl: FormControl = new FormControl();
     statArray: number[] = [1, 2, 3]
     filteredStatArray: number[] = [];
@@ -54,9 +58,6 @@ export class CharacterBuilderKittyComponent {
     magicalPowerControl: FormControl = new FormControl();
     upgradeCheckedSubject: BehaviorSubject<{ checked: boolean, id: string }> = new BehaviorSubject<{ checked: boolean, id: string }>({ checked: false, id: "" });
     upgradeChecked$: Observable<{ checked: boolean, id: string }> = this.upgradeCheckedSubject.asObservable();
-    magicalPowerChangedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    magicalPowerChanged$: Observable<boolean> = this.magicalPowerChangedSubject.asObservable();
-
 
     selectedUpgrades: FormGroup = this.formBuilder.group({
         block1bonusFeature: new FormControl(""),
@@ -83,10 +84,6 @@ export class CharacterBuilderKittyComponent {
         return this.selectedUpgrades.controls['block1attribute3'];
     }
 
-    // TODO: ok here's the skinny. Your project is UNRESPONSIVE to any changes. You need to fix the following:
-    // Updating any Attribute isn't working.
-    // When you update ANYTHING on the character, it should send new information to every component and update relevant values.
-
     constructor() {
         combineLatest({
             character: this.characterApi.character$,
@@ -106,18 +103,6 @@ export class CharacterBuilderKittyComponent {
                 this.cuteControl.setValue(character.cute);
                 this.cunningControl.setValue(character.cunning);
                 this.fierceControl.setValue(character.fierce);
-
-                if (character.cunning !== 0) {
-                    this.filteredStatArray.push(character.cunning);
-                }
-
-                if (character.cute !== 0) {
-                    this.filteredStatArray.push(character.cute);
-                }
-
-                if (character.fierce !== 0) {
-                    this.filteredStatArray.push(character.fierce);
-                }
 
                 if (character.flaw) {
                     this.flawControl.setValue(character.flaw.id);
@@ -154,7 +139,9 @@ export class CharacterBuilderKittyComponent {
                 }
             }
         });
+    }
 
+    ngAfterContentInit(): void {
         this.cuteControl.valueChanges.pipe(
             startWith(this.cuteControl.value),
             pairwise(),
@@ -240,7 +227,7 @@ export class CharacterBuilderKittyComponent {
     }
 
     applyFilter(previous: number, next: number) {
-        if (previous !== undefined && previous !== 0) {
+        if (previous !== null && previous !== 0) {
             this.filteredStatArray.splice(this.filteredStatArray.indexOf(previous), 1);
         }
 
@@ -277,6 +264,46 @@ export class CharacterBuilderKittyComponent {
         return this.characterApi.rules?.upgrades?.filter(x => x.block === block) ?? [];
     }
 
+    updateAttribute(event: MatSelectChange, option: AttributeOption): void {
+        const payload: UpdateCharacterAttributes = {
+            characterId: this.character?.id!,
+        }
+
+        switch (option) {
+            case AttributeOption.cunning:
+                payload.cunning = event.value;
+                break;
+            case AttributeOption.cute:
+                payload.cute = event.value;
+                break;
+            case AttributeOption.fierce:
+                payload.fierce = event.value;
+                break;
+            default:
+                break;
+        }
+
+        this.characterApi.updateAttribute(payload, option).subscribe({
+            next: (_) => {
+                switch (option) {
+                    case AttributeOption.cunning:
+                        this.character!.cunning = event.value;
+                        break;
+                    case AttributeOption.cute:
+                        this.character!.cute = event.value;
+                        break;
+                    case AttributeOption.fierce:
+                        this.character!.fierce = event.value;
+                        break;
+                    default:
+                        break;
+                }
+
+                this.characterApi.characterHasChanged(new CharacterUpdate({ attributeOption: option, value: event.value }));
+            }
+        });
+    }
+
     updateXP(xp: string): void {
         let numberOfXp: number;
 
@@ -293,7 +320,9 @@ export class CharacterBuilderKittyComponent {
         }
 
         this.characterApi.updateXP(payload).subscribe({
-            next: () => {},
+            next: () => {
+                this.characterApi.characterHasChanged(new CharacterUpdate({ descriptionOption: DescriptionOption.xp }));
+            },
             error: (errors: any) => {
                 const config = new MatSnackBarConfig();
 
@@ -335,8 +364,6 @@ export class CharacterBuilderKittyComponent {
         } else {
             this.submitLevelUp(payload);
         }
-
-        this.checkChange();
     }
 
     updateFlaw(event: MatSelectChange): void {
@@ -398,9 +425,9 @@ export class CharacterBuilderKittyComponent {
         }
 
         this.characterApi.updateMagicalPower(payload).subscribe({
-            next: (response) => {
+            next: () => {
                 this.character!.magicalPowers[0] = updatedMagicalPower;
-                this.magicalPowerChangedSubject.next(true);
+                this.characterApi.characterHasChanged(new CharacterUpdate({ attributeOption: AttributeOption.magicalpower }));
             }
         });
     }
@@ -414,7 +441,17 @@ export class CharacterBuilderKittyComponent {
     private submitLevelUp(payload: UpdateCharacterAttributes) {
         this.characterApi.updateLevel(payload).subscribe({
             next: (response) => {
+                let shouldResetElements = false;
+
+                // only do this on going down a level. At this point, the character isn't updated and is still the old value.
+                if (this.character!.level > this.levelControl.value) {
+                    shouldResetElements = true;
+                }
+
                 this.character!.level = this.levelControl.value;
+
+                this.checkChange();
+                this.characterApi.characterHasChanged(new CharacterUpdate({ attributeOption: AttributeOption.level, value: shouldResetElements })); // send a reset signal.
             }
         });
     }

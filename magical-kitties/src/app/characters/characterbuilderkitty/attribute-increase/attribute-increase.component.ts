@@ -10,6 +10,7 @@ import { Upgrade } from '../../../models/Characters/upgrade.model';
 import { UpgradeOption } from '../../../models/Characters/upgradeoption.model';
 import { UpgradeRemoveRequest } from '../../../models/Characters/upgraderemoverequest.model';
 import { UpsertUpgradeRequest } from '../../../models/Characters/upsertupgraderequest.model';
+import { CharacterUpdate } from '../../../models/System/characterupdate.model';
 import { UpgradeRule } from '../../../models/System/upgraderule.model';
 import { CharacterAPIService } from '../../services/characters.service';
 import { ImproveAttributeUpgrade } from './models/attribute-increase.model';
@@ -41,6 +42,30 @@ export class AttributeIncreaseComponent implements AfterContentInit {
                 this.character = character;
             }
         });
+
+        this.characterApi.characterChanged$.subscribe({
+            next: (update: CharacterUpdate) => {
+                if (update.attributeOption === undefined) {
+                    return;
+                }
+
+                switch (update.attributeOption.valueOf()) {
+                    case AttributeOption.cunning:
+                    case AttributeOption.cute:
+                    case AttributeOption.fierce:
+                        this.addValidAttributes();
+                        break;
+                    case AttributeOption.level:
+                        if (update.value === true) {
+                            this.attributeChoice.setValue(undefined);
+                            this.showOptions = false;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        })
     }
 
     ngAfterContentInit(): void {
@@ -70,7 +95,7 @@ export class AttributeIncreaseComponent implements AfterContentInit {
                 error: (err) => {
                     // TODO: do something?
                 }
-            })
+            });
 
         } else {
             const existingUpgrade = this.character?.upgrades.find(x => x.id === this.id);
@@ -126,6 +151,7 @@ export class AttributeIncreaseComponent implements AfterContentInit {
     }
 
     addValidAttributes(): void {
+        this.Attributes = [];
         let maxValue: number = 3;
 
         if (this.upgradeRule!.upgradeOption === UpgradeOption.attribute4) {
@@ -144,5 +170,4 @@ export class AttributeIncreaseComponent implements AfterContentInit {
             this.Attributes.push(AttributeOption.fierce);
         }
     }
-
 }
