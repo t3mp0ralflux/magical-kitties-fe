@@ -1,9 +1,10 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
-import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/common/http';
+import { provideMarkdown } from 'ngx-markdown';
 import { routes } from './app.routes';
-import { authorizationInterceptor } from './interceptors/authorization.interceptor';
+import { ApiClient } from './services/apiClient.service';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -11,7 +12,13 @@ export const appConfig: ApplicationConfig = {
         provideRouter(routes),
         provideHttpClient(
             withFetch(),
-            withInterceptors([authorizationInterceptor])
+            withInterceptorsFromDi(),
         ),
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: ApiClient,
+            multi: true,
+        },
+        provideMarkdown(),
     ]
 };

@@ -1,0 +1,27 @@
+@use "@angular/material" as mat;
+
+.edit-background {
+    background-color: var(--primary-background);
+}
+
+mat-toolbar {
+    @include mat.toolbar-overrides(
+        (
+            container-background-color: "faded-primary",
+            container-text-color: var(--mat-sys-on-primary),
+        )
+    );
+}
+
+.side-panel {
+    width: calc((100dvw - 1200px) / 2);
+}
+
+.left-picture {
+    mask-image: radial-gradient(100% 100% at 0% 0%, var(--primary-background) 90%, transparent 100%);
+}
+
+.right-picture {
+    margin-left: auto;
+    mask-image: radial-gradient(100% 100% at 100% 0%, var(--primary-background) 90%, transparent 100%);
+}

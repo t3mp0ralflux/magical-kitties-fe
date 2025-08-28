@@ -10,8 +10,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { Account } from '../../models/Account/account.model';
 import { LoginModel } from '../../models/Login/login.model';
-import { LoginResponse } from '../../models/Login/loginresponse.model';
 import { AuthService } from '../../services/authService.service';
 
 @Component({
@@ -70,7 +70,7 @@ export class LoginComponent {
         });
 
         this.authService.login(loginInfo).subscribe({
-            next: ((response: LoginResponse) => {
+            next: ((response: Account) => {
                 if (this.resumeNavigation) {
                     this.router.navigateByUrl(this.returnUrl);
                 } else {

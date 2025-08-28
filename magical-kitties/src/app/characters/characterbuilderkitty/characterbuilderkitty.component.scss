@@ -1,0 +1,22 @@
+@use "@angular/material" as mat;
+
+mat-option.hide {
+    display: none;
+}
+
+mat-card {
+    @include mat.card-overrides(
+        (
+            elevated-container-color: var(--primary-background),
+            outlined-container-color: var(--primary-background),
+        )
+    );
+}
+
+mat-accordion {
+    @include mat.expansion-overrides(
+        (
+            container-background-color: var(--primary-background),
+        )
+    );
+}

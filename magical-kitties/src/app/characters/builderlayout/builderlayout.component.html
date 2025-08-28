@@ -1,0 +1,104 @@
+<app-header></app-header>
+<div class="flex edit-background min-h-10/12">
+    <div class="relative z-10 side-panel">
+        <div>
+            <img
+                src="/kitty_counsel.png"
+                class="left-picture"
+            />
+        </div>
+    </div>
+    <div class="w-[1200px] relative z-20">
+        <mat-toolbar>
+            <mat-toolbar-row>
+                <div class="hidden sm:flex flex-col mr-5">
+                    <div class="text-xl">Character Builder</div>
+                    <div class="text-sm flex items-center">
+                        <mat-icon>person</mat-icon>
+                        {{ character?.name }}
+                    </div>
+                </div>
+                <div class="flex flex-col mr-5">
+                    <a
+                        class="cursor-pointer"
+                        (click)="navigate('.')"
+                    >
+                        <div class="flex items-center"><mat-icon class="mr-1">settings</mat-icon>Home</div>
+                        <ng-container *ngIf="currentPage === 'builder'">
+                            <ng-container *ngTemplateOutlet="underline"></ng-container>
+                        </ng-container>
+                    </a>
+                </div>
+                <div class="flex flex-col mr-5">
+                    <a
+                        class="cursor-pointer"
+                        (click)="navigate('kitty')"
+                    >
+                        <div>1. Kitty</div>
+                        <ng-container *ngIf="currentPage === 'kitty'">
+                            <ng-container *ngTemplateOutlet="underline"></ng-container>
+                        </ng-container>
+                    </a>
+                </div>
+                <div class="flex flex-col mr-5">
+                    <a
+                        class="cursor-pointer"
+                        (click)="navigate('background')"
+                    >
+                        <div>2. Background</div>
+                        <ng-container *ngIf="currentPage === 'background'">
+                            <ng-container *ngTemplateOutlet="underline"></ng-container>
+                        </ng-container>
+                    </a>
+                </div>
+                <div class="flex flex-col mr-5">
+                    <a
+                        class="cursor-pointer"
+                        (click)="navigate('human')"
+                    >
+                        <div>3. Human</div>
+                        <ng-container *ngIf="currentPage === 'human'">
+                            <ng-container *ngTemplateOutlet="underline"></ng-container>
+                        </ng-container>
+                    </a>
+                </div>
+            </mat-toolbar-row>
+        </mat-toolbar>
+        <div class="max-w-[800px] ml-auto mr-auto mt-5">
+            <div class="flex items-center">
+                <div class="mr-3 max-w-40 max-h-40">
+                    <img src="/girl_dm.png" />
+                </div>
+                <div class="flex flex-col">
+                    <mat-label>Character Name</mat-label>
+                    <mat-form-field
+                        appearance="outline"
+                        class="w-96"
+                    >
+                        <input
+                            matInput
+                            [formControl]="nameInput"
+                            (blur)="updateName()"
+                        />
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="mt-5 mb-5">
+                <mat-divider class="editor"></mat-divider>
+            </div>
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+    <div class="relative z-10 side-panel">
+        <img
+            src="/d6_collection.png"
+            class="right-picture"
+        />
+    </div>
+</div>
+<div class="faded-primary absolute inset-0 left-0 top-32 h-16 z-10"></div>
+<app-footer></app-footer>
+
+<ng-template #underline>
+    <mat-divider></mat-divider>
+</ng-template>

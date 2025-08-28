@@ -5,7 +5,7 @@ import { environment } from "../../../environments/environment";
 import { Account } from "../../models/Account/account.model";
 import { AccountActivationResponse } from "../../models/Account/accountactivationresponse.model";
 import { AccountCreateRequest } from "../../models/Account/accountcreaterequest.model";
-import { ApiClient } from "../../services/apiClient.service";
+import { ApiClient, HttpMethod } from "../../services/apiClient.service";
 
 @Injectable({ providedIn: 'root' })
 export class LoginAPIService {
@@ -19,18 +19,28 @@ export class LoginAPIService {
     register(request: AccountCreateRequest): Observable<Account>;
     register(request: AccountCreateRequest): Observable<HttpErrorResponse>;
     register(request: AccountCreateRequest): Observable<Account> | Observable<HttpErrorResponse> {
-        return this.apiClient.post<Account>(`${this.baseUrl}/accounts`, request);
+        return this.apiClient.request<Account>({
+            path: `${this.baseUrl}/accounts`,
+            method: HttpMethod.POST,
+            body: request
+        })
     }
 
     activateAccount(username: string, activationCode: string): Observable<AccountActivationResponse>;
     activateAccount(username: string, activationCode: string): Observable<HttpErrorResponse>;
     activateAccount(username: string, activationCode: string): Observable<AccountActivationResponse> | Observable<HttpErrorResponse> {
-        return this.apiClient.get<AccountActivationResponse>(`${this.baseUrl}/accounts/activate/${username}/${activationCode}`);
+        return this.apiClient.request<AccountActivationResponse>({
+            path: `${this.baseUrl}/accounts/activate/${username}/${activationCode}`,
+            method: HttpMethod.GET
+        });
     }
 
     resendActivation(username: string, activationCode: string): Observable<AccountActivationResponse>;
     resendActivation(username: string, activationCode: string): Observable<HttpErrorResponse>;
     resendActivation(username: string, activationCode: string): Observable<AccountActivationResponse> | Observable<HttpErrorResponse> {
-        return this.apiClient.post<AccountActivationResponse>(`${this.baseUrl}/accounts/activate/${username}/${activationCode}/resend`);
+        return this.apiClient.request<AccountActivationResponse>({
+            path: `${this.baseUrl}/accounts/activate/${username}/${activationCode}/resend`,
+            method: HttpMethod.POST
+        });
     }
 }

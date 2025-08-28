@@ -1,0 +1,20 @@
+<mat-dialog-content>
+    <div
+        *ngFor="let item of data"
+        class="flex flex-col mb-4"
+    >
+        <span class="text-xl font-semibold">{{ item.name }}</span>
+        <markdown
+            ngPreserveWhitespaces
+            [data]="item.description"
+        ></markdown>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions
+    ><button
+        mat-raised-button
+        mat-dialog-close=""
+    >
+        Close
+    </button></mat-dialog-actions
+>

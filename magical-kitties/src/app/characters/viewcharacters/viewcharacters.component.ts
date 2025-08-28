@@ -10,7 +10,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { Router } from '@angular/router';
-import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { BehaviorSubject, catchError, combineLatest, debounceTime, EMPTY, Observable, Subscription, switchMap } from 'rxjs';
 import { getValue } from '../../login/utilities';
 import { CharactersResponse } from '../../models/Characters/charactersresponse.model';
@@ -22,7 +21,7 @@ import { CopyCharacterModalComponent } from './copy-modal/copy-modal.component';
 import { DeleteModalComponent } from './delete-modal/delete-modal.component';
 @Component({
     selector: 'app-viewcharacters',
-    imports: [CommonModule, MatButtonModule, MatCardModule, MatIconModule, MatFormFieldModule, MatInputModule, MatPaginatorModule, MatSelectModule, MatDividerModule, NgxSkeletonLoaderModule],
+    imports: [CommonModule, MatButtonModule, MatCardModule, MatIconModule, MatFormFieldModule, MatInputModule, MatPaginatorModule, MatSelectModule, MatDividerModule],
     templateUrl: './viewcharacters.component.html',
     styleUrl: './viewcharacters.component.scss',
 })
@@ -30,7 +29,7 @@ export class ViewCharactersComponent implements OnInit, OnDestroy {
     private router: Router = inject(Router);
     private authService: AuthService = inject(AuthService);
     private apiService: CharacterAPIService = inject(CharacterAPIService);
-    dialog = inject(MatDialog);
+    dialog: MatDialog = inject(MatDialog);
     loggedOutSubscription: Subscription;
     private refreshSearch: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private searchText: BehaviorSubject<string> = new BehaviorSubject<string>("");
@@ -58,6 +57,7 @@ export class ViewCharactersComponent implements OnInit, OnDestroy {
                 this.router.navigateByUrl("");
             }
         })
+
         if (this.authService.account === undefined) {
             const extras = new NavigationExtras({
                 resumeUrl: "characters",
@@ -102,7 +102,7 @@ export class ViewCharactersComponent implements OnInit, OnDestroy {
     }
 
     editCharacter(characterId: string): void {
-        this.router.navigateByUrl(`/characters/${characterId}/builder`);
+        this.router.navigateByUrl(`/characters/${characterId}/builder/kitty`);
     }
 
     copyCharacter(characterId: string): void {
