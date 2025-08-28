@@ -170,9 +170,6 @@ export class ApiClient implements HttpInterceptor {
                         if (err.error.message) {
 
                         }
-                        // this.tokenRefreshedSource.next(new Account());
-                        // this.refreshTokenInProgress = false;
-                        // this.clearTokens();
 
                         return throwError(() => new Error('Session expired, please log in again.'));
                     })

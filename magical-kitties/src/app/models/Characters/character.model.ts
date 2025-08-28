@@ -25,4 +25,5 @@ export class Character {
     currentTreats!: number;
     currentInjuries!: number;
     upgrades: Upgrade[] = [];
+    testValue: number = 0;
 }

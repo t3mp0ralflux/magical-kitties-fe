@@ -1,9 +1,9 @@
-import { AttributeOption } from "./attributeoption.model";
+import { UpgradeOption } from "./upgradeoption.model";
 
 export class Upgrade {
     id!: string;
     block!: number;
-    option!: AttributeOption;
+    option!: UpgradeOption;
     choice?: object;
 
     constructor(init?: Partial<Upgrade>) {

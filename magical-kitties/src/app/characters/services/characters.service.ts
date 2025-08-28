@@ -10,6 +10,7 @@ import { UpdateCharacterAttributes } from "../../models/Characters/updateacharac
 import { UpdateCharacterDescriptors } from "../../models/Characters/updatecharacterdescriptors.model";
 import { UpgradeRemoveRequest } from "../../models/Characters/upgraderemoverequest.model";
 import { UpsertUpgradeRequest } from "../../models/Characters/upsertupgraderequest.model";
+import { CharacterUpdate } from "../../models/System/characterupdate.model";
 import { Rules } from "../../models/System/rules.model";
 import { ApiClient, HttpMethod } from "../../services/apiClient.service";
 
@@ -18,8 +19,8 @@ export class CharacterAPIService {
     apiClient: ApiClient = inject(ApiClient);
     baseUrl: string = "";
     private character: BehaviorSubject<Character | undefined> = new BehaviorSubject<Character | undefined>(undefined);
-    private levelUpSubject: Subject<number> = new Subject<number>();
-    levelUp$: Observable<number> = this.levelUpSubject.asObservable();
+    private characterChangedSubject: Subject<CharacterUpdate> = new Subject<CharacterUpdate>();
+    characterChanged$: Observable<CharacterUpdate> = this.characterChangedSubject.asObservable();
     rules?: Rules;
 
     constructor() {
@@ -53,6 +54,10 @@ export class CharacterAPIService {
 
     get character$() {
         return this.character.asObservable();
+    }
+
+    characterHasChanged(payload: CharacterUpdate): void {
+        this.characterChangedSubject.next(payload);
     }
 
     getCharacterInformation(characterId: string) {
@@ -99,7 +104,16 @@ export class CharacterAPIService {
             body: payload,
             headerResponse: true,
             responseType: "text"
-        });
+        }).pipe(
+            tap(_ => {
+                const returnInfo = new CharacterUpdate({
+                    descriptionOption: DescriptionOption.name,
+                    value: payload.name
+                });
+
+                this.characterChangedSubject.next(returnInfo);
+            })
+        );
     }
 
     /**
@@ -114,9 +128,17 @@ export class CharacterAPIService {
             body: payload,
             headerResponse: true,
             responseType: "text"
-        }).pipe(
-            tap(_ => this.levelUpSubject.next(payload.level!))
-        );
+        });
+    }
+
+    updateAttribute(payload: UpdateCharacterAttributes, choice: AttributeOption): Observable<string> {
+        return this.apiClient.request<any>({
+            path: `${this.baseUrl}/characters/attributes/${choice}`,
+            method: HttpMethod.PUT,
+            body: payload,
+            headerResponse: true,
+            responseType: "text"
+        });
     }
 
     updateXP(payload: UpdateCharacterAttributes): Observable<string> {

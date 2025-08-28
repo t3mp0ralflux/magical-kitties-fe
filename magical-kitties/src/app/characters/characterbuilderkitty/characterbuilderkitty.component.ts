@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { AfterContentInit, Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
-import { MatCheckbox } from "@angular/material/checkbox";
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -15,24 +14,28 @@ import { BehaviorSubject, combineLatest, Observable, pairwise, startWith, tap } 
 import { getValue } from '../../login/utilities';
 import { AttributeOption } from '../../models/Characters/attributeoption.model';
 import { Character } from '../../models/Characters/character.model';
+import { DescriptionOption } from '../../models/Characters/descriptionoption.model';
 import { EndowmentUpdate } from '../../models/Characters/endowmentupdate.model';
 import { Flaw } from '../../models/Characters/flaw.model';
 import { MagicalPower } from '../../models/Characters/magicalpower.model';
 import { Talent } from '../../models/Characters/talent.model';
 import { UpdateCharacterAttributes } from '../../models/Characters/updateacharacterattributes.model';
+import { UpgradeOption } from '../../models/Characters/upgradeoption.model';
+import { CharacterUpdate } from '../../models/System/characterupdate.model';
 import { UpgradeRule } from '../../models/System/upgraderule.model';
 import { ConfirmModalComponent } from '../../sharedcomponents/confirm-modal/confirm-modal.component';
 import { CharacterAPIService } from '../services/characters.service';
+import { AttributeIncreaseComponent } from "./attribute-increase/attribute-increase.component";
 import { BonusFeatureComponent } from "./bonus-feature/bonus-feature.component";
 import { InformationDisplayComponent } from './information-display/information-display.component';
 
 @Component({
     selector: 'app-characterbuilderkitty',
-    imports: [CommonModule, MatDividerModule, MatInputModule, MatSelectModule, ReactiveFormsModule, MatIconModule, MatCardModule, MarkdownComponent, MatExpansionModule, MatCheckbox, BonusFeatureComponent],
+    imports: [CommonModule, MatDividerModule, MatInputModule, MatSelectModule, ReactiveFormsModule, MatIconModule, MatCardModule, MarkdownComponent, MatExpansionModule, BonusFeatureComponent, AttributeIncreaseComponent],
     templateUrl: './characterbuilderkitty.component.html',
     styleUrl: './characterbuilderkitty.component.scss'
 })
-export class CharacterBuilderKittyComponent {
+export class CharacterBuilderKittyComponent implements AfterContentInit {
     private _snackBar: MatSnackBar = inject(MatSnackBar);
     characterApi: CharacterAPIService = inject(CharacterAPIService);
     dialog: MatDialog = inject(MatDialog);
@@ -40,6 +43,8 @@ export class CharacterBuilderKittyComponent {
     character?: Character;
     levelOptions: number[] = Array(10).fill(1).map((_, i) => i + 1);
     getValue = getValue;
+    UpgradeOption = UpgradeOption;
+    AttributeOption = AttributeOption;
     levelControl: FormControl = new FormControl();
     statArray: number[] = [1, 2, 3]
     filteredStatArray: number[] = [];
@@ -53,29 +58,30 @@ export class CharacterBuilderKittyComponent {
     magicalPowerControl: FormControl = new FormControl();
     upgradeCheckedSubject: BehaviorSubject<{ checked: boolean, id: string }> = new BehaviorSubject<{ checked: boolean, id: string }>({ checked: false, id: "" });
     upgradeChecked$: Observable<{ checked: boolean, id: string }> = this.upgradeCheckedSubject.asObservable();
-    magicalPowerChangedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    magicalPowerChanged$: Observable<boolean> = this.magicalPowerChangedSubject.asObservable();
-
 
     selectedUpgrades: FormGroup = this.formBuilder.group({
-        block1magicalpowerbonus: new FormControl(""),
-        block1Attribute: new FormControl(""),
-        block1Owie: new FormControl(""),
-        block1Treat: new FormControl(""),
-        block2Talent: new FormControl(""),
-        block2Bonus: new FormControl(""),
-        block2Attribute: new FormControl(""),
-        block2Owie: new FormControl(""),
-        block2Treat: new FormControl(""),
-        block3MagicalPower: new FormControl(""),
-        block3Bonus: new FormControl(""),
-        block3Attribute: new FormControl(""),
-        block3Owie: new FormControl(""),
-        block3Treat: new FormControl(""),
+        block1bonusFeature: new FormControl(""),
+        block1attribute3: new FormControl(""),
+        block1owieLimit: new FormControl(""),
+        block1treatsValue: new FormControl(""),
+        block2talent: new FormControl(""),
+        block2bonusFeature: new FormControl(""),
+        block2attribute4: new FormControl(""),
+        block2owieLimit: new FormControl(""),
+        block2treatsValue: new FormControl(""),
+        block3magicalPower: new FormControl(""),
+        block3bonusFeature: new FormControl(""),
+        block3attribute4: new FormControl(""),
+        block3owieLimit: new FormControl(""),
+        block3treatsValue: new FormControl(""),
     });
 
     get block1Bonus() {
-        return this.selectedUpgrades.controls['block1magicalpowerbonus'];
+        return this.selectedUpgrades.controls['block1bonusFeature'];
+    }
+
+    get block1Attribute() {
+        return this.selectedUpgrades.controls['block1attribute3'];
     }
 
     constructor() {
@@ -98,18 +104,6 @@ export class CharacterBuilderKittyComponent {
                 this.cunningControl.setValue(character.cunning);
                 this.fierceControl.setValue(character.fierce);
 
-                if (character.cunning !== 0) {
-                    this.filteredStatArray.push(character.cunning);
-                }
-
-                if (character.cute !== 0) {
-                    this.filteredStatArray.push(character.cute);
-                }
-
-                if (character.fierce !== 0) {
-                    this.filteredStatArray.push(character.fierce);
-                }
-
                 if (character.flaw) {
                     this.flawControl.setValue(character.flaw.id);
                 }
@@ -131,7 +125,7 @@ export class CharacterBuilderKittyComponent {
                 }
 
                 character.upgrades.forEach((upgrade) => {
-                    const controlName = `block${upgrade.block}${AttributeOption[upgrade.option!]}`;
+                    const controlName = `block${upgrade.block}${UpgradeOption[upgrade.option!]}`;
 
                     this.selectedUpgrades.controls[controlName].setValue(true);
                 });
@@ -139,13 +133,15 @@ export class CharacterBuilderKittyComponent {
                 this.character = character;
 
                 if (this.upgradesDisabled()) {
-                    this.disabledControls();
+                    this.disableControls();
                 } else {
                     this.enableControls();
                 }
             }
         });
+    }
 
+    ngAfterContentInit(): void {
         this.cuteControl.valueChanges.pipe(
             startWith(this.cuteControl.value),
             pairwise(),
@@ -181,21 +177,21 @@ export class CharacterBuilderKittyComponent {
         return characterUpgrade;
     }
 
-    getUpgradeIdFromRules(block: number, name: string) {
-        const foundUpgrade = this.characterApi.rules?.upgrades.find(x => x.block === block && x.value.toLowerCase().includes(name));
+    getUpgradeIdFromRules(block: number, upgradeOption: UpgradeOption) {
+        const foundUpgrade = this.characterApi.rules?.upgrades.find(x => x.block === block && x.upgradeOption === upgradeOption);
 
         return foundUpgrade?.id;
     }
 
     checkChange() {
         if (this.upgradesDisabled()) {
-            this.disabledControls();
+            this.disableControls();
         } else {
             this.enableControls();
         }
     }
 
-    disabledControls(): void {
+    disableControls(): void {
         Object.keys(this.selectedUpgrades.controls).forEach((key: string) => {
             const control = this.selectedUpgrades.controls[key];
             if (control.value !== true) {
@@ -211,6 +207,15 @@ export class CharacterBuilderKittyComponent {
         });
     }
 
+    resetUpgrades(): void {
+        Object.keys(this.selectedUpgrades.controls).forEach((key: string) => {
+            const control = this.selectedUpgrades.controls[key];
+            control?.setValue(false);
+        });
+
+        this.character!.upgrades = [];
+    }
+
     upgradesDisabled(): boolean {
         const selectedValues = Object.values(this.selectedUpgrades.value);
 
@@ -222,7 +227,7 @@ export class CharacterBuilderKittyComponent {
     }
 
     applyFilter(previous: number, next: number) {
-        if (previous !== undefined && previous !== 0) {
+        if (previous !== null && previous !== 0) {
             this.filteredStatArray.splice(this.filteredStatArray.indexOf(previous), 1);
         }
 
@@ -259,6 +264,46 @@ export class CharacterBuilderKittyComponent {
         return this.characterApi.rules?.upgrades?.filter(x => x.block === block) ?? [];
     }
 
+    updateAttribute(event: MatSelectChange, option: AttributeOption): void {
+        const payload: UpdateCharacterAttributes = {
+            characterId: this.character?.id!,
+        }
+
+        switch (option) {
+            case AttributeOption.cunning:
+                payload.cunning = event.value;
+                break;
+            case AttributeOption.cute:
+                payload.cute = event.value;
+                break;
+            case AttributeOption.fierce:
+                payload.fierce = event.value;
+                break;
+            default:
+                break;
+        }
+
+        this.characterApi.updateAttribute(payload, option).subscribe({
+            next: (_) => {
+                switch (option) {
+                    case AttributeOption.cunning:
+                        this.character!.cunning = event.value;
+                        break;
+                    case AttributeOption.cute:
+                        this.character!.cute = event.value;
+                        break;
+                    case AttributeOption.fierce:
+                        this.character!.fierce = event.value;
+                        break;
+                    default:
+                        break;
+                }
+
+                this.characterApi.characterHasChanged(new CharacterUpdate({ attributeOption: option, value: event.value }));
+            }
+        });
+    }
+
     updateXP(xp: string): void {
         let numberOfXp: number;
 
@@ -275,7 +320,9 @@ export class CharacterBuilderKittyComponent {
         }
 
         this.characterApi.updateXP(payload).subscribe({
-            next: () => {},
+            next: () => {
+                this.characterApi.characterHasChanged(new CharacterUpdate({ descriptionOption: DescriptionOption.xp }));
+            },
             error: (errors: any) => {
                 const config = new MatSnackBarConfig();
 
@@ -295,7 +342,8 @@ export class CharacterBuilderKittyComponent {
     updateLevel(event: MatSelectChange): void {
         const payload: UpdateCharacterAttributes = {
             characterId: this.character?.id!,
-            level: this.levelControl.value
+            level: this.levelControl.value,
+            xp: 0
         };
 
         if (event.value < this.character!.level) {
@@ -306,10 +354,11 @@ export class CharacterBuilderKittyComponent {
                     if (result) {
                         this.submitLevelUp(payload);
                         this.character!.currentXp = 0;
+                        this.resetUpgrades();
                     }
                 },
                 error: (err) => {
-
+                    debugger;
                 }
             })
         } else {
@@ -376,9 +425,9 @@ export class CharacterBuilderKittyComponent {
         }
 
         this.characterApi.updateMagicalPower(payload).subscribe({
-            next: (response) => {
+            next: () => {
                 this.character!.magicalPowers[0] = updatedMagicalPower;
-                this.magicalPowerChangedSubject.next(true);
+                this.characterApi.characterHasChanged(new CharacterUpdate({ attributeOption: AttributeOption.magicalpower }));
             }
         });
     }
@@ -392,7 +441,17 @@ export class CharacterBuilderKittyComponent {
     private submitLevelUp(payload: UpdateCharacterAttributes) {
         this.characterApi.updateLevel(payload).subscribe({
             next: (response) => {
+                let shouldResetElements = false;
+
+                // only do this on going down a level. At this point, the character isn't updated and is still the old value.
+                if (this.character!.level > this.levelControl.value) {
+                    shouldResetElements = true;
+                }
+
                 this.character!.level = this.levelControl.value;
+
+                this.checkChange();
+                this.characterApi.characterHasChanged(new CharacterUpdate({ attributeOption: AttributeOption.level, value: shouldResetElements })); // send a reset signal.
             }
         });
     }
