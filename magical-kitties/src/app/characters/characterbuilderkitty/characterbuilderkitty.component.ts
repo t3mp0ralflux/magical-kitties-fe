@@ -372,16 +372,17 @@ export class CharacterBuilderKittyComponent implements AfterContentInit {
 
         const flawUpdate = new EndowmentUpdate({
             previousId: this.character?.flaw?.id ?? updatedFlaw.id,
-            newId: updatedFlaw.id
+            newId: updatedFlaw.id,
+            isPrimary: false
         });
 
         const payload: UpdateCharacterAttributes = {
             characterId: this.character?.id!,
-            talentChange: flawUpdate
+            flawChange: flawUpdate
         }
 
         this.characterApi.updateFlaw(payload).subscribe({
-            next: (response) => {
+            next: (_) => {
                 this.character!.flaw = updatedFlaw;
             }
         });
@@ -403,7 +404,7 @@ export class CharacterBuilderKittyComponent implements AfterContentInit {
         }
 
         this.characterApi.updateTalent(payload).subscribe({
-            next: (response) => {
+            next: (_) => {
                 this.character!.talents[0] = updatedTalent;
             }
         });
