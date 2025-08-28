@@ -432,9 +432,9 @@ export class CharacterBuilderKittyComponent implements AfterContentInit {
         });
     }
 
-    openInfoDialog(data: Flaw[] | Talent | MagicalPower[] | undefined): void {
+    openInfoDialog(data: Flaw[] | Talent[] | MagicalPower[] | undefined, anchor: number): void {
         const config = new MatDialogConfig();
-        config.data = data;
+        config.data = { data: data, anchor: anchor };
         this.dialog.open(InformationDisplayComponent, config);
     }
 

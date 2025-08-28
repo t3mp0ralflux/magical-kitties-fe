@@ -111,7 +111,7 @@
             <span class="text-xl font-semibold mb-2">Flaw</span>
             <mat-icon
                 class="ml-auto cursor-pointer"
-                (click)="openInfoDialog(characterApi.rules?.flaws)"
+                (click)="openInfoDialog(characterApi.rules?.flaws, flawControl.value)"
                 >help</mat-icon
             >
         </mat-card-header>
@@ -151,7 +151,7 @@
             <span class="text-xl font-semibold mb-2">Talent</span>
             <mat-icon
                 class="ml-auto cursor-pointer"
-                (click)="openInfoDialog(characterApi.rules?.talents)"
+                (click)="openInfoDialog(characterApi.rules?.talents, talentControl.value)"
                 >help</mat-icon
             >
         </mat-card-header>
@@ -191,7 +191,7 @@
             <span class="text-xl font-semibold mb-2">Magical Power</span>
             <mat-icon
                 class="ml-auto cursor-pointer"
-                (click)="openInfoDialog(characterApi.rules?.magicalPowers)"
+                (click)="openInfoDialog(characterApi.rules?.magicalPowers, magicalPowerControl.value)"
                 >help</mat-icon
             >
         </mat-card-header>
