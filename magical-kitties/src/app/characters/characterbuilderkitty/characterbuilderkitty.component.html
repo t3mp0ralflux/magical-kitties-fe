@@ -245,6 +245,22 @@
             >
             </app-attribute-increase>
         </div>
+        <div>
+            <app-increase-limit
+                [id]="getUpgradeIdFromRules(1, UpgradeOption.owieLimit)"
+                [disabled]="block1owieLimit.disabled"
+                [parentControl]="block1owieLimit"
+                (upgradeSelected)="checkChange()"
+            ></app-increase-limit>
+        </div>
+        <div>
+            <app-increase-limit
+                [id]="getUpgradeIdFromRules(1, UpgradeOption.treatsValue)"
+                [disabled]="block1treatsValue.disabled"
+                [parentControl]="block1treatsValue"
+                (upgradeSelected)="checkChange()"
+            ></app-increase-limit>
+        </div>
     </div>
 </div>
 <!-- <div

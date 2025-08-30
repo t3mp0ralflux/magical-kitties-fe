@@ -83,9 +83,9 @@ export class AttributeIncreaseComponent implements AfterContentInit {
         this.showOptions = this.parentControl.value === true;
     }
 
-    checkChange(event: MatCheckboxChange) {
+    checkChange(event: MatCheckboxChange): void {
         if (event.checked) {
-            const newUpgrade = new Upgrade({ id: this.id, option: this.upgradeRule?.upgradeOption, block: this.upgradeRule!.block });
+            const newUpgrade = new Upgrade({ id: this.id, option: this.upgradeRule!.upgradeOption, block: this.upgradeRule!.block });
             const upgradeRequest = new UpsertUpgradeRequest({ upgradeId: this.id, upgradeOption: this.upgradeRule!.upgradeOption, block: this.upgradeRule!.block });
             this.characterApi.upsertUpgrade(this.character!.id, upgradeRequest).subscribe({
                 next: (_: string) => {
@@ -116,7 +116,7 @@ export class AttributeIncreaseComponent implements AfterContentInit {
                 error: (err) => {
                     // TODO: do something?
                 }
-            })
+            });
         }
 
         this.upgradeSelected.next(event.checked);
