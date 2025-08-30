@@ -1,0 +1,10 @@
+<div class="flex items-center min-h-14">
+    <mat-checkbox
+        [formControl]="parentControl"
+        (change)="checkChange($event)"
+    >
+    </mat-checkbox>
+    <div ngClass="{{ disabled ? 'disabled' : '' }}">
+        {{ upgradeRule?.value }}
+    </div>
+</div>

@@ -27,11 +27,12 @@ import { ConfirmModalComponent } from '../../sharedcomponents/confirm-modal/conf
 import { CharacterAPIService } from '../services/characters.service';
 import { AttributeIncreaseComponent } from "./attribute-increase/attribute-increase.component";
 import { BonusFeatureComponent } from "./bonus-feature/bonus-feature.component";
+import { IncreaseLimitComponent } from "./increase-limit/increase-limit.component";
 import { InformationDisplayComponent } from './information-display/information-display.component';
 
 @Component({
     selector: 'app-characterbuilderkitty',
-    imports: [CommonModule, MatDividerModule, MatInputModule, MatSelectModule, ReactiveFormsModule, MatIconModule, MatCardModule, MarkdownComponent, MatExpansionModule, BonusFeatureComponent, AttributeIncreaseComponent],
+    imports: [CommonModule, MatDividerModule, MatInputModule, MatSelectModule, ReactiveFormsModule, MatIconModule, MatCardModule, MarkdownComponent, MatExpansionModule, BonusFeatureComponent, AttributeIncreaseComponent, IncreaseLimitComponent],
     templateUrl: './characterbuilderkitty.component.html',
     styleUrl: './characterbuilderkitty.component.scss'
 })
@@ -82,6 +83,14 @@ export class CharacterBuilderKittyComponent implements AfterContentInit {
 
     get block1Attribute() {
         return this.selectedUpgrades.controls['block1attribute3'];
+    }
+
+    get block1owieLimit() {
+        return this.selectedUpgrades.controls['block1owieLimit'];
+    }
+
+    get block1treatsValue() {
+        return this.selectedUpgrades.controls['block1treatsValue'];
     }
 
     constructor() {
