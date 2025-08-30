@@ -55,19 +55,9 @@ export class BonusFeatureComponent implements AfterContentInit {
                     return;
                 }
 
-                switch (update.attributeOption.valueOf()) {
-                    case AttributeOption.level:
-                        if (update.value === true) {
-                            this.magicalPowerChoice.setValue(undefined);
-                            this.bonusFeatureChoice.setValue(undefined);
 
-                            this.showOptions = false;
-                        }
-                        break;
-
-                }
             }
-        })
+        });
     }
 
     get bonusFeatures() {
@@ -94,13 +84,22 @@ export class BonusFeatureComponent implements AfterContentInit {
                     return;
                 }
 
-                if (update.attributeOption !== AttributeOption.magicalpower) {
-                    return;
-                }
+                switch (update.attributeOption.valueOf()) {
+                    case AttributeOption.level:
+                        if (update.value === true) {
+                            this.magicalPowerChoice.setValue(undefined);
+                            this.bonusFeatureChoice.setValue(undefined);
 
-                this.magicalPowerChoice.setValue(undefined);
-                this.bonusFeatureChoice.setValue(undefined);
-                this.getAvailableBonusFeatures();
+                            this.showOptions = false;
+                        }
+                        break;
+                    case AttributeOption.magicalpower:
+                        this.magicalPowerChoice.setValue(undefined);
+                        this.bonusFeatureChoice.setValue(undefined);
+                        this.getAvailableBonusFeatures();
+                        break;
+
+                }
             }
         });
     }
@@ -110,7 +109,7 @@ export class BonusFeatureComponent implements AfterContentInit {
             const newUpgrade = new Upgrade({ id: this.id, option: UpgradeOption.bonusFeature, block: this.upgradeRule!.block });
             const upgradeRequest = new UpsertUpgradeRequest({ upgradeId: this.id, upgradeOption: UpgradeOption.bonusFeature, block: this.upgradeRule!.block });
             this.characterApi.upsertUpgrade(this.character!.id, upgradeRequest).subscribe({
-                next: (value: string) => {
+                next: (_: string) => {
                     this.character!.upgrades.push(newUpgrade);
                     this.showOptions = true;
                 },
@@ -126,7 +125,7 @@ export class BonusFeatureComponent implements AfterContentInit {
 
             const upgradeRemoveRequest = new UpgradeRemoveRequest({ upgradeId: this.id, upgradeOption: UpgradeOption.bonusFeature })
             this.characterApi.removeUpgrade(this.character!.id, upgradeRemoveRequest).subscribe({
-                next: (value: string) => {
+                next: (_: string) => {
                     const upgradeIndex = this.character?.upgrades.findIndex(x => x.id === existingUpgrade.id);
                     if (upgradeIndex !== undefined && upgradeIndex >= 0) {
                         this.character!.upgrades.splice(upgradeIndex, 1);
@@ -145,7 +144,7 @@ export class BonusFeatureComponent implements AfterContentInit {
         this.upgradeSelected.next(event.checked);
     }
 
-    changeMagicalPower(value: MatSelectChange) {
+    changeMagicalPower(value: MatSelectChange): void {
         if (!this.bonusFeatureInformation) {
             this.bonusFeatureInformation = new BonusFeatureUpgrade();
         }
@@ -171,10 +170,10 @@ export class BonusFeatureComponent implements AfterContentInit {
             error: (err) => {
                 // TODO: do something?
             }
-        })
+        });
     }
 
-    changeBonusFeature(value: MatSelectChange) {
+    changeBonusFeature(value: MatSelectChange): void {
         if (!this.bonusFeatureInformation) {
             this.bonusFeatureInformation = new BonusFeatureUpgrade();
         }
@@ -199,7 +198,7 @@ export class BonusFeatureComponent implements AfterContentInit {
             error: (err) => {
                 debugger;
             }
-        })
+        });
     }
 
     getAvailableBonusFeatures(): Endowment[] {
@@ -222,7 +221,7 @@ export class BonusFeatureComponent implements AfterContentInit {
                     }
                 }
                 return false;
-            })
+            });
         }
 
         return false;

@@ -227,7 +227,7 @@
         class="flex flex-col"
         [formGroup]="selectedUpgrades"
     >
-        <mat-label class="font-semibold">Level 2-4</mat-label>
+        <mat-label class="font-semibold">Levels 2-4</mat-label>
         <div class="flex items-baseline">
             <app-bonus-feature
                 [id]="getUpgradeIdFromRules(1, UpgradeOption.bonusFeature)"
@@ -236,7 +236,7 @@
                 (upgradeSelected)="checkChange()"
             ></app-bonus-feature>
         </div>
-        <div>
+        <div class="flex items-baseline">
             <app-attribute-increase
                 [id]="getUpgradeIdFromRules(1, UpgradeOption.attribute3)"
                 [disabled]="block1Attribute.disabled"
@@ -263,7 +263,60 @@
         </div>
     </div>
 </div>
-<!-- <div
+<div
+    class="mb-5"
+    *ngIf="character ? character.level > 4 : false"
+>
+    <div
+        class="flex flex-col"
+        [formGroup]="selectedUpgrades"
+    >
+        <mat-label class="font-semibold">Levels 5-7</mat-label>
+        <div class="flex items-baseline">
+            <app-talent
+                [id]="getUpgradeIdFromRules(2, UpgradeOption.talent)"
+                [disabled]="block2talent.disabled"
+                [parentControl]="block2talent"
+                (upgradeSelected)="checkChange()"
+            ></app-talent>
+        </div>
+        <div class="flex items-baseline">
+            <app-bonus-feature
+                [id]="getUpgradeIdFromRules(2, UpgradeOption.bonusFeature)"
+                [disabled]="block2Bonus.disabled"
+                [parentControl]="block2Bonus"
+                (upgradeSelected)="checkChange()"
+            ></app-bonus-feature>
+        </div>
+        <div class="flex items-baseline">
+            <app-attribute-increase
+                [id]="getUpgradeIdFromRules(2, UpgradeOption.attribute4)"
+                [disabled]="block2Attribute.disabled"
+                [parentControl]="block2Attribute"
+                (upgradeSelected)="checkChange()"
+            >
+            </app-attribute-increase>
+        </div>
+        <div>
+            <app-increase-limit
+                [id]="getUpgradeIdFromRules(2, UpgradeOption.owieLimit)"
+                [disabled]="block2owieLimit.disabled"
+                [parentControl]="block2owieLimit"
+                (upgradeSelected)="checkChange()"
+            ></app-increase-limit>
+        </div>
+        <div>
+            <app-increase-limit
+                [id]="getUpgradeIdFromRules(2, UpgradeOption.treatsValue)"
+                [disabled]="block2treatsValue.disabled"
+                [parentControl]="block2treatsValue"
+                (upgradeSelected)="checkChange()"
+            ></app-increase-limit>
+        </div>
+    </div>
+</div>
+
+<div
     class="mb-5"
     *ngIf="character ? character.level < 8 : true"
 >
@@ -315,4 +368,4 @@
             </div>
         </mat-expansion-panel>
     </mat-accordion>
-</div> -->
+</div>
