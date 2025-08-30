@@ -2,7 +2,9 @@ import { CommonModule } from '@angular/common';
 import { AfterContentInit, Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { AttributeOption } from '../../../models/Characters/attributeoption.model';
 import { Character } from '../../../models/Characters/character.model';
@@ -14,11 +16,12 @@ import { UpsertUpgradeRequest } from '../../../models/Characters/upsertupgradere
 import { CharacterUpdate } from '../../../models/System/characterupdate.model';
 import { UpgradeRule } from '../../../models/System/upgraderule.model';
 import { CharacterAPIService } from '../../services/characters.service';
+import { InformationDisplayComponent } from '../information-display/information-display.component';
 import { TalentUpgrade } from './models/talent-upgrade.model';
 
 @Component({
     selector: 'app-talent',
-    imports: [CommonModule, MatSelectModule, MatFormFieldModule, ReactiveFormsModule, MatCheckboxModule],
+    imports: [CommonModule, MatSelectModule, MatFormFieldModule, ReactiveFormsModule, MatCheckboxModule, MatIconModule],
     templateUrl: './talent.component.html',
     styleUrl: './talent.component.scss'
 })
@@ -29,6 +32,7 @@ export class TalentComponent implements AfterContentInit {
     @Output() upgradeSelected = new EventEmitter<boolean>();
     showOptions: Boolean = false;
     characterApi: CharacterAPIService = inject(CharacterAPIService);
+    dialog: MatDialog = inject(MatDialog);
     talentChoice: FormControl = new FormControl({ value: undefined, disabled: this.disabled });
     upgradeRule?: UpgradeRule;
     availableTalents: Talent[] = [];
@@ -153,5 +157,11 @@ export class TalentComponent implements AfterContentInit {
     getAvailableTalents(): void {
         const assignedTalent = this.character?.talents.find(x => x.isPrimary === true);
         this.availableTalents = assignedTalent ? this.characterApi.rules!.talents.filter(x => x.id !== assignedTalent.id) : this.characterApi.rules!.talents;
+    }
+
+    openInfoDialog(data: Talent[] | undefined, anchor: number): void {
+        const config = new MatDialogConfig();
+        config.data = { data: data, anchor: anchor };
+        this.dialog.open(InformationDisplayComponent, config);
     }
 }

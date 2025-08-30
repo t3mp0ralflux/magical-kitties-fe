@@ -31,4 +31,10 @@
             </mat-select>
         </mat-form-field>
     </div>
+    <mat-icon
+        class="ml-auto cursor-pointer"
+        (click)="openInfoDialog(characterApi.rules?.talents, talentChoice.value)"
+        [hidden]="!showOptions"
+        >help</mat-icon
+    >
 </div>

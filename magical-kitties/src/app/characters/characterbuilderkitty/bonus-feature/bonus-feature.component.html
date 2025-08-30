@@ -50,10 +50,17 @@
                 <mat-option
                     *ngFor="let item of getAvailableBonusFeatures()"
                     [value]="item.id"
-                    [class.hide]="isFiltered(item)"
                     >{{ item.name }}</mat-option
                 >
             </mat-select>
         </mat-form-field>
+    </div>
+    <div>
+        <mat-icon
+            class="ml-auto cursor-pointer"
+            (click)="openInfoDialog()"
+            [hidden]="!showOptions"
+            >help</mat-icon
+        >
     </div>
 </div>

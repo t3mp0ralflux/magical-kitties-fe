@@ -2,7 +2,9 @@ import { CommonModule } from '@angular/common';
 import { AfterContentInit, Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { AttributeOption } from '../../../models/Characters/attributeoption.model';
 import { Character } from '../../../models/Characters/character.model';
@@ -14,11 +16,12 @@ import { UpsertUpgradeRequest } from '../../../models/Characters/upsertupgradere
 import { CharacterUpdate } from '../../../models/System/characterupdate.model';
 import { UpgradeRule } from '../../../models/System/upgraderule.model';
 import { CharacterAPIService } from '../../services/characters.service';
+import { InformationDisplayComponent } from '../information-display/information-display.component';
 import { BonusFeatureUpgrade } from './models/bonus-feature.model';
 
 @Component({
     selector: 'app-bonus-feature',
-    imports: [CommonModule, MatSelectModule, MatFormFieldModule, ReactiveFormsModule, MatCheckboxModule],
+    imports: [CommonModule, MatSelectModule, MatFormFieldModule, ReactiveFormsModule, MatCheckboxModule, MatIconModule],
     templateUrl: './bonus-feature.component.html',
     styleUrl: './bonus-feature.component.scss'
 })
@@ -29,6 +32,7 @@ export class BonusFeatureComponent implements AfterContentInit {
     @Output() upgradeSelected = new EventEmitter<boolean>();
     showOptions: Boolean = false;
     characterApi: CharacterAPIService = inject(CharacterAPIService);
+    dialog: MatDialog = inject(MatDialog);
     upgradeRule?: UpgradeRule;
     magicalPowerChoice: FormControl = new FormControl({ value: undefined, disabled: this.disabled })
     bonusFeatureChoice: FormControl = new FormControl({ value: undefined, disabled: this.disabled })
@@ -207,7 +211,31 @@ export class BonusFeatureComponent implements AfterContentInit {
             return [];
         }
 
-        return foundMagicalPower.bonusFeatures;
+        const relevantUpgrades = this.character?.upgrades.filter(x => x.option === UpgradeOption.bonusFeature && x.id !== this.id);
+
+        const featuresToFilterIds: number[] = [];
+
+        relevantUpgrades?.forEach(relevantUpgrade => {
+            const choice = relevantUpgrade.choice as BonusFeatureUpgrade;
+            if (!choice) {
+                // failsafe?
+                return;
+            }
+
+            if (choice.magicalPowerId === this.magicalPowerChoice.value) {
+                if (choice.bonusFeatureId) {
+                    featuresToFilterIds.push(choice.bonusFeatureId);
+                }
+            }
+
+            if (choice.nestedMagicalPowerId === this.magicalPowerChoice.value) {
+                if (choice.nestedBonusFeatureId) {
+                    featuresToFilterIds.push(choice.nestedBonusFeatureId);
+                }
+            }
+        });
+
+        return foundMagicalPower.bonusFeatures.filter(x => !featuresToFilterIds.includes(x.id));
     }
 
     isFiltered(item: Endowment): boolean {
@@ -225,5 +253,15 @@ export class BonusFeatureComponent implements AfterContentInit {
         }
 
         return false;
+    }
+
+    openInfoDialog(): void {
+        const config = new MatDialogConfig();
+        const selectedMagicalPower = this.characterApi.rules?.magicalPowers.find(x => x.id === this.magicalPowerChoice.value);
+
+        if (selectedMagicalPower) {
+            config.data = { data: [selectedMagicalPower] };
+            this.dialog.open(InformationDisplayComponent, config);
+        }
     }
 }
