@@ -52,16 +52,6 @@ export class BonusFeatureComponent implements AfterContentInit {
                 }
             }
         });
-
-        this.characterApi.characterChanged$.subscribe({
-            next: (update: CharacterUpdate) => {
-                if (update.attributeOption === undefined) {
-                    return;
-                }
-
-
-            }
-        });
     }
 
     get bonusFeatures() {
@@ -102,7 +92,6 @@ export class BonusFeatureComponent implements AfterContentInit {
                         this.bonusFeatureChoice.setValue(undefined);
                         this.getAvailableBonusFeatures();
                         break;
-
                 }
             }
         });
