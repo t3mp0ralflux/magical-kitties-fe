@@ -2,7 +2,9 @@ import { CommonModule } from '@angular/common';
 import { AfterContentInit, Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { AttributeOption } from '../../../models/Characters/attributeoption.model';
 import { Character } from '../../../models/Characters/character.model';
@@ -14,11 +16,12 @@ import { UpsertUpgradeRequest } from '../../../models/Characters/upsertupgradere
 import { CharacterUpdate } from '../../../models/System/characterupdate.model';
 import { UpgradeRule } from '../../../models/System/upgraderule.model';
 import { CharacterAPIService } from '../../services/characters.service';
+import { InformationDisplayComponent } from '../information-display/information-display.component';
 import { BonusFeatureUpgrade } from './models/bonus-feature.model';
 
 @Component({
     selector: 'app-bonus-feature',
-    imports: [CommonModule, MatSelectModule, MatFormFieldModule, ReactiveFormsModule, MatCheckboxModule],
+    imports: [CommonModule, MatSelectModule, MatFormFieldModule, ReactiveFormsModule, MatCheckboxModule, MatIconModule],
     templateUrl: './bonus-feature.component.html',
     styleUrl: './bonus-feature.component.scss'
 })
@@ -29,6 +32,7 @@ export class BonusFeatureComponent implements AfterContentInit {
     @Output() upgradeSelected = new EventEmitter<boolean>();
     showOptions: Boolean = false;
     characterApi: CharacterAPIService = inject(CharacterAPIService);
+    dialog: MatDialog = inject(MatDialog);
     upgradeRule?: UpgradeRule;
     magicalPowerChoice: FormControl = new FormControl({ value: undefined, disabled: this.disabled })
     bonusFeatureChoice: FormControl = new FormControl({ value: undefined, disabled: this.disabled })
@@ -48,26 +52,6 @@ export class BonusFeatureComponent implements AfterContentInit {
                 }
             }
         });
-
-        this.characterApi.characterChanged$.subscribe({
-            next: (update: CharacterUpdate) => {
-                if (update.attributeOption === undefined) {
-                    return;
-                }
-
-                switch (update.attributeOption.valueOf()) {
-                    case AttributeOption.level:
-                        if (update.value === true) {
-                            this.magicalPowerChoice.setValue(undefined);
-                            this.bonusFeatureChoice.setValue(undefined);
-
-                            this.showOptions = false;
-                        }
-                        break;
-
-                }
-            }
-        })
     }
 
     get bonusFeatures() {
@@ -94,13 +78,21 @@ export class BonusFeatureComponent implements AfterContentInit {
                     return;
                 }
 
-                if (update.attributeOption !== AttributeOption.magicalpower) {
-                    return;
-                }
+                switch (update.attributeOption.valueOf()) {
+                    case AttributeOption.level:
+                        if (update.value === true) {
+                            this.magicalPowerChoice.setValue(undefined);
+                            this.bonusFeatureChoice.setValue(undefined);
 
-                this.magicalPowerChoice.setValue(undefined);
-                this.bonusFeatureChoice.setValue(undefined);
-                this.getAvailableBonusFeatures();
+                            this.showOptions = false;
+                        }
+                        break;
+                    case AttributeOption.magicalpower:
+                        this.magicalPowerChoice.setValue(undefined);
+                        this.bonusFeatureChoice.setValue(undefined);
+                        this.getAvailableBonusFeatures();
+                        break;
+                }
             }
         });
     }
@@ -110,7 +102,7 @@ export class BonusFeatureComponent implements AfterContentInit {
             const newUpgrade = new Upgrade({ id: this.id, option: UpgradeOption.bonusFeature, block: this.upgradeRule!.block });
             const upgradeRequest = new UpsertUpgradeRequest({ upgradeId: this.id, upgradeOption: UpgradeOption.bonusFeature, block: this.upgradeRule!.block });
             this.characterApi.upsertUpgrade(this.character!.id, upgradeRequest).subscribe({
-                next: (value: string) => {
+                next: (_: string) => {
                     this.character!.upgrades.push(newUpgrade);
                     this.showOptions = true;
                 },
@@ -126,7 +118,7 @@ export class BonusFeatureComponent implements AfterContentInit {
 
             const upgradeRemoveRequest = new UpgradeRemoveRequest({ upgradeId: this.id, upgradeOption: UpgradeOption.bonusFeature })
             this.characterApi.removeUpgrade(this.character!.id, upgradeRemoveRequest).subscribe({
-                next: (value: string) => {
+                next: (_: string) => {
                     const upgradeIndex = this.character?.upgrades.findIndex(x => x.id === existingUpgrade.id);
                     if (upgradeIndex !== undefined && upgradeIndex >= 0) {
                         this.character!.upgrades.splice(upgradeIndex, 1);
@@ -145,7 +137,7 @@ export class BonusFeatureComponent implements AfterContentInit {
         this.upgradeSelected.next(event.checked);
     }
 
-    changeMagicalPower(value: MatSelectChange) {
+    changeMagicalPower(value: MatSelectChange): void {
         if (!this.bonusFeatureInformation) {
             this.bonusFeatureInformation = new BonusFeatureUpgrade();
         }
@@ -171,10 +163,10 @@ export class BonusFeatureComponent implements AfterContentInit {
             error: (err) => {
                 // TODO: do something?
             }
-        })
+        });
     }
 
-    changeBonusFeature(value: MatSelectChange) {
+    changeBonusFeature(value: MatSelectChange): void {
         if (!this.bonusFeatureInformation) {
             this.bonusFeatureInformation = new BonusFeatureUpgrade();
         }
@@ -199,7 +191,7 @@ export class BonusFeatureComponent implements AfterContentInit {
             error: (err) => {
                 debugger;
             }
-        })
+        });
     }
 
     getAvailableBonusFeatures(): Endowment[] {
@@ -208,7 +200,31 @@ export class BonusFeatureComponent implements AfterContentInit {
             return [];
         }
 
-        return foundMagicalPower.bonusFeatures;
+        const relevantUpgrades = this.character?.upgrades.filter(x => x.option === UpgradeOption.bonusFeature && x.id !== this.id);
+
+        const featuresToFilterIds: number[] = [];
+
+        relevantUpgrades?.forEach(relevantUpgrade => {
+            const choice = relevantUpgrade.choice as BonusFeatureUpgrade;
+            if (!choice) {
+                // failsafe?
+                return;
+            }
+
+            if (choice.magicalPowerId === this.magicalPowerChoice.value) {
+                if (choice.bonusFeatureId) {
+                    featuresToFilterIds.push(choice.bonusFeatureId);
+                }
+            }
+
+            if (choice.nestedMagicalPowerId === this.magicalPowerChoice.value) {
+                if (choice.nestedBonusFeatureId) {
+                    featuresToFilterIds.push(choice.nestedBonusFeatureId);
+                }
+            }
+        });
+
+        return foundMagicalPower.bonusFeatures.filter(x => !featuresToFilterIds.includes(x.id));
     }
 
     isFiltered(item: Endowment): boolean {
@@ -222,9 +238,19 @@ export class BonusFeatureComponent implements AfterContentInit {
                     }
                 }
                 return false;
-            })
+            });
         }
 
         return false;
+    }
+
+    openInfoDialog(): void {
+        const config = new MatDialogConfig();
+        const selectedMagicalPower = this.characterApi.rules?.magicalPowers.find(x => x.id === this.magicalPowerChoice.value);
+
+        if (selectedMagicalPower) {
+            config.data = { data: [selectedMagicalPower] };
+            this.dialog.open(InformationDisplayComponent, config);
+        }
     }
 }

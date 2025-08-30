@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { AfterContentInit, Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -24,15 +25,17 @@ import { UpgradeOption } from '../../models/Characters/upgradeoption.model';
 import { CharacterUpdate } from '../../models/System/characterupdate.model';
 import { UpgradeRule } from '../../models/System/upgraderule.model';
 import { ConfirmModalComponent } from '../../sharedcomponents/confirm-modal/confirm-modal.component';
+import { CopyObject } from '../../utilities';
 import { CharacterAPIService } from '../services/characters.service';
 import { AttributeIncreaseComponent } from "./attribute-increase/attribute-increase.component";
 import { BonusFeatureComponent } from "./bonus-feature/bonus-feature.component";
 import { IncreaseLimitComponent } from "./increase-limit/increase-limit.component";
 import { InformationDisplayComponent } from './information-display/information-display.component';
+import { TalentComponent } from "./talent/talent.component";
 
 @Component({
     selector: 'app-characterbuilderkitty',
-    imports: [CommonModule, MatDividerModule, MatInputModule, MatSelectModule, ReactiveFormsModule, MatIconModule, MatCardModule, MarkdownComponent, MatExpansionModule, BonusFeatureComponent, AttributeIncreaseComponent, IncreaseLimitComponent],
+    imports: [CommonModule, MatDividerModule, MatInputModule, MatSelectModule, ReactiveFormsModule, MatIconModule, MatCardModule, MatCheckboxModule, MarkdownComponent, MatExpansionModule, BonusFeatureComponent, AttributeIncreaseComponent, IncreaseLimitComponent, TalentComponent],
     templateUrl: './characterbuilderkitty.component.html',
     styleUrl: './characterbuilderkitty.component.scss'
 })
@@ -91,6 +94,26 @@ export class CharacterBuilderKittyComponent implements AfterContentInit {
 
     get block1treatsValue() {
         return this.selectedUpgrades.controls['block1treatsValue'];
+    }
+
+    get block2talent() {
+        return this.selectedUpgrades.controls["block2talent"];
+    }
+
+    get block2Bonus() {
+        return this.selectedUpgrades.controls['block2bonusFeature'];
+    }
+
+    get block2Attribute() {
+        return this.selectedUpgrades.controls['block2attribute4'];
+    }
+
+    get block2owieLimit() {
+        return this.selectedUpgrades.controls['block2owieLimit'];
+    }
+
+    get block2treatsValue() {
+        return this.selectedUpgrades.controls['block2treatsValue'];
     }
 
     constructor() {
@@ -399,7 +422,8 @@ export class CharacterBuilderKittyComponent implements AfterContentInit {
 
     updateTalent(event: MatSelectChange): void {
         const updatedTalentId: number = event.value;
-        const updatedTalent: Talent = this.characterApi.rules?.talents.find(x => x.id === updatedTalentId)!;
+        const updatedTalent: Talent = CopyObject(this.characterApi.rules?.talents.find(x => x.id === updatedTalentId)!);
+        updatedTalent.isPrimary = true;
 
         const talentUpdate = new EndowmentUpdate({
             previousId: this.character?.talents[0]?.id ?? updatedTalent.id,
@@ -415,6 +439,8 @@ export class CharacterBuilderKittyComponent implements AfterContentInit {
         this.characterApi.updateTalent(payload).subscribe({
             next: (_) => {
                 this.character!.talents[0] = updatedTalent;
+
+                this.characterApi.characterHasChanged(new CharacterUpdate({ attributeOption: AttributeOption.talent, value: event.value }));
             }
         });
     }
