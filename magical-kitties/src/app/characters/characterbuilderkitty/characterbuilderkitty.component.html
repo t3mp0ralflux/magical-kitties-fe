@@ -315,6 +315,50 @@
         </div>
     </div>
 </div>
+<div
+    class="mb-5"
+    *ngIf="character ? character.level > 7 : false"
+>
+    <div
+        class="flex flex-col"
+        [formGroup]="selectedUpgrades"
+    >
+        <mat-label class="font-semibold">Levels 8-10</mat-label>
+        <div class="flex items-baseline">
+            <app-magical-power
+                [id]="getUpgradeIdFromRules(3, UpgradeOption.magicalPower)"
+                [disabled]="block3MagicalPower.disabled"
+                [parentControl]="block3MagicalPower"
+                (upgradeSelected)="checkChange()"
+            ></app-magical-power>
+        </div>
+        <div class="flex items-baseline">
+            <app-bonus-feature
+                [id]="getUpgradeIdFromRules(3, UpgradeOption.bonusFeature)"
+                [disabled]="block3Bonus.disabled"
+                [parentControl]="block3Bonus"
+                (upgradeSelected)="checkChange()"
+            ></app-bonus-feature>
+        </div>
+        <div class="flex items-baseline">
+            <app-attribute-increase
+                [id]="getUpgradeIdFromRules(3, UpgradeOption.attribute4)"
+                [disabled]="block3Attribute.disabled"
+                [parentControl]="block3Attribute"
+                (upgradeSelected)="checkChange()"
+            >
+            </app-attribute-increase>
+        </div>
+        <div>
+            <app-increase-limit
+                [id]="getUpgradeIdFromRules(3, UpgradeOption.owieLimit)"
+                [disabled]="block3owieLimit.disabled"
+                [parentControl]="block3owieLimit"
+                (upgradeSelected)="checkChange()"
+            ></app-increase-limit>
+        </div>
+    </div>
+</div>
 
 <div
     class="mb-5"

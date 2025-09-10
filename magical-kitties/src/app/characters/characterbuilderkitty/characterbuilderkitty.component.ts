@@ -31,11 +31,12 @@ import { AttributeIncreaseComponent } from "./attribute-increase/attribute-incre
 import { BonusFeatureComponent } from "./bonus-feature/bonus-feature.component";
 import { IncreaseLimitComponent } from "./increase-limit/increase-limit.component";
 import { InformationDisplayComponent } from './information-display/information-display.component';
+import { MagicalPowerComponent } from "./magical-power/magical-power.component";
 import { TalentComponent } from "./talent/talent.component";
 
 @Component({
     selector: 'app-characterbuilderkitty',
-    imports: [CommonModule, MatDividerModule, MatInputModule, MatSelectModule, ReactiveFormsModule, MatIconModule, MatCardModule, MatCheckboxModule, MarkdownComponent, MatExpansionModule, BonusFeatureComponent, AttributeIncreaseComponent, IncreaseLimitComponent, TalentComponent],
+    imports: [CommonModule, MatDividerModule, MatInputModule, MatSelectModule, ReactiveFormsModule, MatIconModule, MatCardModule, MatCheckboxModule, MarkdownComponent, MatExpansionModule, BonusFeatureComponent, AttributeIncreaseComponent, IncreaseLimitComponent, TalentComponent, MagicalPowerComponent],
     templateUrl: './characterbuilderkitty.component.html',
     styleUrl: './characterbuilderkitty.component.scss'
 })
@@ -114,6 +115,26 @@ export class CharacterBuilderKittyComponent implements AfterContentInit {
 
     get block2treatsValue() {
         return this.selectedUpgrades.controls['block2treatsValue'];
+    }
+
+    get block3MagicalPower() {
+        return this.selectedUpgrades.controls["block3magicalPower"];
+    }
+
+    get block3Bonus() {
+        return this.selectedUpgrades.controls['block3bonusFeature'];
+    }
+
+    get block3Attribute() {
+        return this.selectedUpgrades.controls['block3attribute4'];
+    }
+
+    get block3owieLimit() {
+        return this.selectedUpgrades.controls['block3owieLimit'];
+    }
+
+    get block3treatsValue() {
+        return this.selectedUpgrades.controls['block3treatsValue'];
     }
 
     constructor() {

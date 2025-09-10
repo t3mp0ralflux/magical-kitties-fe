@@ -88,9 +88,11 @@ export class BonusFeatureComponent implements AfterContentInit {
                         }
                         break;
                     case AttributeOption.magicalpower:
-                        this.magicalPowerChoice.setValue(undefined);
-                        this.bonusFeatureChoice.setValue(undefined);
-                        this.getAvailableBonusFeatures();
+                        if (this.bonusFeatureInformation?.magicalPowerId === update.value) {
+                            this.magicalPowerChoice.setValue(undefined);
+                            this.bonusFeatureChoice.setValue(undefined);
+                            this.getAvailableBonusFeatures();
+                        }
                         break;
                 }
             }
