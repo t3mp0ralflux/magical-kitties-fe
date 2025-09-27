@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterContentInit, Component, inject } from '@angular/core';
+import { AfterContentInit, Component, inject, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -40,7 +40,7 @@ import { TalentComponent } from "./talent/talent.component";
     templateUrl: './characterbuilderkitty.component.html',
     styleUrl: './characterbuilderkitty.component.scss'
 })
-export class CharacterBuilderKittyComponent implements AfterContentInit {
+export class CharacterBuilderKittyComponent implements AfterContentInit, OnDestroy {
     private _snackBar: MatSnackBar = inject(MatSnackBar);
     characterApi: CharacterAPIService = inject(CharacterAPIService);
     dialog: MatDialog = inject(MatDialog);
@@ -220,6 +220,10 @@ export class CharacterBuilderKittyComponent implements AfterContentInit {
         ).subscribe();
     }
 
+    ngOnDestroy(): void {
+        this.resetControls();
+    }
+
     getUpgradeFromCharacter(id?: string) {
         if (!id) {
             return;
@@ -258,6 +262,20 @@ export class CharacterBuilderKittyComponent implements AfterContentInit {
             const control = this.selectedUpgrades.controls[key];
             control.enable();
         });
+    }
+
+    resetControls(): void {
+        this.cunningControl.reset();
+        this.cuteControl.reset();
+        this.fierceControl.reset();
+        this.flawControl.reset();
+        this.talentControl.reset();
+        this.magicalPowerControl.reset();
+
+        Object.keys(this.selectedUpgrades.controls).forEach((key: string) => {
+            const control = this.selectedUpgrades.controls[key];
+            control.reset();
+        })
     }
 
     resetUpgrades(): void {

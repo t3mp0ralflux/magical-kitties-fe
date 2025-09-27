@@ -89,7 +89,7 @@ export class ViewCharactersComponent implements OnInit, OnDestroy {
             next: (response) => {
                 const characterLocation = response.headers.get("location")?.split("/") ?? [];
                 const characterId = characterLocation![characterLocation!.length - 1];
-                this.router.navigateByUrl(`/characters/${characterId}`);
+                this.router.navigateByUrl(`/characters/${characterId}/builder/kitty`);
             },
             error: (err) => {
                 // TODO: do something here.
