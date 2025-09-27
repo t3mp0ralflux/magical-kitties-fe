@@ -4,10 +4,10 @@
         (change)="checkChange($event)"
     >
     </mat-checkbox>
-    <div ngClass="{{ disabled ? 'disabled' : '' }}">
+    <div ngClass="{{ disabled ? 'disabled upgrade-text' : 'upgrade-text' }}">
         {{ upgradeRule?.value }}
     </div>
-    <div class="ml-3">
+    <div>
         <mat-form-field
             appearance="outline"
             class="flex items-baseline"
@@ -31,10 +31,12 @@
             </mat-select>
         </mat-form-field>
     </div>
-    <mat-icon
-        class="ml-auto cursor-pointer"
-        (click)="openInfoDialog(characterApi.rules?.talents, talentChoice.value)"
-        [hidden]="!showOptions"
-        >help</mat-icon
-    >
+    <div class="ml-1">
+        <mat-icon
+            class="ml-auto cursor-pointer"
+            (click)="openInfoDialog(characterApi.rules?.talents, talentChoice.value)"
+            [hidden]="!showOptions"
+            >help</mat-icon
+        >
+    </div>
 </div>

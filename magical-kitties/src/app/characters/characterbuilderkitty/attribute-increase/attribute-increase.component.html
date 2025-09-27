@@ -4,10 +4,10 @@
         (change)="checkChange($event)"
     >
     </mat-checkbox>
-    <div ngClass="{{ disabled ? 'disabled' : '' }}">
+    <div ngClass="{{ disabled ? 'disabled upgrade-text' : 'upgrade-text' }}">
         {{ upgradeRule?.value }}
     </div>
-    <div class="ml-3">
+    <div>
         <mat-form-field
             appearance="outline"
             class="flex items-baseline"
