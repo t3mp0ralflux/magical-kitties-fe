@@ -11,7 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { MarkdownComponent } from "ngx-markdown";
-import { BehaviorSubject, combineLatest, Observable, pairwise, startWith, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, pairwise, startWith, Subscription, tap } from 'rxjs';
 import { getValue } from '../../login/utilities';
 import { AttributeOption } from '../../models/Characters/attributeoption.model';
 import { Character } from '../../models/Characters/character.model';
@@ -81,6 +81,8 @@ export class CharacterBuilderKittyComponent implements AfterContentInit, OnDestr
         block3treatsValue: new FormControl(""),
     });
 
+    editorSubscriptions: Subscription[] = [];
+
     get block1Bonus() {
         return this.selectedUpgrades.controls['block1bonusFeature'];
     }
@@ -138,7 +140,7 @@ export class CharacterBuilderKittyComponent implements AfterContentInit, OnDestr
     }
 
     constructor() {
-        combineLatest({
+        const characterSubscription = combineLatest({
             character: this.characterApi.character$,
             rules: this.characterApi.getRules()
         }).subscribe({
@@ -192,18 +194,12 @@ export class CharacterBuilderKittyComponent implements AfterContentInit, OnDestr
                 }
             }
         });
+
+        this.editorSubscriptions.push(characterSubscription);
     }
 
     ngAfterContentInit(): void {
-        this.cuteControl.valueChanges.pipe(
-            startWith(this.cuteControl.value),
-            pairwise(),
-            tap(([previous, next]) => {
-                this.applyFilter(previous, next);
-            })
-        ).subscribe();
-
-        this.cunningControl.valueChanges.pipe(
+        const cunningControlSubscription = this.cunningControl.valueChanges.pipe(
             startWith(this.cunningControl.value),
             pairwise(),
             tap(([previous, next]) => {
@@ -211,17 +207,31 @@ export class CharacterBuilderKittyComponent implements AfterContentInit, OnDestr
             })
         ).subscribe();
 
-        this.fierceControl.valueChanges.pipe(
+        const cuteControlSubscription = this.cuteControl.valueChanges.pipe(
+            startWith(this.cuteControl.value),
+            pairwise(),
+            tap(([previous, next]) => {
+                this.applyFilter(previous, next);
+            })
+        ).subscribe();
+
+        const fierceControlSubscription = this.fierceControl.valueChanges.pipe(
             startWith(this.fierceControl.value),
             pairwise(),
             tap(([previous, next]) => {
                 this.applyFilter(previous, next);
             })
         ).subscribe();
+
+        this.editorSubscriptions.push(...[cunningControlSubscription, cuteControlSubscription, fierceControlSubscription]);
     }
 
     ngOnDestroy(): void {
         this.resetControls();
+
+        this.editorSubscriptions.forEach((subscription: Subscription) => {
+            subscription.unsubscribe();
+        });
     }
 
     getUpgradeFromCharacter(id?: string) {
@@ -420,7 +430,7 @@ export class CharacterBuilderKittyComponent implements AfterContentInit, OnDestr
         if (event.value < this.character!.level) {
             const dialogData = { message: "You are about to lower your level. Any accrued XP for this level along with any relevant upgrade choices will be removed. Are you sure you want to do this?" };
 
-            this.dialog.open(ConfirmModalComponent, { data: dialogData }).afterClosed().subscribe({
+            const dialogSubscription = this.dialog.open(ConfirmModalComponent, { data: dialogData }).afterClosed().subscribe({
                 next: (result) => {
                     if (result) {
                         this.submitLevelUp(payload);
@@ -431,7 +441,9 @@ export class CharacterBuilderKittyComponent implements AfterContentInit, OnDestr
                 error: (err) => {
                     debugger;
                 }
-            })
+            });
+
+            this.editorSubscriptions.push(dialogSubscription);
         } else {
             this.submitLevelUp(payload);
         }
@@ -515,7 +527,7 @@ export class CharacterBuilderKittyComponent implements AfterContentInit, OnDestr
 
     private submitLevelUp(payload: UpdateCharacterAttributes) {
         this.characterApi.updateLevel(payload).subscribe({
-            next: (response) => {
+            next: (_) => {
                 let shouldResetElements = false;
 
                 // only do this on going down a level. At this point, the character isn't updated and is still the old value.
