@@ -1,12 +1,13 @@
-<div class="flex items-center sm:items-baseline">
+<div class="flex items-center sm:items-baseline ml-3 mr-3 sm:ml-0 sm:mr-0">
     <div class="flex flex-col w-1/3">
         <span class="sm:text-xl font-semibold">Character Level: {{ character?.level }}</span>
     </div>
-    <div class="ml-5 w-1/3 sm:ml-auto sm:w-auto">
+    <div class="ml-5 w-1/3 sm:ml-auto flex flex-col items-center sm:flex-row sm:justify-end sm:items-baseline">
         <span class="mr-2 font-semibold">XP</span>
         <mat-form-field
             class="max-w-24"
             appearance="outline"
+            subscriptSizing="dynamic"
         >
             <input
                 matInput
@@ -17,11 +18,12 @@
             />
         </mat-form-field>
     </div>
-    <div class="ml-8 mr-3 w-1/3 sm:w-auto">
+    <div class="ml-8 w-1/3 sm:w-auto flex flex-col items-center sm:flex-row sm:justify-end sm:items-baseline">
         <span class="mr-2 font-semibold">Level</span>
         <mat-form-field
-            class="max-w-20"
+            class="max-w-24"
             appearance="outline"
+            subscriptSizing="dynamic"
         >
             <mat-select
                 [formControl]="levelControl"
@@ -37,7 +39,7 @@
         </mat-form-field>
     </div>
 </div>
-<div>
+<div class="mt-2 mb-2 sm:mt-5 sm:mb-5">
     <mat-divider class="editor"></mat-divider>
 </div>
 <div class="flex justify-around mt-4">
