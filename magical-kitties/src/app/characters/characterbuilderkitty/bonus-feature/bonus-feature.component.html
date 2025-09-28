@@ -1,16 +1,18 @@
-<div class="flex-col items-center min-h-14">
-    <mat-checkbox
-        [formControl]="parentControl"
-        (change)="checkChange($event)"
-    >
-    </mat-checkbox>
-    <div ngClass="{{ disabled ? 'upgrade-text disabled' : 'upgrade-text' }}">
-        {{ upgradeRule?.value }}
+<div class="flex-col items-center min-h-14 w-dvw">
+    <div class="flex items-center">
+        <mat-checkbox
+            [formControl]="parentControl"
+            (change)="checkChange($event)"
+        >
+        </mat-checkbox>
+        <div ngClass="{{ disabled ? 'upgrade-text disabled text-sm' : 'upgrade-text text-sm' }}">
+            {{ upgradeRule?.value }}
+        </div>
     </div>
-    <div>
+    <div class="flex items-center">
         <mat-form-field
             appearance="outline"
-            class="flex items-baseline"
+            class="max-w-9/20"
             subscriptSizing="dynamic"
             [hidden]="!showOptions"
         >
@@ -30,11 +32,9 @@
                 >
             </mat-select>
         </mat-form-field>
-    </div>
-    <div class="ml-3">
         <mat-form-field
             appearance="outline"
-            class="flex items-baseline"
+            class="max-w-9/20"
             subscriptSizing="dynamic"
             [hidden]="!showOptions"
         >
@@ -54,13 +54,13 @@
                 >
             </mat-select>
         </mat-form-field>
-    </div>
-    <div class="ml-1">
-        <mat-icon
-            class="ml-auto cursor-pointer"
-            (click)="openInfoDialog()"
-            [hidden]="!showOptions"
-            >help</mat-icon
-        >
+        <div class="flex ml-1 max-w-1/10">
+            <mat-icon
+                class="cursor-pointer"
+                (click)="openInfoDialog()"
+                [hidden]="!showOptions"
+                >help</mat-icon
+            >
+        </div>
     </div>
 </div>

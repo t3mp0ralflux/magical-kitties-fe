@@ -326,7 +326,7 @@ export class CharacterBuilderKittyComponent implements AfterContentInit, OnDestr
     getFlawDescription(id: number) {
         const flaw = this.characterApi.rules?.flaws.find(x => x.id === id);
 
-        return flaw?.description;
+        return flaw?.description ?? "";
     }
 
     getTalentDescription(id: number) {
