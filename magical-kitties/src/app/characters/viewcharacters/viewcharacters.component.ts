@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
@@ -10,7 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { Router } from '@angular/router';
-import { BehaviorSubject, catchError, combineLatest, debounceTime, EMPTY, Observable, Subscription, switchMap } from 'rxjs';
+import { BehaviorSubject, catchError, combineLatest, debounceTime, EMPTY, Observable, switchMap } from 'rxjs';
 import { getValue } from '../../login/utilities';
 import { CharactersResponse } from '../../models/Characters/charactersresponse.model';
 import { GetAllCharactersResponse } from '../../models/Characters/getallcharactersresponse.model';
@@ -25,12 +25,11 @@ import { DeleteModalComponent } from './delete-modal/delete-modal.component';
     templateUrl: './viewcharacters.component.html',
     styleUrl: './viewcharacters.component.scss',
 })
-export class ViewCharactersComponent implements OnInit, OnDestroy {
+export class ViewCharactersComponent {
     private router: Router = inject(Router);
     private authService: AuthService = inject(AuthService);
     private apiService: CharacterAPIService = inject(CharacterAPIService);
     dialog: MatDialog = inject(MatDialog);
-    loggedOutSubscription: Subscription;
     private refreshSearch: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private searchText: BehaviorSubject<string> = new BehaviorSubject<string>("");
     private sortOption: BehaviorSubject<string> = new BehaviorSubject<string>("name");
@@ -52,12 +51,6 @@ export class ViewCharactersComponent implements OnInit, OnDestroy {
     )
 
     constructor() {
-        this.loggedOutSubscription = this.authService.loggedOut.subscribe({
-            next: () => {
-                this.router.navigateByUrl("");
-            }
-        })
-
         if (this.authService.account === undefined) {
             const extras = new NavigationExtras({
                 resumeUrl: "characters",
@@ -67,20 +60,12 @@ export class ViewCharactersComponent implements OnInit, OnDestroy {
             this.router.navigateByUrl("/login", { state: extras });
         }
     }
-    ngOnInit(): void {
-    }
 
-    ngOnDestroy(): void {
-        if (this.loggedOutSubscription) {
-            this.loggedOutSubscription.unsubscribe();
-        }
-    }
-
-    search(characterSearch: string) {
+    search(characterSearch: string): void {
         this.searchText.next(characterSearch);
     }
 
-    sort(event: MatSelectChange) {
+    sort(event: MatSelectChange): void {
         this.sortOption.next(event.value);
     }
 

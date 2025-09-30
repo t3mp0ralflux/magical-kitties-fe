@@ -1,4 +1,4 @@
-<div class="flex-col items-center min-h-14 w-dvw">
+<div class="flex-col min-h-14 upgrade-width">
     <div class="flex items-center">
         <mat-checkbox
             [formControl]="parentControl"
@@ -12,7 +12,6 @@
     <div class="flex items-center">
         <mat-form-field
             appearance="outline"
-            class="max-w-9/20"
             subscriptSizing="dynamic"
             [hidden]="!showOptions"
         >
@@ -34,7 +33,7 @@
         </mat-form-field>
         <mat-form-field
             appearance="outline"
-            class="max-w-9/20"
+            class="ml-1"
             subscriptSizing="dynamic"
             [hidden]="!showOptions"
         >
@@ -54,7 +53,7 @@
                 >
             </mat-select>
         </mat-form-field>
-        <div class="flex ml-1 max-w-1/10">
+        <div class="flex ml-1">
             <mat-icon
                 class="cursor-pointer"
                 (click)="openInfoDialog()"

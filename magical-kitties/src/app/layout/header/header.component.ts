@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,8 +17,10 @@ import { AuthService } from '../../services/authService.service';
 })
 export class HeaderComponent {
     menuOpen: boolean = false;
+    private router: Router = inject(Router);
+    private authService: AuthService = inject(AuthService)
 
-    constructor(private router: Router, private authService: AuthService) {}
+    constructor() {}
 
     get account(): Account | undefined {
         return this.authService.account;
@@ -37,9 +39,10 @@ export class HeaderComponent {
     }
 
     logout(): void {
+        console.log("logout received.")
         this.authService.logout().subscribe({
             next: (response) => {
-                this.authService.loggedOut.next(true);
+                this.router.navigateByUrl('/');
             },
             error: (err) => {
 
