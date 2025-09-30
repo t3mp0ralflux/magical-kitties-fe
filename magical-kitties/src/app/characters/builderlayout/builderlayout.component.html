@@ -9,9 +9,9 @@
         </div>
     </div>
     <div class="w-dvw lg:w-[1200px] relative z-20">
-        <div class="max-w-[800px] ml-auto mr-auto">
+        <div class="max-w-[800px] min-w-xs lg:max-w-[1200px] ml-auto mr-auto">
             <mat-toolbar>
-                <mat-toolbar-row class="flex justify-between text-sm md:text-xl">
+                <mat-toolbar-row class="flex justify-between text-sm md:text-xl lg:justify-start">
                     <div class="hidden sm:flex flex-col mr-5">
                         <div class="text-xl">Character Builder</div>
                         <div class="text-sm flex items-center">
@@ -66,7 +66,7 @@
                 </mat-toolbar-row>
             </mat-toolbar>
         </div>
-        <div class="max-w-[800px] ml-auto mr-auto mt-5">
+        <div class="max-w-[800px] min-w-xs ml-auto mr-auto mt-5">
             <div class="flex items-center">
                 <div class="hidden sm:block w-40! h-40!">
                     <img src="/girl_dm.png" />
@@ -95,7 +95,7 @@
         />
     </div>
 </div>
-<div class="faded-primary w-dvw absolute inset-0 left-0 top-14 lg:top-32 h-16 z-10"></div>
+<div class="faded-primary w-dvw absolute inset-0 left-0 top-14 lg:top-32 h-14 sm:h-16 z-10"></div>
 <app-footer></app-footer>
 
 <ng-template #underline>

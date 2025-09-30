@@ -1,6 +1,6 @@
 <div
     id="level"
-    class="flex items-center sm:items-baseline ml-3 mr-3 sm:ml-0 sm:mr-0"
+    class="flex min-w-xs items-center sm:items-baseline ml-3 mr-3 sm:ml-0 sm:mr-0"
 >
     <div class="flex flex-col w-1/3">
         <span class="sm:text-xl font-semibold">Character Level: {{ character?.level }}</span>
@@ -112,7 +112,7 @@
 </div>
 <div
     id="endowments"
-    class="ml-1 mr-1"
+    class="ml-1 mr-1 sm:ml-0 sm:mr-0"
 >
     <div class="flex items-baseline">
         <mat-card
@@ -131,7 +131,7 @@
                 <div class="flex">
                     <mat-form-field
                         appearance="outline"
-                        class="w-1/2 mr-2 mb-5 max-h-10"
+                        class="w-1/2 mr-2 mb-5 max-h-10 sm:w-1/3"
                     >
                         <mat-select
                             [formControl]="flawControl"
@@ -171,7 +171,7 @@
                 <div class="flex">
                     <mat-form-field
                         appearance="outline"
-                        class="w-1/2 mr-2 mb-5 max-h-10"
+                        class="w-1/2 mr-2 mb-5 max-h-10 sm:w-1/3"
                     >
                         <mat-select
                             [formControl]="talentControl"
@@ -211,7 +211,7 @@
                 <div class="flex">
                     <mat-form-field
                         appearance="outline"
-                        class="w-1/2 mr-2 mb-5 max-h-10"
+                        class="w-1/2 mr-2 mb-5 max-h-10 sm:w-1/3"
                     >
                         <mat-select
                             [formControl]="magicalPowerControl"
@@ -225,7 +225,7 @@
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
-                    <div class="w-1/2 max-h-36 overflow-auto">
+                    <div class="w-1/2 max-h-36 overflow-auto ml-auto">
                         <markdown [data]="getMagicalPowerDescription(magicalPowerControl.value)"> </markdown>
                     </div>
                 </div>
@@ -235,7 +235,7 @@
 </div>
 <div
     id="upgrades"
-    class="ml-1 mr-1"
+    class="ml-1 mr-1 sm:ml-0 sm:mr-0"
 >
     <div
         class="mb-5"
@@ -334,7 +334,7 @@
         </div>
     </div>
     <div
-        class="mb-5"
+        class=""
         *ngIf="character ? character.level > 7 : false"
     >
         <div
