@@ -439,7 +439,7 @@ export class CharacterBuilderKittyComponent implements AfterContentInit, OnDestr
                     }
                 },
                 error: (err) => {
-                    debugger;
+                    //debugger;
                 }
             });
 

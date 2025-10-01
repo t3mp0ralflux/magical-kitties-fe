@@ -45,7 +45,7 @@ export class ViewCharactersComponent {
             this.apiService.getCharacters(characterSearch.sort, characterSearch.input)
         ),
         catchError((err: any) => {
-            debugger;
+            //debugger;
             return EMPTY;
         })
     )
@@ -120,7 +120,7 @@ export class ViewCharactersComponent {
                         this.refreshSearch.next(true);
                     },
                     error: (err) => {
-                        debugger;
+                        //debugger;
                     }
                 })
             }
