@@ -36,7 +36,7 @@ export class ForgotPasswordComponent {
                 this.emailSent = true;
             },
             error: (error) => {
-                debugger;
+                //debugger;
             }
         })
     }

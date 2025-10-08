@@ -1,6 +1,6 @@
 <app-header></app-header>
-<div class="flex edit-background min-h-10/12">
-    <div class="relative z-10 side-panel">
+<div class="edit-background min-h-10/12 lg:flex">
+    <div class="relative z-10 hidden xl:block side-panel">
         <div>
             <img
                 src="/kitty_counsel.png"
@@ -8,73 +8,72 @@
             />
         </div>
     </div>
-    <div class="w-[1200px] relative z-20">
-        <mat-toolbar>
-            <mat-toolbar-row>
-                <div class="hidden sm:flex flex-col mr-5">
-                    <div class="text-xl">Character Builder</div>
-                    <div class="text-sm flex items-center">
-                        <mat-icon>person</mat-icon>
-                        {{ character?.name }}
+    <div class="w-dvw lg:w-[1200px] relative z-20">
+        <div class="max-w-[800px] min-w-xs lg:max-w-[1200px] ml-auto mr-auto">
+            <mat-toolbar>
+                <mat-toolbar-row class="flex justify-between text-sm md:text-xl lg:justify-start">
+                    <div class="hidden sm:flex flex-col mr-5">
+                        <div class="text-xl">Character Builder</div>
+                        <div class="text-sm flex items-center">
+                            <mat-icon>person</mat-icon>
+                            {{ character?.name }}
+                        </div>
                     </div>
-                </div>
-                <div class="flex flex-col mr-5">
-                    <a
-                        class="cursor-pointer"
-                        (click)="navigate('.')"
-                    >
-                        <div class="flex items-center"><mat-icon class="mr-1">settings</mat-icon>Home</div>
-                        <ng-container *ngIf="currentPage === 'builder'">
-                            <ng-container *ngTemplateOutlet="underline"></ng-container>
-                        </ng-container>
-                    </a>
-                </div>
-                <div class="flex flex-col mr-5">
-                    <a
-                        class="cursor-pointer"
-                        (click)="navigate('kitty')"
-                    >
-                        <div>1. Kitty</div>
-                        <ng-container *ngIf="currentPage === 'kitty'">
-                            <ng-container *ngTemplateOutlet="underline"></ng-container>
-                        </ng-container>
-                    </a>
-                </div>
-                <div class="flex flex-col mr-5">
-                    <a
-                        class="cursor-pointer"
-                        (click)="navigate('background')"
-                    >
-                        <div>2. Background</div>
-                        <ng-container *ngIf="currentPage === 'background'">
-                            <ng-container *ngTemplateOutlet="underline"></ng-container>
-                        </ng-container>
-                    </a>
-                </div>
-                <div class="flex flex-col mr-5">
-                    <a
-                        class="cursor-pointer"
-                        (click)="navigate('human')"
-                    >
-                        <div>3. Human</div>
-                        <ng-container *ngIf="currentPage === 'human'">
-                            <ng-container *ngTemplateOutlet="underline"></ng-container>
-                        </ng-container>
-                    </a>
-                </div>
-            </mat-toolbar-row>
-        </mat-toolbar>
-        <div class="max-w-[800px] ml-auto mr-auto mt-5">
+                    <div class="flex flex-col mr-5">
+                        <a
+                            class="cursor-pointer"
+                            (click)="navigate('.')"
+                        >
+                            <div class="flex items-center"><mat-icon class="mr-1">settings</mat-icon>Home</div>
+                            <ng-container *ngIf="currentPage === 'builder'">
+                                <ng-container *ngTemplateOutlet="underline"></ng-container>
+                            </ng-container>
+                        </a>
+                    </div>
+                    <div class="flex flex-col mr-5">
+                        <a
+                            class="cursor-pointer"
+                            (click)="navigate('kitty')"
+                        >
+                            <div>1. Kitty</div>
+                            <ng-container *ngIf="currentPage === 'kitty'">
+                                <ng-container *ngTemplateOutlet="underline"></ng-container>
+                            </ng-container>
+                        </a>
+                    </div>
+                    <div class="flex flex-col mr-5">
+                        <a
+                            class="cursor-pointer"
+                            (click)="navigate('background')"
+                        >
+                            <div>2. Background</div>
+                            <ng-container *ngIf="currentPage === 'background'">
+                                <ng-container *ngTemplateOutlet="underline"></ng-container>
+                            </ng-container>
+                        </a>
+                    </div>
+                    <div class="flex flex-col mr-5">
+                        <a
+                            class="cursor-pointer"
+                            (click)="navigate('human')"
+                        >
+                            <div>3. Human</div>
+                            <ng-container *ngIf="currentPage === 'human'">
+                                <ng-container *ngTemplateOutlet="underline"></ng-container>
+                            </ng-container>
+                        </a>
+                    </div>
+                </mat-toolbar-row>
+            </mat-toolbar>
+        </div>
+        <div class="max-w-[800px] min-w-xs ml-auto mr-auto mt-5">
             <div class="flex items-center">
-                <div class="mr-3 max-w-40 max-h-40">
+                <div class="hidden sm:block w-40! h-40!">
                     <img src="/girl_dm.png" />
                 </div>
-                <div class="flex flex-col">
+                <div class="ml-3 mr-3 flex flex-col w-96">
                     <mat-label>Character Name</mat-label>
-                    <mat-form-field
-                        appearance="outline"
-                        class="w-96"
-                    >
+                    <mat-form-field appearance="outline">
                         <input
                             matInput
                             [formControl]="nameInput"
@@ -83,20 +82,20 @@
                     </mat-form-field>
                 </div>
             </div>
-            <div class="mt-5 mb-5">
+            <div class="mt-2 mb-2 sm:mt-5 sm:mb-5">
                 <mat-divider class="editor"></mat-divider>
             </div>
             <router-outlet></router-outlet>
         </div>
     </div>
-    <div class="relative z-10 side-panel">
+    <div class="relative z-10 hidden xl:block side-panel">
         <img
             src="/d6_collection.png"
             class="right-picture"
         />
     </div>
 </div>
-<div class="faded-primary absolute inset-0 left-0 top-32 h-16 z-10"></div>
+<div class="faded-primary w-dvw absolute inset-0 left-0 top-14 lg:top-32 h-14 sm:h-16 z-10"></div>
 <app-footer></app-footer>
 
 <ng-template #underline>

@@ -191,7 +191,7 @@ export class BonusFeatureComponent implements AfterContentInit {
                 }
             },
             error: (err) => {
-                debugger;
+                //debugger;
             }
         });
     }

@@ -1,6 +1,6 @@
 import { HttpErrorResponse, HttpResponse } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { catchError, EMPTY, Observable, Subject, tap } from "rxjs";
+import { catchError, EMPTY, Observable, tap } from "rxjs";
 import { environment } from "../../environments/environment";
 import { Account } from "../models/Account/account.model";
 import { LoginModel } from "../models/Login/login.model";
@@ -13,7 +13,6 @@ export class AuthService {
     account?: Account;
     apiClient: ApiClient = inject(ApiClient);
     baseUrl: string = "";
-    loggedOut: Subject<boolean> = new Subject<boolean>();
 
     constructor() {
         this.baseUrl = `${environment.baseUrl}/auth`;
@@ -40,8 +39,10 @@ export class AuthService {
         );
     }
 
-    logout(): Observable<never> {
-        return this.apiClient.logout();
+    logout(): Observable<void> {
+        return this.apiClient.logout().pipe(
+            tap(_ => this.account = undefined)
+        );
     }
 
     forgotPassword(request: PasswordResetRequest): Observable<PasswordResetResponse>;

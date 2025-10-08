@@ -1,16 +1,18 @@
-<div class="flex items-center min-h-14">
-    <mat-checkbox
-        [formControl]="parentControl"
-        (change)="checkChange($event)"
-    >
-    </mat-checkbox>
-    <div ngClass="{{ disabled ? 'disabled' : '' }}">
-        {{ upgradeRule?.value }}
+<div class="flex flex-wrap sm:min-h-14 min-w-xs sm:w-[800px]!">
+    <div class="flex items-center sm:w-1/2">
+        <mat-checkbox
+            [formControl]="parentControl"
+            (change)="checkChange($event)"
+        >
+        </mat-checkbox>
+        <div ngClass="{{ disabled ? 'disabled' : '' }}">
+            {{ upgradeRule?.value }}
+        </div>
     </div>
-    <div class="ml-3">
+    <div class="flex w-full sm:w-1/2">
         <mat-form-field
             appearance="outline"
-            class="flex items-baseline"
+            class="sm:max-w-9/20"
             subscriptSizing="dynamic"
             [hidden]="!showOptions"
         >

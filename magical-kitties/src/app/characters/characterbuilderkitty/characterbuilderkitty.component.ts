@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterContentInit, Component, inject } from '@angular/core';
+import { AfterContentInit, Component, inject, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -11,7 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { MarkdownComponent } from "ngx-markdown";
-import { BehaviorSubject, combineLatest, Observable, pairwise, startWith, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, pairwise, startWith, Subscription, tap } from 'rxjs';
 import { getValue } from '../../login/utilities';
 import { AttributeOption } from '../../models/Characters/attributeoption.model';
 import { Character } from '../../models/Characters/character.model';
@@ -40,7 +40,7 @@ import { TalentComponent } from "./talent/talent.component";
     templateUrl: './characterbuilderkitty.component.html',
     styleUrl: './characterbuilderkitty.component.scss'
 })
-export class CharacterBuilderKittyComponent implements AfterContentInit {
+export class CharacterBuilderKittyComponent implements AfterContentInit, OnDestroy {
     private _snackBar: MatSnackBar = inject(MatSnackBar);
     characterApi: CharacterAPIService = inject(CharacterAPIService);
     dialog: MatDialog = inject(MatDialog);
@@ -80,6 +80,8 @@ export class CharacterBuilderKittyComponent implements AfterContentInit {
         block3owieLimit: new FormControl(""),
         block3treatsValue: new FormControl(""),
     });
+
+    editorSubscriptions: Subscription[] = [];
 
     get block1Bonus() {
         return this.selectedUpgrades.controls['block1bonusFeature'];
@@ -138,7 +140,7 @@ export class CharacterBuilderKittyComponent implements AfterContentInit {
     }
 
     constructor() {
-        combineLatest({
+        const characterSubscription = combineLatest({
             character: this.characterApi.character$,
             rules: this.characterApi.getRules()
         }).subscribe({
@@ -192,18 +194,12 @@ export class CharacterBuilderKittyComponent implements AfterContentInit {
                 }
             }
         });
+
+        this.editorSubscriptions.push(characterSubscription);
     }
 
     ngAfterContentInit(): void {
-        this.cuteControl.valueChanges.pipe(
-            startWith(this.cuteControl.value),
-            pairwise(),
-            tap(([previous, next]) => {
-                this.applyFilter(previous, next);
-            })
-        ).subscribe();
-
-        this.cunningControl.valueChanges.pipe(
+        const cunningControlSubscription = this.cunningControl.valueChanges.pipe(
             startWith(this.cunningControl.value),
             pairwise(),
             tap(([previous, next]) => {
@@ -211,13 +207,31 @@ export class CharacterBuilderKittyComponent implements AfterContentInit {
             })
         ).subscribe();
 
-        this.fierceControl.valueChanges.pipe(
+        const cuteControlSubscription = this.cuteControl.valueChanges.pipe(
+            startWith(this.cuteControl.value),
+            pairwise(),
+            tap(([previous, next]) => {
+                this.applyFilter(previous, next);
+            })
+        ).subscribe();
+
+        const fierceControlSubscription = this.fierceControl.valueChanges.pipe(
             startWith(this.fierceControl.value),
             pairwise(),
             tap(([previous, next]) => {
                 this.applyFilter(previous, next);
             })
         ).subscribe();
+
+        this.editorSubscriptions.push(...[cunningControlSubscription, cuteControlSubscription, fierceControlSubscription]);
+    }
+
+    ngOnDestroy(): void {
+        this.resetControls();
+
+        this.editorSubscriptions.forEach((subscription: Subscription) => {
+            subscription.unsubscribe();
+        });
     }
 
     getUpgradeFromCharacter(id?: string) {
@@ -260,6 +274,20 @@ export class CharacterBuilderKittyComponent implements AfterContentInit {
         });
     }
 
+    resetControls(): void {
+        this.cunningControl.reset();
+        this.cuteControl.reset();
+        this.fierceControl.reset();
+        this.flawControl.reset();
+        this.talentControl.reset();
+        this.magicalPowerControl.reset();
+
+        Object.keys(this.selectedUpgrades.controls).forEach((key: string) => {
+            const control = this.selectedUpgrades.controls[key];
+            control.reset();
+        })
+    }
+
     resetUpgrades(): void {
         Object.keys(this.selectedUpgrades.controls).forEach((key: string) => {
             const control = this.selectedUpgrades.controls[key];
@@ -298,7 +326,7 @@ export class CharacterBuilderKittyComponent implements AfterContentInit {
     getFlawDescription(id: number) {
         const flaw = this.characterApi.rules?.flaws.find(x => x.id === id);
 
-        return flaw?.description;
+        return flaw?.description ?? "";
     }
 
     getTalentDescription(id: number) {
@@ -402,7 +430,7 @@ export class CharacterBuilderKittyComponent implements AfterContentInit {
         if (event.value < this.character!.level) {
             const dialogData = { message: "You are about to lower your level. Any accrued XP for this level along with any relevant upgrade choices will be removed. Are you sure you want to do this?" };
 
-            this.dialog.open(ConfirmModalComponent, { data: dialogData }).afterClosed().subscribe({
+            const dialogSubscription = this.dialog.open(ConfirmModalComponent, { data: dialogData }).afterClosed().subscribe({
                 next: (result) => {
                     if (result) {
                         this.submitLevelUp(payload);
@@ -411,9 +439,11 @@ export class CharacterBuilderKittyComponent implements AfterContentInit {
                     }
                 },
                 error: (err) => {
-                    debugger;
+                    //debugger;
                 }
-            })
+            });
+
+            this.editorSubscriptions.push(dialogSubscription);
         } else {
             this.submitLevelUp(payload);
         }
@@ -497,7 +527,7 @@ export class CharacterBuilderKittyComponent implements AfterContentInit {
 
     private submitLevelUp(payload: UpdateCharacterAttributes) {
         this.characterApi.updateLevel(payload).subscribe({
-            next: (response) => {
+            next: (_) => {
                 let shouldResetElements = false;
 
                 // only do this on going down a level. At this point, the character isn't updated and is still the old value.

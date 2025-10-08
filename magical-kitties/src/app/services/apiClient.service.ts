@@ -41,7 +41,7 @@ export interface RequestConfig {
 @Injectable({ providedIn: 'root' })
 export class ApiClient implements HttpInterceptor {
     private loginApiUrl = `${environment.baseUrl}/auth/login`;
-    private logoutApiUrl = `${environment.baseUrl}/auth/logout/`;
+    private logoutApiUrl = `${environment.baseUrl}/auth/logout`;
     private refreshApiUrl = `${environment.baseUrl}/auth/token/refresh`;
     private _snackBar: MatSnackBar = inject(MatSnackBar);
 
@@ -49,10 +49,9 @@ export class ApiClient implements HttpInterceptor {
     private tokenRefreshedSource = new Subject<Account | undefined>();
     private tokenRefreshed$ = this.tokenRefreshedSource.asObservable();
     private tokenExpiredObserver: (() => void)[] = [];
+    private http: HttpClient = inject(HttpClient);
 
-    constructor(private http: HttpClient) {
-
-    }
+    constructor() {}
 
     public addTokenExpiredObserver(observer: () => void) {
         this.tokenExpiredObserver.push(observer);
@@ -72,6 +71,7 @@ export class ApiClient implements HttpInterceptor {
                 });
             }
         }
+
         return request;
     }
 
@@ -210,9 +210,11 @@ export class ApiClient implements HttpInterceptor {
     public getRefreshToken(): string | null {
         return localStorage.getItem(Constants.RefreshToken);
     }
-    private clearTokens() {
+    private clearTokens(): Observable<never> {
         localStorage.removeItem(Constants.JWTToken);
         localStorage.removeItem(Constants.RefreshToken);
+
+        return EMPTY;
     }
 
     login(loginInfo: LoginModel): Observable<Account> {
@@ -229,27 +231,26 @@ export class ApiClient implements HttpInterceptor {
         )
     }
 
-    logout(): Observable<never> {
+    logout(): Observable<void> {
         const refreshToken = this.getRefreshToken();
 
         if (refreshToken) {
-            this.http.post(
-                `${this.logoutApiUrl}/${refreshToken}`,
-                null,
-                { context: new HttpContext().set(TOKEN_CONTEXT, '<refresh_token>') }
-            ).subscribe({
-                next: () => {
+            return this.request({
+                method: HttpMethod.POST,
+                path: `${this.logoutApiUrl}/${refreshToken}`
+            }).pipe(
+                map(_ => {
                     this.clearTokens();
-                },
-                error: () => {
-                    this.clearTokens();
-                }
-            })
+                    return undefined;
+                }),
+                catchError(err => {
+                    console.log(err);
+                    return EMPTY;
+                })
+            )
         } else {
-            this.clearTokens();
+            return this.clearTokens();
         }
-
-        return EMPTY;
     }
 
     request<T>(config: RequestConfig): Observable<T> {
