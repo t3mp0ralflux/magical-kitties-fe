@@ -8,11 +8,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { Account } from '../../models/Account/account.model';
 import { LoginModel } from '../../models/Login/login.model';
 import { AuthService } from '../../services/authService.service';
+import { ErrorSnackbarComponent } from '../../sharedcomponents/error-snackbar/error-snackbar.component';
 
 @Component({
     selector: 'app-login',
@@ -34,8 +35,6 @@ export class LoginComponent {
     private fb: FormBuilder = inject(FormBuilder);
     private authService: AuthService = inject(AuthService);
     private router: Router = inject(Router);
-    private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
-
 
     constructor() {
         this.formGroup = this.fb.group({
@@ -51,11 +50,21 @@ export class LoginComponent {
     }
 
     openSnackBar(message: string, action: string) {
-        let snackBar: MatSnackBarRef<TextOnlySnackBar> = this._snackBar.open(message, action, {
-        });
+        const snackBar: MatSnackBarRef<ErrorSnackbarComponent> = this._snackBar.openFromComponent(ErrorSnackbarComponent, { data: message });
+
+        snackBar.onAction().subscribe({
+            next: (_: any) => {
+                this.login();
+            }
+        })
+    }
+
+    openError() {
+        const snackBar = this._snackBar.openFromComponent(ErrorSnackbarComponent, { data: "This is a test" });
+
         snackBar.onAction().subscribe({
             next: (thing: any) => {
-                this.login();
+                alert(thing);
             }
         })
     }

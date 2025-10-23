@@ -1,0 +1,90 @@
+<mat-card
+    class="min-w-full edit-background"
+    appearance="outlined"
+>
+    <mat-card-header
+        ><mat-icon
+            class="ml-auto"
+            (click)="removeProblem()"
+            >remove</mat-icon
+        ></mat-card-header
+    >
+    <mat-card-content class="flex flex-col">
+        <!-- Source, Emotion, Rank, Solved -->
+        <div class="flex">
+            <div class="flex flex-col max-w-1/2">
+                <mat-label>Source</mat-label>
+                <mat-form-field appearance="outline">
+                    <mat-select (selectionChange)="updateProblemSource($event)">
+                        <mat-option
+                            *ngFor="let source of characterAPI.rules?.problemSource"
+                            [value]="source.rollValue"
+                            >{{ source.problemSource }}</mat-option
+                        >
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div
+                class="flex flex-col ml-1 max-w-1/2"
+                *ngIf="selectedProblemSource === 99"
+            >
+                <mat-label>Custom Source</mat-label>
+                <mat-form-field appearance="outline">
+                    <input
+                        matInput
+                        (blur)="customSourceUpdated(getValue($event))"
+                    />
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="flex mt-1">
+            <div class="flex flex-col max-w-1/2">
+                <mat-label>Emotion</mat-label>
+                <mat-form-field appearance="outline">
+                    <mat-select (selectionChange)="updateProblemEmotion($event)">
+                        <mat-option
+                            *ngFor="let source of characterAPI.rules?.emotion"
+                            [value]="source.rollValue"
+                            >{{ source.emotionSource }}</mat-option
+                        >
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div
+                class="flex flex-col ml-1 max-w-1/2"
+                *ngIf="selectedProblemEmotion === '99'"
+            >
+                <mat-label>Custom Emotion</mat-label>
+                <mat-form-field appearance="outline">
+                    <input
+                        matInput
+                        (blur)="customEmotionUpdated(getValue($event))"
+                    />
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="flex mt-1">
+            <div class="flex flex-col max-w-1/2">
+                <mat-label>Rank</mat-label>
+                <mat-form-field appearance="outline">
+                    <input
+                        matInput
+                        type="number"
+                        min="0"
+                        max="99"
+                        (blur)="updateRank(getValue($event))"
+                    />
+                </mat-form-field>
+            </div>
+            <div class="flex flex-col ml-1 max-w-1/2">
+                <mat-label>Solved</mat-label>
+                <mat-form-field appearance="outline">
+                    <mat-select (selectionChange)="updateSolved($event)">
+                        <mat-option value="false">No</mat-option>
+                        <mat-option value="true">Yes</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

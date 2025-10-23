@@ -1,0 +1,33 @@
+<!-- Yes, a lot of the CSS was snagged from Material, but I didn't want to have to re-create it. -->
+
+<div class="flex">
+    <div
+        matsnackbarlabel=""
+        class="mat-mdc-snack-bar-label mdc-snackbar__label"
+    >
+        {{ data }}
+    </div>
+    <div
+        matsnackbaractions=""
+        class="mat-mdc-snack-bar-actions mdc-snackbar__actions"
+    >
+        <button
+            mat-button=""
+            matsnackbaraction=""
+            class="mat-mdc-snack-bar-action mdc-snackbar__action mdc-button mat-mdc-button mat-unthemed mat-mdc-button-base"
+            mat-ripple-loader-class-name="mat-mdc-button-ripple"
+            (click)="doAction()"
+        >
+            <span class="mat-mdc-button-persistent-ripple mdc-button__ripple"></span><span class="mdc-button__label"> Retry </span><span class="mat-focus-indicator"></span><span class="mat-mdc-button-touch-target"></span><span class="mat-ripple mat-mdc-button-ripple"></span>
+        </button>
+        <button
+            mat-button=""
+            matsnackbaraction=""
+            class="mat-mdc-snack-bar-action mdc-snackbar__action mdc-button mat-mdc-button mat-unthemed mat-mdc-button-base ml-1"
+            mat-ripple-loader-class-name="mat-mdc-button-ripple"
+            (click)="close()"
+        >
+            <span class="mat-mdc-button-persistent-ripple mdc-button__ripple"></span><span class="mdc-button__label"> Close </span><span class="mat-focus-indicator"></span><span class="mat-mdc-button-touch-target"></span><span class="mat-ripple mat-mdc-button-ripple"></span>
+        </button>
+    </div>
+</div>

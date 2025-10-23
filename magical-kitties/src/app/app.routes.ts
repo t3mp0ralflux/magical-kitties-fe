@@ -2,7 +2,6 @@ import { Routes } from '@angular/router';
 import { BuilderlayoutComponent } from './characters/builderlayout/builderlayout.component';
 import { CharacterBuilderBackgroundComponent } from './characters/characterbuilderbackground/characterbuilderbackground.component';
 import { CharacterBuilderHomeComponent } from './characters/characterbuilderhome/characterbuilderhome.component';
-import { CharacterBuilderHumanComponent } from './characters/characterbuilderhuman/characterbuilderhuman.component';
 import { CharacterBuilderKittyComponent } from './characters/characterbuilderkitty/characterbuilderkitty.component';
 import { DisplayCharacterComponent } from './characters/displaycharacter/displaycharacter.component';
 import { ViewCharactersComponent } from './characters/viewcharacters/viewcharacters.component';
@@ -57,7 +56,6 @@ export const routes: Routes = [
             { path: "", component: CharacterBuilderHomeComponent },
             { path: "kitty", component: CharacterBuilderKittyComponent },
             { path: "background", component: CharacterBuilderBackgroundComponent },
-            { path: "human", component: CharacterBuilderHumanComponent }
         ]
     },
     {
