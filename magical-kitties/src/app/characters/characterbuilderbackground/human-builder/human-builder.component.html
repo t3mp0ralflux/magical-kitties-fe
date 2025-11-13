@@ -11,7 +11,7 @@
             >
                 <input
                     matInput
-                    [value]="human.name"
+                    [value]="human?.name"
                     (blur)="updateName(getValue($event))"
                 />
             </mat-form-field>
@@ -26,6 +26,7 @@
             <mat-form-field appearance="outline">
                 <textarea
                     matInput
+                    [value]="human?.description"
                     rows="3"
                     (blur)="updateDescription(getValue($event))"
                 ></textarea>
@@ -33,12 +34,20 @@
         </div>
         <div class="flex flex-col">
             <mat-label>Problems</mat-label>
-            <div *ngFor="let problem of human.problems">
-                <app-problem-builder
-                    [problem]="problem"
-                    (problemRemoved)="removeProblem($event)"
-                ></app-problem-builder>
-            </div>
+            <mat-accordion multi="true">
+                <mat-expansion-panel
+                    *ngFor="let problem of human?.problems"
+                    class="mt-1 accordion-color"
+                >
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>Source: {{ problem.source }} Solved: {{ problem.solved }}</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <app-problem-builder
+                        [problem]="problem"
+                        (problemRemoved)="removeProblem($event)"
+                    ></app-problem-builder>
+                </mat-expansion-panel>
+            </mat-accordion>
             <button
                 mat-flat-button
                 matPrefix

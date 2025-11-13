@@ -59,16 +59,6 @@ export class LoginComponent {
         })
     }
 
-    openError() {
-        const snackBar = this._snackBar.openFromComponent(ErrorSnackbarComponent, { data: "This is a test" });
-
-        snackBar.onAction().subscribe({
-            next: (thing: any) => {
-                alert(thing);
-            }
-        })
-    }
-
     login(): void {
         this.formSubmitting = true;
         this.loginError = false;

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterContentInit, Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -17,7 +17,7 @@ import { CharacterAPIService } from '../../../services/characters.service';
     templateUrl: './problem-builder.component.html',
     styleUrl: './problem-builder.component.scss'
 })
-export class ProblemBuilderComponent implements AfterContentInit {
+export class ProblemBuilderComponent {
     @Input() problem!: Problem;
     @Output() problemRemoved = new EventEmitter<string>();
     characterAPI: CharacterAPIService = inject(CharacterAPIService);
@@ -30,9 +30,6 @@ export class ProblemBuilderComponent implements AfterContentInit {
     getValue = getValue;
 
     constructor() {}
-    ngAfterContentInit(): void {
-
-    }
 
     updateProblemSource(change: MatSelectChange): void {
         this.selectedProblemSource = change.value;

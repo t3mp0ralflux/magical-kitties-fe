@@ -23,7 +23,6 @@ import { CharacterAPIService } from '../services/characters.service';
 })
 export class BuilderlayoutComponent extends LayoutComponent implements OnDestroy {
     router: Router = inject(Router);
-    //route: ActivatedRoute = inject(ActivatedRoute);
     characterApi: CharacterAPIService = inject(CharacterAPIService);
     characterId: string;
     nameInput: FormControl = new FormControl("", [Validators.required]);

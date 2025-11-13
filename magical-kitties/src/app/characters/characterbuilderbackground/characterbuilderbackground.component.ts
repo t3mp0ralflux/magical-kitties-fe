@@ -1,62 +1,95 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { AfterContentInit, Component, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from "@angular/material/button";
+import { MatExpansionModule } from "@angular/material/expansion";
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { getValue } from '../../login/utilities';
 import { Character } from '../../models/Characters/character.model';
+import { DescriptionOption } from '../../models/Characters/descriptionoption.model';
+import { DescriptionUpdateRequest } from '../../models/Characters/descriptionupdaterequest.model';
 import { Human } from '../../models/Characters/human.model';
+import { CharacterAPIService } from '../services/characters.service';
+import { HumanAPIService } from '../services/humans.service';
 import { HumanBuilderComponent } from "./human-builder/human-builder.component";
 
 @Component({
     selector: 'app-characterbuilderbackground',
-    imports: [CommonModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatButtonModule, MatIconModule, HumanBuilderComponent],
+    imports: [CommonModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatButtonModule, MatIconModule, HumanBuilderComponent, MatExpansionModule],
     templateUrl: './characterbuilderbackground.component.html',
     styleUrl: './characterbuilderbackground.component.scss'
 })
-export class CharacterBuilderBackgroundComponent {
+export class CharacterBuilderBackgroundComponent implements AfterContentInit {
     hometownControl: FormControl = new FormControl();
     kittyDescriptionControl: FormControl = new FormControl();
-    character: Character;
-    humanCount: number = 0;
+    characterAPI: CharacterAPIService = inject(CharacterAPIService);
+    humanAPI: HumanAPIService = inject(HumanAPIService);
+    character?: Character;
+    getValue = getValue;
 
-    constructor() {
-        // TODO: remove before flight
-        this.character = new Character();
-        this.character.id = "12345";
+    constructor() {}
 
-        const tempHuman = new Human();
-        tempHuman.characterId = this.character.id;
-        tempHuman.id = "TestHuman";
-        tempHuman.name = "Biscuit";
-        tempHuman.problems = [];
-
-        this.character.human = [tempHuman];
+    ngAfterContentInit(): void {
+        this.characterAPI.character$.subscribe({
+            next: (character: Character | undefined) => {
+                if (character) {
+                    this.character = character
+                }
+            }
+        });
     }
 
-    updateHometown(): void {
-        console.log("hometown updated");
+    updateHometown(hometown: string): void {
+        const payload = new DescriptionUpdateRequest({
+            characterId: this.character!.id,
+            hometown: hometown
+        });
+
+        this.characterAPI.updateDescription(DescriptionOption.hometown, payload).subscribe({
+            next: (_: string) => {
+                this.character!.hometown = hometown;
+            }
+        });
     }
 
-    updateKittyDescription(): void {
-        console.log("kitty description updated");
+    updateKittyDescription(description: string): void {
+        const payload = new DescriptionUpdateRequest({
+            characterId: this.character!.id,
+            description: description
+        });
+
+        this.characterAPI.updateDescription(DescriptionOption.description, payload).subscribe({
+            next: (_: string) => {
+                this.character!.description = description;
+            }
+        })
     }
 
     addNewHuman(): void {
-        // TODO: call the API and add human, then take the result and add to current character.
-        const newHuman = new Human();
-        const number = Math.floor(Math.random() * 100);
-        newHuman.name = `Human ${number}`;
-        this.character.human.push(newHuman);
+        this.characterAPI.addHuman(this.character!.id).subscribe({
+            next: (response: HttpResponse<Human>) => {
+                this.character!.humans ?? [];
+
+                this.character!.humans.push(response.body!);
+            }
+        });
     }
 
-    removeHuman(id: any) {
-        // TODO: call the API and remove, then remove locally
-        const foundHumanIndex = this.character.human.findIndex(x => x.id === id);
+    removeHuman(id: string): void {
+        this.characterAPI.removeHuman(this.character!.id, id).subscribe({
+            next: (_: any) => {
+                const foundHumanIndex = this.character!.humans.findIndex(x => x.id === id);
 
-        if (foundHumanIndex > -1) {
-            this.character.human.splice(foundHumanIndex, 1);
-        }
+                if (foundHumanIndex >= 0) {
+                    this.character!.humans.splice(foundHumanIndex, 1);
+                }
+            },
+            error: (err: any) => {
+                debugger;
+            }
+        })
     }
 }

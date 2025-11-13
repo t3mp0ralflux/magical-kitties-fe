@@ -6,6 +6,8 @@ import { AttributeOption } from "../../models/Characters/attributeoption.model";
 import { Character } from "../../models/Characters/character.model";
 import { CharactersResponse } from "../../models/Characters/charactersresponse.model";
 import { DescriptionOption } from "../../models/Characters/descriptionoption.model";
+import { DescriptionUpdateRequest } from "../../models/Characters/descriptionupdaterequest.model";
+import { Human } from "../../models/Characters/human.model";
 import { UpdateCharacterAttributes } from "../../models/Characters/updateacharacterattributes.model";
 import { UpdateCharacterDescriptors } from "../../models/Characters/updatecharacterdescriptors.model";
 import { UpgradeRemoveRequest } from "../../models/Characters/upgraderemoverequest.model";
@@ -181,7 +183,7 @@ export class CharacterAPIService {
         });
     }
 
-    upsertUpgrade(characterId: string, upgrade: UpsertUpgradeRequest) {
+    upsertUpgrade(characterId: string, upgrade: UpsertUpgradeRequest): Observable<string> {
         return this.apiClient.request<string>({
             path: `${this.baseUrl}/characters/${characterId}/upgrade/upsert`,
             method: HttpMethod.PUT,
@@ -191,13 +193,41 @@ export class CharacterAPIService {
         });
     }
 
-    removeUpgrade(characterId: string, upgrade: UpgradeRemoveRequest) {
+    removeUpgrade(characterId: string, upgrade: UpgradeRemoveRequest): Observable<string> {
         return this.apiClient.request<string>({
             path: `${this.baseUrl}/characters/${characterId}/upgrade/remove`,
             method: HttpMethod.PUT,
             body: upgrade,
             headerResponse: true,
             responseType: "text"
+        });
+    }
+
+    updateDescription(option: DescriptionOption, payload: DescriptionUpdateRequest): Observable<string> {
+        return this.apiClient.request<string>({
+            path: `${this.baseUrl}/characters/description/${option}`,
+            method: HttpMethod.PUT,
+            body: payload,
+            headerResponse: true,
+            responseType: "text"
+        });
+    }
+
+    addHuman(characterId: string): Observable<HttpResponse<Human>>;
+    addHuman(characterId: string): Observable<HttpErrorResponse>;
+    addHuman(characterId: string): Observable<HttpResponse<Human>> | Observable<HttpErrorResponse> {
+        return this.apiClient.request<HttpResponse<Human>>({
+            path: `${this.baseUrl}/humans/${characterId}`,
+            method: HttpMethod.POST,
+            headerResponse: true,
+        });
+    }
+
+    removeHuman(characterId: string, humanId: string): Observable<unknown> {
+        return this.apiClient.request({
+            path: `${this.baseUrl}/humans/${characterId}/human/${humanId}`,
+            method: HttpMethod.DELETE,
+            responseType: "application/json"
         });
     }
 }

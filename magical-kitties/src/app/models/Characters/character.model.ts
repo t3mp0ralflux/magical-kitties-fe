@@ -12,8 +12,8 @@ export class Character {
     flaw?: Flaw;
     talents: Talent[] = [];
     magicalPowers: MagicalPower[] = [];
-    hometown: string = "";
-    human: Human[] = [];
+    hometown?: string = "";
+    humans: Human[] = [];
     level!: number;
     currentXp!: number;
     cunning!: number;

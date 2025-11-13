@@ -283,15 +283,14 @@ export class ApiClient implements HttpInterceptor {
             Object.assign(options, { responseType: "json" });
         }
 
-        if (config.formData == undefined && config.body == undefined) {
-            return this.http.request<T>(config.method, config.path, options);
-        } else {
+        if (config.body !== undefined || config.formData !== undefined) {
             if (config.body != undefined) {
                 Object.assign(options, { body: config.body });
             } else if (config.formData != undefined) {
                 Object.assign(options, { body: config.formData });
             }
-            return this.http.request<T>(config.method, config.path, options);
         }
+
+        return this.http.request<T>(config.method, config.path, options);
     }
 }
