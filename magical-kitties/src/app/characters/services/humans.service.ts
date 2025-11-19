@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { environment } from "../../../environments/environment";
 import { Problem } from "../../models/Characters/problem.model";
 import { HumanUpdateRequest } from "../../models/Humans/humanupdaterequest.model";
+import { ProblemUpdateRequest } from "../../models/Humans/problemupdaterequest.model";
 import { ApiClient, HttpMethod } from "../../services/apiClient.service";
 
 @Injectable({ providedIn: "root" })
@@ -41,6 +42,18 @@ export class HumanAPIService {
         return this.apiClient.request<string>({
             path: `${this.baseUrl}/humans/${characterId}/human/${humanId}/problem/${problemId}`,
             method: HttpMethod.DELETE,
+            headerResponse: true,
+            responseType: "text"
+        });
+    }
+
+    updateProblem(request: ProblemUpdateRequest): Observable<string>;
+    updateProblem(request: ProblemUpdateRequest): Observable<string>;
+    updateProblem(request: ProblemUpdateRequest): Observable<string> | Observable<HttpErrorResponse> {
+        return this.apiClient.request<string>({
+            path: `${this.baseUrl}/humans/problem/${request.problemOption}`,
+            method: HttpMethod.PUT,
+            body: request,
             headerResponse: true,
             responseType: "text"
         });

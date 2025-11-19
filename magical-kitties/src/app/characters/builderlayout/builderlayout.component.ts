@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { Router, RouterEvent, RouterOutlet } from '@angular/router';
-import { combineLatest, filter, Subscription } from 'rxjs';
+import { filter, forkJoin, Subscription } from 'rxjs';
 import { FooterComponent } from '../../layout/footer/footer.component';
 import { HeaderComponent } from '../../layout/header/header.component';
 import { LayoutComponent } from '../../layout/layout.component';
@@ -34,12 +34,11 @@ export class BuilderlayoutComponent extends LayoutComponent implements OnDestroy
         super();
         this.characterId = this.route.snapshot.params["id"];
 
-        this.apiSubscription = combineLatest({
+        this.apiSubscription = forkJoin({
             character: this.characterApi.getCharacterInformation(this.characterId),
             rules: this.characterApi.getRules()
         }).subscribe({
             next: ({ character }) => {
-                this.characterApi.addCharacter(character);
                 this.nameInput.setValue(character.name);
             }
         });
@@ -60,8 +59,11 @@ export class BuilderlayoutComponent extends LayoutComponent implements OnDestroy
             }
         })
     }
+
     ngOnDestroy(): void {
-        throw new Error('Method not implemented.');
+        if (this.apiSubscription) {
+            this.apiSubscription.unsubscribe();
+        }
     }
 
     updateName(): void {

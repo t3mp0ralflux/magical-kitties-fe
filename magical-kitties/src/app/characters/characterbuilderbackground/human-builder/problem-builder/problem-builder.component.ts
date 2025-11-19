@@ -9,7 +9,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { getValue } from '../../../../login/utilities';
 import { Problem } from '../../../../models/Characters/problem.model';
+import { ProblemOption } from '../../../../models/Humans/problemoption.model';
+import { ProblemUpdateRequest } from '../../../../models/Humans/problemupdaterequest.model';
+import { ProblemSource } from '../../../../models/System/problemsource.model';
 import { CharacterAPIService } from '../../../services/characters.service';
+import { HumanAPIService } from '../../../services/humans.service';
 
 @Component({
     selector: 'app-problem-builder',
@@ -19,8 +23,10 @@ import { CharacterAPIService } from '../../../services/characters.service';
 })
 export class ProblemBuilderComponent {
     @Input() problem!: Problem;
+    @Input() characterId?: string;
     @Output() problemRemoved = new EventEmitter<string>();
     characterAPI: CharacterAPIService = inject(CharacterAPIService);
+    humanAPI: HumanAPIService = inject(HumanAPIService);
     selectedProblemSource: number = -1;
     selectedProblemEmotion: string = "-1";
     customProblemSource: string = "";
@@ -31,24 +37,58 @@ export class ProblemBuilderComponent {
 
     constructor() {}
 
+    getProblemValue(value: string, problemSources?: ProblemSource[]): number {
+        if (!problemSources) {
+            return -1;
+        }
+
+        const foundSource = problemSources.find(x => x.problemSource === value);
+
+        if (foundSource) {
+            this.selectedProblemSource = foundSource.rollValue;
+        } else {
+            this.selectedProblemSource = 99; // custom
+        }
+
+        return this.selectedProblemSource;
+    }
+
     updateProblemSource(change: MatSelectChange): void {
         this.selectedProblemSource = change.value;
 
-        if (this.selectedProblemSource === 99) {
-            // TODO: submit custom problem source text
-            console.log("Source updated to custom");
-        } else {
-            // TODO: submit pre-made problem source text.
-            this.customProblemSource = ""; // empty to prevent leftovers
-            const foundSource = this.characterAPI.rules?.problemSource.find(x => x.rollValue === change.value);
+        let sourceText = "";
+
+        if (this.selectedProblemSource !== 99) {
+            const foundSource = this.characterAPI.rules?.problemSource.find(x => x.rollValue === this.selectedProblemSource);
             if (foundSource) {
-                console.log(`Source updated to ${foundSource.problemSource}`);
+                sourceText = foundSource.problemSource;
             }
         }
+
+        this.sendProblemUpdate(sourceText);
     }
 
-    customSourceUpdated(source: string) {
-        console.log(`Custom source is now ${source}`);
+    customSourceUpdated(customSource: string): void {
+        this.selectedProblemSource = 99; // jic
+
+        this.sendProblemUpdate(customSource);
+    }
+
+    sendProblemUpdate(source: string): void {
+        const request = new ProblemUpdateRequest({
+            problemOption: ProblemOption.source,
+            characterId: this.characterId,
+            humanId: this.problem.humanId,
+            problemId: this.problem.id,
+            source: source
+        });
+
+        this.humanAPI.updateProblem(request).subscribe({
+            next: (_: string) => {
+                this.problem.source = source;
+            }
+        });
+
     }
 
     updateProblemEmotion(change: MatSelectChange): void {

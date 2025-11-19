@@ -17,7 +17,10 @@
                     appearance="outline"
                     subscriptSizing="dynamic"
                 >
-                    <mat-select (selectionChange)="updateProblemSource($event)">
+                    <mat-select
+                        (selectionChange)="updateProblemSource($event)"
+                        [value]="getProblemValue(problem.source, characterAPI.rules?.problemSource)"
+                    >
                         <mat-option
                             *ngFor="let source of characterAPI.rules?.problemSource"
                             [value]="source.rollValue"
@@ -30,13 +33,14 @@
                 class="flex flex-col ml-1 max-w-1/2"
                 *ngIf="selectedProblemSource === 99"
             >
-                <mat-label class="text-sm">Custom Source</mat-label>
+                <mat-label class="text-xs pb-[2px]">Custom Source</mat-label>
                 <mat-form-field
                     appearance="outline"
                     subscriptSizing="dynamic"
                 >
                     <input
                         matInput
+                        [value]="problem.source"
                         (blur)="customSourceUpdated(getValue($event))"
                     />
                 </mat-form-field>
