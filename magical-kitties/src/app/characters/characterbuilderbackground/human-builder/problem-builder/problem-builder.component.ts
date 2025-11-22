@@ -11,6 +11,7 @@ import { getValue } from '../../../../login/utilities';
 import { Problem } from '../../../../models/Characters/problem.model';
 import { ProblemOption } from '../../../../models/Humans/problemoption.model';
 import { ProblemUpdateRequest } from '../../../../models/Humans/problemupdaterequest.model';
+import { Emotion } from '../../../../models/System/emotion.model';
 import { ProblemSource } from '../../../../models/System/problemsource.model';
 import { CharacterAPIService } from '../../../services/characters.service';
 import { HumanAPIService } from '../../../services/humans.service';
@@ -53,6 +54,22 @@ export class ProblemBuilderComponent {
         return this.selectedProblemSource;
     }
 
+    getEmotionValue(value: string, problemEmotions?: Emotion[]): string {
+        if (!problemEmotions) {
+            return "-1";
+        }
+
+        const foundEmotion = problemEmotions.find(x => x.emotionSource === value);
+
+        if (foundEmotion) {
+            this.selectedProblemEmotion = foundEmotion.rollValue;
+        } else {
+            this.selectedProblemEmotion = "99" // custom
+        }
+
+        return this.selectedProblemEmotion;
+    }
+
     updateProblemSource(change: MatSelectChange): void {
         this.selectedProblemSource = change.value;
 
@@ -88,26 +105,43 @@ export class ProblemBuilderComponent {
                 this.problem.source = source;
             }
         });
-
     }
 
     updateProblemEmotion(change: MatSelectChange): void {
         this.selectedProblemEmotion = change.value.toString();
-        if (this.selectedProblemEmotion === "99") {
-            // TODO: submit custom problem emotion text
-            console.log("Emotion updated to custom");
-        } else {
-            // TODO: submit pre-made problem emotion text.
-            this.customProblemEmotion = ""; // empty to prevent leftovers
-            const foundEmotion = this.characterAPI.rules?.emotion.find(x => x.rollValue === change.value);
+
+        let emotionText = "";
+
+        if (this.selectedProblemEmotion !== "99") {
+            const foundEmotion = this.characterAPI.rules?.emotion.find(x => x.rollValue === this.selectedProblemEmotion);
             if (foundEmotion) {
-                console.log(`Emotion updated to ${foundEmotion.emotionSource}`);
+                emotionText = foundEmotion.emotionSource;
             }
         }
+
+        this.sendEmotionUpdate(emotionText);
     }
 
     customEmotionUpdated(source: string) {
-        console.log(`Custom emotion is now ${source}`);
+        this.selectedProblemEmotion = "99" // jic
+
+        this.sendEmotionUpdate(source);
+    }
+
+    sendEmotionUpdate(emotion: string): void {
+        const request = new ProblemUpdateRequest({
+            problemOption: ProblemOption.emotion,
+            characterId: this.characterId,
+            humanId: this.problem.humanId,
+            problemId: this.problem.id,
+            emotion: emotion
+        });
+
+        this.humanAPI.updateProblem(request).subscribe({
+            next: (_: string) => {
+                this.problem.emotion = emotion;
+            }
+        });
     }
 
     removeProblem(): void {
@@ -115,15 +149,38 @@ export class ProblemBuilderComponent {
     }
 
     updateRank(rank: string) {
-        // TODO: api
         const numberRank = Number(rank);
-        console.log(`Rank is now ${numberRank}`);
-        this.problem.rank = numberRank;
+
+        const request = new ProblemUpdateRequest({
+            problemOption: ProblemOption.rank,
+            characterId: this.characterId,
+            humanId: this.problem.humanId,
+            problemId: this.problem.id,
+            rank: numberRank
+        });
+
+        this.humanAPI.updateProblem(request).subscribe({
+            next: (_: string) => {
+                this.problem.rank = numberRank;
+            }
+        });
     }
 
     updateSolved(change: MatSelectChange): void {
-        // TODO: api
-        console.log(`Problem solved: ${change.value}`);
-        this.problem.solved = change.value;
+        const booleanValue = JSON.parse(change.value);
+
+        const request = new ProblemUpdateRequest({
+            problemOption: ProblemOption.solved,
+            characterId: this.characterId,
+            humanId: this.problem.humanId,
+            problemId: this.problem.id,
+            solved: booleanValue
+        });
+
+        this.humanAPI.updateProblem(request).subscribe({
+            next: (_: string) => {
+                this.problem.solved = booleanValue;
+            }
+        });
     }
 }

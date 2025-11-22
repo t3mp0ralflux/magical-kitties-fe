@@ -1,4 +1,4 @@
 export interface Emotion {
-    rollValue: number;
+    rollValue: string;
     emotionSource: string;
 }

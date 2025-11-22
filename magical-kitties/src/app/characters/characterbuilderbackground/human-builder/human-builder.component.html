@@ -40,7 +40,7 @@
                     class="mt-1 accordion-color"
                 >
                     <mat-expansion-panel-header>
-                        <mat-panel-title>Source: {{ problem.source }} Solved: {{ problem.solved }}</mat-panel-title>
+                        <mat-panel-title>Source: {{ problem.source }} Solved: {{ problem.solved ? "Yes" : "No" }}</mat-panel-title>
                     </mat-expansion-panel-header>
                     <app-problem-builder
                         [problem]="problem"
