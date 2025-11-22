@@ -7,7 +7,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { Router, RouterEvent, RouterOutlet } from '@angular/router';
-import { filter, forkJoin, Subscription } from 'rxjs';
+import { BehaviorSubject, filter, forkJoin, Observable, Subscription } from 'rxjs';
+import { Constants } from '../../Constants';
 import { FooterComponent } from '../../layout/footer/footer.component';
 import { HeaderComponent } from '../../layout/header/header.component';
 import { LayoutComponent } from '../../layout/layout.component';
@@ -24,11 +25,14 @@ import { CharacterAPIService } from '../services/characters.service';
 export class BuilderlayoutComponent extends LayoutComponent implements OnDestroy {
     router: Router = inject(Router);
     characterApi: CharacterAPIService = inject(CharacterAPIService);
+    Constants = Constants;
     characterId: string;
     nameInput: FormControl = new FormControl("", [Validators.required]);
     currentPage?: string;
     character?: Character;
     apiSubscription!: Subscription;
+    nameMaxCountSubject: BehaviorSubject<number> = new BehaviorSubject(0);
+    remainingNameCharacters$: Observable<number> = this.nameMaxCountSubject.asObservable();
 
     constructor() {
         super();
@@ -40,6 +44,8 @@ export class BuilderlayoutComponent extends LayoutComponent implements OnDestroy
         }).subscribe({
             next: ({ character }) => {
                 this.nameInput.setValue(character.name);
+
+                this.updateMaxName();
             }
         });
 
@@ -64,6 +70,19 @@ export class BuilderlayoutComponent extends LayoutComponent implements OnDestroy
         if (this.apiSubscription) {
             this.apiSubscription.unsubscribe();
         }
+    }
+
+    updateMaxName(): void {
+        if (!this.character) {
+            return;
+        }
+
+        let maxCharacters = Constants.MaxCharactersMediumInput;
+        if (this.character.name) {
+            maxCharacters = maxCharacters - this.character.name.length;
+        }
+
+        this.nameMaxCountSubject.next(maxCharacters);
     }
 
     updateName(): void {

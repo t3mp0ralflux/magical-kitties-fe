@@ -1,12 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { AfterContentInit, Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { Constants } from '../../../../Constants';
 import { getValue } from '../../../../login/utilities';
 import { Problem } from '../../../../models/Characters/problem.model';
 import { ProblemOption } from '../../../../models/Humans/problemoption.model';
@@ -18,11 +20,11 @@ import { HumanAPIService } from '../../../services/humans.service';
 
 @Component({
     selector: 'app-problem-builder',
-    imports: [CommonModule, MatButtonModule, MatSelectModule, MatInputModule, MatFormFieldModule, MatIconModule, ReactiveFormsModule, MatCardModule],
+    imports: [CommonModule, MatButtonModule, MatSelectModule, MatInputModule, MatFormFieldModule, MatIconModule, FormsModule, ReactiveFormsModule, MatCardModule],
     templateUrl: './problem-builder.component.html',
     styleUrl: './problem-builder.component.scss'
 })
-export class ProblemBuilderComponent {
+export class ProblemBuilderComponent implements AfterContentInit {
     @Input() problem!: Problem;
     @Input() characterId?: string;
     @Output() problemRemoved = new EventEmitter<string>();
@@ -34,9 +36,45 @@ export class ProblemBuilderComponent {
     customProblemEmotion: string = "";
     problemRank: number = 0;
     solved: boolean = false;
+    Constants = Constants;
     getValue = getValue;
+    sourceMaxCountSubject: BehaviorSubject<number> = new BehaviorSubject(0);
+    remainingSourceCharacters$: Observable<number> = this.sourceMaxCountSubject.asObservable();
+    emotionMaxCountSubject: BehaviorSubject<number> = new BehaviorSubject(0);
+    remainingEmotionCharacters$: Observable<number> = this.emotionMaxCountSubject.asObservable();
 
     constructor() {}
+
+    ngAfterContentInit(): void {
+        this.updateMaxSource();
+        this.updateMaxEmotion();
+    }
+
+    updateMaxSource(): void {
+        if (!this.problem) {
+            return;
+        }
+
+        let maxCharacters = Constants.MaxCharactersSmallInput;
+        if (this.problem.source) {
+            maxCharacters = maxCharacters - this.problem.source.length;
+        }
+
+        this.sourceMaxCountSubject.next(maxCharacters);
+    }
+
+    updateMaxEmotion(): void {
+        if (!this.problem) {
+            return;
+        }
+
+        let maxCharacters = Constants.MaxCharactersSmallInput;
+        if (this.problem.emotion) {
+            maxCharacters = maxCharacters - this.problem.emotion.length;
+        }
+
+        this.emotionMaxCountSubject.next(maxCharacters);
+    }
 
     getProblemValue(value: string, problemSources?: ProblemSource[]): number {
         if (!problemSources) {

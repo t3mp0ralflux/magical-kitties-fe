@@ -1,12 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
 import { AfterContentInit, Component, inject } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from "@angular/material/button";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { BehaviorSubject } from 'rxjs';
+import { Constants } from '../../Constants';
 import { getValue } from '../../login/utilities';
 import { Character } from '../../models/Characters/character.model';
 import { DescriptionOption } from '../../models/Characters/descriptionoption.model';
@@ -18,7 +20,7 @@ import { HumanBuilderComponent } from "./human-builder/human-builder.component";
 
 @Component({
     selector: 'app-characterbuilderbackground',
-    imports: [CommonModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatButtonModule, MatIconModule, HumanBuilderComponent, MatExpansionModule],
+    imports: [CommonModule, MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule, MatButtonModule, MatIconModule, HumanBuilderComponent, MatExpansionModule],
     templateUrl: './characterbuilderbackground.component.html',
     styleUrl: './characterbuilderbackground.component.scss'
 })
@@ -29,6 +31,11 @@ export class CharacterBuilderBackgroundComponent implements AfterContentInit {
     humanAPI: HumanAPIService = inject(HumanAPIService);
     character?: Character;
     getValue = getValue;
+    Constants = Constants;
+    descriptionMaxCountSubject = new BehaviorSubject(0);
+    remainingDescriptionCharacters$ = this.descriptionMaxCountSubject.asObservable();
+    hometownMaxCountSubject = new BehaviorSubject(0);
+    remainingHometownCharacters$ = this.hometownMaxCountSubject.asObservable();
 
     constructor() {}
 
@@ -38,8 +45,37 @@ export class CharacterBuilderBackgroundComponent implements AfterContentInit {
                 if (character) {
                     this.character = character
                 }
+
+                this.updateMaxDescription();
+                this.updateMaxHometown();
             }
         });
+    }
+
+    updateMaxDescription(): void {
+        if (!this.character) {
+            return;
+        }
+
+        let maxCharacters = Constants.MaxCharactersBigInput;
+        if (this.character.description) {
+            maxCharacters = maxCharacters - this.character.description.length;
+        }
+
+        this.descriptionMaxCountSubject.next(maxCharacters);
+    }
+
+    updateMaxHometown(): void {
+        if (!this.character) {
+            return;
+        }
+
+        let maxCharacters = Constants.MaxCharactersMediumInput;
+        if (this.character.hometown) {
+            maxCharacters = maxCharacters - this.character.hometown.length;
+        }
+
+        this.hometownMaxCountSubject.next(maxCharacters);
     }
 
     updateHometown(hometown: string): void {

@@ -10,7 +10,7 @@
         ></mat-card-header
     >
     <mat-card-content class="flex flex-col">
-        <div class="flex items-baseline">
+        <div class="flex items-baseline sm:justify-around">
             <div class="flex flex-col max-w-1/2">
                 <mat-label>Source</mat-label>
                 <mat-form-field
@@ -33,23 +33,29 @@
                 class="flex flex-col ml-1 max-w-1/2"
                 *ngIf="selectedProblemSource === 99"
             >
-                <mat-label class="text-xs pb-[2px]">Custom Source</mat-label>
+                <mat-label class="text-xs pb-[2px] sm:text-base sm:pb-0">Custom Source</mat-label>
                 <mat-form-field
                     appearance="outline"
-                    subscriptSizing="dynamic"
+                    *ngFor="let count of [(remainingSourceCharacters$ | async)!.valueOf()]"
+                    hintLabel="{{count <= Constants.MaxCharactersSmallInput/2 ? `Characters remaining: ${count}` : '' }}"
                 >
                     <input
                         matInput
-                        [value]="problem.source"
+                        maxlength="{{ Constants.MaxCharactersSmallInput }}"
+                        [(ngModel)]="problem.source"
+                        (keyup)="updateMaxSource()"
                         (blur)="customSourceUpdated(getValue($event))"
                     />
                 </mat-form-field>
             </div>
         </div>
-        <div class="flex items-baseline mt-1">
+        <div class="flex items-baseline mt-1 sm:justify-around">
             <div class="flex flex-col max-w-1/2">
                 <mat-label>Emotion</mat-label>
-                <mat-form-field appearance="outline">
+                <mat-form-field
+                    appearance="outline"
+                    subscriptSizing="dynamic"
+                >
                     <mat-select
                         (selectionChange)="updateProblemEmotion($event)"
                         [value]="getEmotionValue(problem.emotion, characterAPI.rules?.emotion)"
@@ -66,20 +72,29 @@
                 class="flex flex-col ml-1 max-w-1/2"
                 *ngIf="selectedProblemEmotion === '99'"
             >
-                <mat-label class="text-xs pb-[2px]">Custom Emotion</mat-label>
-                <mat-form-field appearance="outline">
+                <mat-label class="text-xs pb-[2px] sm:text-base sm:pb-0">Custom Emotion</mat-label>
+                <mat-form-field
+                    appearance="outline"
+                    *ngFor="let count of [(remainingEmotionCharacters$ | async)!.valueOf()]"
+                    hintLabel="{{count <= Constants.MaxCharactersSmallInput/2 ? `Characters remaining: ${count}` : '' }}"
+                >
                     <input
                         matInput
-                        [value]="problem.emotion"
+                        maxlength="{{ Constants.MaxCharactersSmallInput }}"
+                        [(ngModel)]="problem.emotion"
+                        (keyup)="updateMaxEmotion()"
                         (blur)="customEmotionUpdated(getValue($event))"
                     />
                 </mat-form-field>
             </div>
         </div>
-        <div class="flex mt-1">
+        <div class="flex mt-1 sm:justify-around">
             <div class="flex flex-col max-w-1/2">
                 <mat-label>Rank</mat-label>
-                <mat-form-field appearance="outline">
+                <mat-form-field
+                    appearance="outline"
+                    subscriptSizing="dynamic"
+                >
                     <input
                         matInput
                         type="number"
@@ -92,7 +107,10 @@
             </div>
             <div class="flex flex-col ml-1 max-w-1/2">
                 <mat-label>Solved</mat-label>
-                <mat-form-field appearance="outline">
+                <mat-form-field
+                    appearance="outline"
+                    subscriptSizing="dynamic"
+                >
                     <mat-select
                         (selectionChange)="updateSolved($event)"
                         [value]="problem.solved.toString()"
