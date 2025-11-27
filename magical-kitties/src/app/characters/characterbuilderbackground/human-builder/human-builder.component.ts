@@ -38,6 +38,10 @@ export class HumanBuilderComponent implements AfterContentInit {
 
     constructor() {}
 
+    trackByFn(index: number, item: any) {
+        return item.id;
+    }
+
     ngAfterContentInit(): void {
         this.updateMaxName(new KeyboardEvent(""));
         this.updateMaxDescription();

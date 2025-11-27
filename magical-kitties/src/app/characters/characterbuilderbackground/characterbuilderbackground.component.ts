@@ -39,6 +39,10 @@ export class CharacterBuilderBackgroundComponent implements AfterContentInit {
 
     constructor() {}
 
+    trackByFn(index: number, item: any) {
+        return item.id;
+    }
+
     ngAfterContentInit(): void {
         this.characterAPI.character$.subscribe({
             next: (character: Character | undefined) => {

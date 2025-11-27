@@ -13,7 +13,6 @@ import { getValue } from '../../../../login/utilities';
 import { Problem } from '../../../../models/Characters/problem.model';
 import { ProblemOption } from '../../../../models/Humans/problemoption.model';
 import { ProblemUpdateRequest } from '../../../../models/Humans/problemupdaterequest.model';
-import { Emotion } from '../../../../models/System/emotion.model';
 import { ProblemSource } from '../../../../models/System/problemsource.model';
 import { CharacterAPIService } from '../../../services/characters.service';
 import { HumanAPIService } from '../../../services/humans.service';
@@ -30,8 +29,8 @@ export class ProblemBuilderComponent implements AfterContentInit {
     @Output() problemRemoved = new EventEmitter<string>();
     characterAPI: CharacterAPIService = inject(CharacterAPIService);
     humanAPI: HumanAPIService = inject(HumanAPIService);
-    selectedProblemSource: number = -1;
-    selectedProblemEmotion: string = "-1";
+    selectedProblemSource: string = "0";
+    selectedProblemEmotion: string = "11-13";
     customProblemSource: string = "";
     customProblemEmotion: string = "";
     problemRank: number = 0;
@@ -76,28 +75,28 @@ export class ProblemBuilderComponent implements AfterContentInit {
         this.emotionMaxCountSubject.next(maxCharacters);
     }
 
-    getProblemValue(value: string, problemSources?: ProblemSource[]): number {
-        if (!problemSources) {
-            return -1;
+    getProblemValue(value: string, problemSources?: ProblemSource[]): string {
+        if (!problemSources || value === "") {
+            return "-1";
         }
 
-        const foundSource = problemSources.find(x => x.problemSource === value);
+        const foundSource = problemSources.find(x => x.source === value);
 
         if (foundSource) {
             this.selectedProblemSource = foundSource.rollValue;
         } else {
-            this.selectedProblemSource = 99; // custom
+            this.selectedProblemSource = "99"; // custom
         }
 
         return this.selectedProblemSource;
     }
 
-    getEmotionValue(value: string, problemEmotions?: Emotion[]): string {
+    getEmotionValue(value: string, problemEmotions?: ProblemSource[]): string {
         if (!problemEmotions) {
             return "-1";
         }
 
-        const foundEmotion = problemEmotions.find(x => x.emotionSource === value);
+        const foundEmotion = problemEmotions.find(x => x.source === value);
 
         if (foundEmotion) {
             this.selectedProblemEmotion = foundEmotion.rollValue;
@@ -113,10 +112,10 @@ export class ProblemBuilderComponent implements AfterContentInit {
 
         let sourceText = "";
 
-        if (this.selectedProblemSource !== 99) {
+        if (this.selectedProblemSource !== "99") {
             const foundSource = this.characterAPI.rules?.problemSource.find(x => x.rollValue === this.selectedProblemSource);
             if (foundSource) {
-                sourceText = foundSource.problemSource;
+                sourceText = foundSource.source;
             }
         }
 
@@ -124,7 +123,7 @@ export class ProblemBuilderComponent implements AfterContentInit {
     }
 
     customSourceUpdated(customSource: string): void {
-        this.selectedProblemSource = 99; // jic
+        this.selectedProblemSource = "99"; // jic
 
         this.sendProblemUpdate(customSource);
     }
@@ -153,7 +152,7 @@ export class ProblemBuilderComponent implements AfterContentInit {
         if (this.selectedProblemEmotion !== "99") {
             const foundEmotion = this.characterAPI.rules?.emotion.find(x => x.rollValue === this.selectedProblemEmotion);
             if (foundEmotion) {
-                emotionText = foundEmotion.emotionSource;
+                emotionText = foundEmotion.source;
             }
         }
 

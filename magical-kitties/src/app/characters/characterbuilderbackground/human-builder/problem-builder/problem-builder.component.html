@@ -22,16 +22,21 @@
                         [value]="getProblemValue(problem.source, characterAPI.rules?.problemSource)"
                     >
                         <mat-option
-                            *ngFor="let source of characterAPI.rules?.problemSource"
-                            [value]="source.rollValue"
-                            >{{ source.problemSource }}</mat-option
+                            value="-1"
+                            *ngIf="getProblemValue(problem.source, characterAPI.rules?.problemSource) === '-1'"
+                            >-- Select Source --</mat-option
+                        >
+                        <mat-option
+                            *ngFor="let problem of characterAPI.rules?.problemSource"
+                            [value]="problem.rollValue"
+                            >{{ problem.source }}</mat-option
                         >
                     </mat-select>
                 </mat-form-field>
             </div>
             <div
                 class="flex flex-col ml-1 max-w-1/2"
-                *ngIf="selectedProblemSource === 99"
+                *ngIf="selectedProblemSource === '99'"
             >
                 <mat-label class="text-xs pb-[2px] sm:text-base sm:pb-0">Custom Source</mat-label>
                 <mat-form-field
@@ -63,7 +68,7 @@
                         <mat-option
                             *ngFor="let emotion of characterAPI.rules?.emotion"
                             [value]="emotion.rollValue"
-                            >{{ emotion.emotionSource }}</mat-option
+                            >{{ emotion.source }}</mat-option
                         >
                     </mat-select>
                 </mat-form-field>

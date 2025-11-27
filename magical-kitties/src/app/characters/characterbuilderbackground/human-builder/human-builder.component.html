@@ -9,14 +9,13 @@
             <mat-form-field
                 appearance="outline"
                 class="ml-1"
-                *ngFor="let count of [(remainingNameCharacters$ | async)!.valueOf()]"
+                *ngFor="let count of [(remainingNameCharacters$ | async)!.valueOf()]; trackBy: trackByFn"
                 hintLabel="{{count <= Constants.MaxCharactersSmallInput/2 ? `Characters remaining: ${count}` : '' }}"
             >
                 <input
                     matInput
                     maxlength="{{ Constants.MaxCharactersSmallInput }}"
                     [(ngModel)]="human.name"
-                    (keyup)="updateMaxName($event)"
                     (blur)="updateName(getValue($event))"
                 />
             </mat-form-field>
@@ -30,7 +29,7 @@
             <mat-label>Description</mat-label>
             <mat-form-field
                 appearance="outline"
-                *ngFor="let count of [(remainingDescriptionCharacters$ | async)!.valueOf()]"
+                *ngFor="let count of [(remainingDescriptionCharacters$ | async)!.valueOf()]; trackBy: trackByFn"
                 hintLabel="{{count <= Constants.MaxCharactersBigInput/2 ? `Characters remaining: ${count}` : '' }}"
             >
                 <textarea

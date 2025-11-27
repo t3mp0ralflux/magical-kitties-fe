@@ -6,8 +6,8 @@
         <span class="mr-2 font-semibold">Hometown</span>
         <mat-form-field
             appearance="outline"
-            *ngIf="remainingHometownCharacters$ | async as maxHometown"
-            hintLabel="{{maxHometown <= Constants.MaxCharactersMediumInput/2 ? `Characters remaining: ${maxHometown}` : '' }}"
+            *ngFor="let count of [(remainingHometownCharacters$ | async)!.valueOf()]; trackBy: trackByFn"
+            hintLabel="{{count <= Constants.MaxCharactersMediumInput/2 ? `Characters remaining: ${count}` : '' }}"
         >
             <input
                 matInput
@@ -23,7 +23,7 @@
         <span class="mr-2 font-semibold">Kitty Description</span>
         <mat-form-field
             appearance="outline"
-            *ngFor="let count of [(remainingDescriptionCharacters$ | async)!.valueOf()]"
+            *ngFor="let count of [(remainingDescriptionCharacters$ | async)!.valueOf()]; trackBy: trackByFn"
             hintLabel="{{count <= 100 ? `Characters remaining: ${count}` : '' }}"
         >
             <textarea

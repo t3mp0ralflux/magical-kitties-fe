@@ -1,4 +1,6 @@
 export interface ProblemSource {
-    rollValue: number;
-    problemSource: string;
+    id: string;
+    rollValue: string;
+    source: string;
+    customSource: string;
 }
