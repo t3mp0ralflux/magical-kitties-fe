@@ -7,6 +7,7 @@ export class ProblemUpdateRequest {
     problemId!: string;
     source?: string;
     emotion?: string;
+    customSource?: string;
     rank?: number;
     solved?: boolean;
 

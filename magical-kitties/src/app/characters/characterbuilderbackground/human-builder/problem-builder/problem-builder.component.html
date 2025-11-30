@@ -3,32 +3,34 @@
     appearance="outlined"
 >
     <mat-card-header
-        ><mat-icon
-            class="ml-auto"
-            (click)="removeProblem()"
-            >remove</mat-icon
-        ></mat-card-header
+        ><div class="ml-auto">
+            <mat-icon
+                class="cursor-pointer"
+                (click)="removeProblem()"
+                >remove</mat-icon
+            >
+        </div></mat-card-header
     >
     <mat-card-content class="flex flex-col">
-        <div class="flex items-baseline sm:justify-around">
+        <div
+            class="flex items-baseline"
+            ngClass="{{ getAlignmentCSS(problem.source) }}"
+        >
             <div class="flex flex-col max-w-1/2">
                 <mat-label>Source</mat-label>
-                <mat-form-field
-                    appearance="outline"
-                    subscriptSizing="dynamic"
-                >
+                <mat-form-field appearance="outline">
                     <mat-select
                         (selectionChange)="updateProblemSource($event)"
                         [value]="getProblemValue(problem.source, characterAPI.rules?.problemSource)"
                     >
                         <mat-option
-                            value="-1"
-                            *ngIf="getProblemValue(problem.source, characterAPI.rules?.problemSource) === '-1'"
+                            value=""
+                            *ngIf="getProblemValue(problem.source, characterAPI.rules?.problemSource) === ''"
                             >-- Select Source --</mat-option
                         >
                         <mat-option
-                            *ngFor="let problem of characterAPI.rules?.problemSource"
-                            [value]="problem.rollValue"
+                            *ngFor="let problem of characterAPI.rules?.problemSource; trackBy: trackByFn"
+                            [value]="problem.source"
                             >{{ problem.source }}</mat-option
                         >
                     </mat-select>
@@ -36,38 +38,43 @@
             </div>
             <div
                 class="flex flex-col ml-1 max-w-1/2"
-                *ngIf="selectedProblemSource === '99'"
+                *ngIf="selectedProblemSource === 'Custom'"
             >
                 <mat-label class="text-xs pb-[2px] sm:text-base sm:pb-0">Custom Source</mat-label>
                 <mat-form-field
                     appearance="outline"
-                    *ngFor="let count of [(remainingSourceCharacters$ | async)!.valueOf()]"
+                    *ngFor="let count of [(remainingSourceCharacters$ | async)!.valueOf()]; trackBy: trackByFn"
                     hintLabel="{{count <= Constants.MaxCharactersSmallInput/2 ? `Characters remaining: ${count}` : '' }}"
                 >
                     <input
                         matInput
                         maxlength="{{ Constants.MaxCharactersSmallInput }}"
-                        [(ngModel)]="problem.source"
+                        [(ngModel)]="problem.customSource"
                         (keyup)="updateMaxSource()"
                         (blur)="customSourceUpdated(getValue($event))"
                     />
                 </mat-form-field>
             </div>
         </div>
-        <div class="flex items-baseline mt-1 sm:justify-around">
+        <div
+            class="flex items-baseline mt-1"
+            ngClass="{{ getAlignmentCSS(problem.emotion) }}"
+        >
             <div class="flex flex-col max-w-1/2">
                 <mat-label>Emotion</mat-label>
-                <mat-form-field
-                    appearance="outline"
-                    subscriptSizing="dynamic"
-                >
+                <mat-form-field appearance="outline">
                     <mat-select
                         (selectionChange)="updateProblemEmotion($event)"
                         [value]="getEmotionValue(problem.emotion, characterAPI.rules?.emotion)"
                     >
                         <mat-option
-                            *ngFor="let emotion of characterAPI.rules?.emotion"
-                            [value]="emotion.rollValue"
+                            value=""
+                            *ngIf="getProblemValue(problem.emotion, characterAPI.rules?.emotion) === ''"
+                            >-- Select Emotion --</mat-option
+                        >
+                        <mat-option
+                            *ngFor="let emotion of characterAPI.rules?.emotion; trackBy: trackByFn"
+                            [value]="emotion.source"
                             >{{ emotion.source }}</mat-option
                         >
                     </mat-select>
@@ -75,18 +82,18 @@
             </div>
             <div
                 class="flex flex-col ml-1 max-w-1/2"
-                *ngIf="selectedProblemEmotion === '99'"
+                *ngIf="selectedProblemEmotion === 'Custom'"
             >
                 <mat-label class="text-xs pb-[2px] sm:text-base sm:pb-0">Custom Emotion</mat-label>
                 <mat-form-field
                     appearance="outline"
-                    *ngFor="let count of [(remainingEmotionCharacters$ | async)!.valueOf()]"
+                    *ngFor="let count of [(remainingEmotionCharacters$ | async)!.valueOf()]; trackBy: trackByFn"
                     hintLabel="{{count <= Constants.MaxCharactersSmallInput/2 ? `Characters remaining: ${count}` : '' }}"
                 >
                     <input
                         matInput
                         maxlength="{{ Constants.MaxCharactersSmallInput }}"
-                        [(ngModel)]="problem.emotion"
+                        [(ngModel)]="problem.customEmotion"
                         (keyup)="updateMaxEmotion()"
                         (blur)="customEmotionUpdated(getValue($event))"
                     />
