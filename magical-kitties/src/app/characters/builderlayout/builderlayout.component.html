@@ -75,7 +75,7 @@
                     <mat-label>Character Name</mat-label>
                     <mat-form-field
                         appearance="outline"
-                        *ngFor="let count of [(remainingNameCharacters$ | async)!.valueOf()]"
+                        *ngFor="let count of [(remainingNameCharacters$ | async)!.valueOf()]; trackBy: trackByFn"
                         hintLabel="{{count <= Constants.MaxCharactersMediumInput/2 ? `Characters remaining: ${count}` : '' }}"
                     >
                         <input

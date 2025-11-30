@@ -50,7 +50,7 @@
             <mat-label>Problems</mat-label>
             <mat-accordion multi="true">
                 <mat-expansion-panel
-                    *ngFor="let problem of human.problems"
+                    *ngFor="let problem of human.problems; trackBy: trackByFn"
                     class="mt-1 accordion-color"
                 >
                     <mat-expansion-panel-header>

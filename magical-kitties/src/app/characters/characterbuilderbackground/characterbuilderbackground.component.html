@@ -41,7 +41,7 @@
         <span class="mr-2 font-semibold">Humans</span>
         <mat-accordion multi="true">
             <mat-expansion-panel
-                *ngFor="let human of character.humans"
+                *ngFor="let human of character.humans; trackBy: trackByFn"
                 class="mt-1 accordion-color"
             >
                 <mat-expansion-panel-header>

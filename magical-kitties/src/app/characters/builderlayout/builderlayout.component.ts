@@ -14,6 +14,7 @@ import { HeaderComponent } from '../../layout/header/header.component';
 import { LayoutComponent } from '../../layout/layout.component';
 import { Character } from '../../models/Characters/character.model';
 import { UpdateCharacterDescriptors } from '../../models/Characters/updatecharacterdescriptors.model';
+import { trackByFn } from '../../utilities';
 import { CharacterAPIService } from '../services/characters.service';
 
 @Component({
@@ -26,6 +27,7 @@ export class BuilderlayoutComponent extends LayoutComponent implements OnDestroy
     router: Router = inject(Router);
     characterApi: CharacterAPIService = inject(CharacterAPIService);
     Constants = Constants;
+    trackByFn = trackByFn;
     characterId: string;
     nameInput: FormControl = new FormControl("", [Validators.required]);
     currentPage?: string;

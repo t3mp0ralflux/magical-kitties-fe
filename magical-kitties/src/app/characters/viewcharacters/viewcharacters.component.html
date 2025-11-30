@@ -45,7 +45,7 @@
         *ngIf="characters$ | async as characters"
     >
         <div
-            *ngFor="let character of characters.items"
+            *ngFor="let character of characters.items; trackBy: trackByFn"
             class="ml-auto mr-auto xl:ml-0 xl:mr-0 w-96 p-2.5"
         >
             <mat-card class="min-w-fit">

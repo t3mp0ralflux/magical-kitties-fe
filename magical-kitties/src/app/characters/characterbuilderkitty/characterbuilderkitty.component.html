@@ -33,7 +33,7 @@
                 (selectionChange)="updateLevel($event)"
             >
                 <mat-option
-                    *ngFor="let item of levelOptions"
+                    *ngFor="let item of levelOptions; trackBy: trackByFn"
                     [value]="item"
                 >
                     {{ item }}
@@ -61,7 +61,7 @@
             >
                 <mat-option [value]="0">-</mat-option>
                 <mat-option
-                    *ngFor="let item of statArray"
+                    *ngFor="let item of statArray; trackBy: trackByFn"
                     [value]="item"
                     [class.hide]="isFiltered(item)"
                     >{{ item }}</mat-option
@@ -81,7 +81,7 @@
             >
                 <mat-option [value]="0">-</mat-option>
                 <mat-option
-                    *ngFor="let item of statArray"
+                    *ngFor="let item of statArray; trackBy: trackByFn"
                     [class.hide]="isFiltered(item)"
                     [value]="item"
                     >{{ item }}</mat-option
@@ -101,7 +101,7 @@
             >
                 <mat-option [value]="0">-</mat-option>
                 <mat-option
-                    *ngFor="let item of statArray"
+                    *ngFor="let item of statArray; trackBy: trackByFn"
                     [value]="item"
                     [class.hide]="isFiltered(item)"
                     >{{ item }}</mat-option
@@ -138,7 +138,7 @@
                             (selectionChange)="updateFlaw($event)"
                         >
                             <mat-option
-                                *ngFor="let flaw of characterApi.rules?.flaws"
+                                *ngFor="let flaw of characterApi.rules?.flaws; trackBy: trackByFn"
                                 [value]="flaw.id"
                             >
                                 {{ flaw.name }}
@@ -178,7 +178,7 @@
                             (selectionChange)="updateTalent($event)"
                         >
                             <mat-option
-                                *ngFor="let talent of characterApi.rules?.talents"
+                                *ngFor="let talent of characterApi.rules?.talents; trackBy: trackByFn"
                                 [value]="talent.id"
                             >
                                 {{ talent.name }}
@@ -218,7 +218,7 @@
                             (selectionChange)="updateMagicalPower($event)"
                         >
                             <mat-option
-                                *ngFor="let magicalPower of characterApi.rules?.magicalPowers"
+                                *ngFor="let magicalPower of characterApi.rules?.magicalPowers; trackBy: trackByFn"
                                 [value]="magicalPower.id"
                             >
                                 {{ magicalPower.name }}
@@ -402,7 +402,7 @@
                     <mat-label class="font-semibold">Level 2-4</mat-label>
                     <mat-checkbox
                         [disabled]="true"
-                        *ngFor="let item of getBlockRules(1)"
+                        *ngFor="let item of getBlockRules(1); trackBy: trackByFn"
                         >{{ item.value }}</mat-checkbox
                     >
                 </div>
@@ -413,7 +413,7 @@
                     <mat-label class="font-semibold">Level 5-7</mat-label>
                     <mat-checkbox
                         [disabled]="true"
-                        *ngFor="let item of getBlockRules(2)"
+                        *ngFor="let item of getBlockRules(2); trackBy: trackByFn"
                         >{{ item.value }}</mat-checkbox
                     >
                 </div>
@@ -424,7 +424,7 @@
                     <mat-label class="font-semibold">Level 8-10</mat-label>
                     <mat-checkbox
                         [disabled]="true"
-                        *ngFor="let item of getBlockRules(3)"
+                        *ngFor="let item of getBlockRules(3); trackBy: trackByFn"
                         >{{ item.value }}</mat-checkbox
                     >
                 </div>

@@ -26,7 +26,7 @@
                     >-</mat-option
                 >
                 <mat-option
-                    *ngFor="let item of availableMagicalPowers"
+                    *ngFor="let item of availableMagicalPowers; trackBy: trackByFn"
                     [value]="item.id"
                     >{{ item.name }}</mat-option
                 >
