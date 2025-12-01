@@ -16,6 +16,7 @@ import { CharactersResponse } from '../../models/Characters/charactersresponse.m
 import { GetAllCharactersResponse } from '../../models/Characters/getallcharactersresponse.model';
 import { NavigationExtras } from '../../models/Login/navigationExtras.model';
 import { AuthService } from '../../services/authService.service';
+import { trackByFn } from '../../utilities';
 import { CharacterAPIService } from '../services/characters.service';
 import { CopyCharacterModalComponent } from './copy-modal/copy-modal.component';
 import { DeleteModalComponent } from './delete-modal/delete-modal.component';
@@ -33,7 +34,7 @@ export class ViewCharactersComponent {
     private refreshSearch: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private searchText: BehaviorSubject<string> = new BehaviorSubject<string>("");
     private sortOption: BehaviorSubject<string> = new BehaviorSubject<string>("name");
-
+    trackByFn = trackByFn;
     private searchInformation$: Observable<{ input: string, sort: string }> = combineLatest({ input: this.searchText, sort: this.sortOption, refresh: this.refreshSearch });
 
     getValue = getValue;

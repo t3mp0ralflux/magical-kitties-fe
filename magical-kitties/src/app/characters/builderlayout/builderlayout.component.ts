@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -7,12 +7,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { Router, RouterEvent, RouterOutlet } from '@angular/router';
-import { filter } from 'rxjs';
+import { BehaviorSubject, filter, forkJoin, Observable, Subscription } from 'rxjs';
+import { Constants } from '../../Constants';
 import { FooterComponent } from '../../layout/footer/footer.component';
 import { HeaderComponent } from '../../layout/header/header.component';
 import { LayoutComponent } from '../../layout/layout.component';
 import { Character } from '../../models/Characters/character.model';
 import { UpdateCharacterDescriptors } from '../../models/Characters/updatecharacterdescriptors.model';
+import { trackByFn } from '../../utilities';
 import { CharacterAPIService } from '../services/characters.service';
 
 @Component({
@@ -21,23 +23,31 @@ import { CharacterAPIService } from '../services/characters.service';
     templateUrl: './builderlayout.component.html',
     styleUrl: './builderlayout.component.scss'
 })
-export class BuilderlayoutComponent extends LayoutComponent {
+export class BuilderlayoutComponent extends LayoutComponent implements OnDestroy {
     router: Router = inject(Router);
-    //route: ActivatedRoute = inject(ActivatedRoute);
     characterApi: CharacterAPIService = inject(CharacterAPIService);
+    Constants = Constants;
+    trackByFn = trackByFn;
     characterId: string;
     nameInput: FormControl = new FormControl("", [Validators.required]);
     currentPage?: string;
     character?: Character;
+    apiSubscription!: Subscription;
+    nameMaxCountSubject: BehaviorSubject<number> = new BehaviorSubject(0);
+    remainingNameCharacters$: Observable<number> = this.nameMaxCountSubject.asObservable();
 
     constructor() {
         super();
         this.characterId = this.route.snapshot.params["id"];
 
-        this.characterApi.getCharacterInformation(this.characterId).subscribe({
-            next: (character: Character) => {
-                this.characterApi.addCharacter(character);
+        this.apiSubscription = forkJoin({
+            character: this.characterApi.getCharacterInformation(this.characterId),
+            rules: this.characterApi.getRules()
+        }).subscribe({
+            next: ({ character }) => {
                 this.nameInput.setValue(character.name);
+
+                this.updateMaxName();
             }
         });
 
@@ -56,6 +66,25 @@ export class BuilderlayoutComponent extends LayoutComponent {
                 this.character = character;
             }
         })
+    }
+
+    ngOnDestroy(): void {
+        if (this.apiSubscription) {
+            this.apiSubscription.unsubscribe();
+        }
+    }
+
+    updateMaxName(): void {
+        if (!this.character) {
+            return;
+        }
+
+        let maxCharacters = Constants.MaxCharactersMediumInput;
+        if (this.character.name) {
+            maxCharacters = maxCharacters - this.character.name.length;
+        }
+
+        this.nameMaxCountSubject.next(maxCharacters);
     }
 
     updateName(): void {

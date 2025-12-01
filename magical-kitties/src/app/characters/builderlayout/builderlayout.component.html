@@ -55,28 +55,34 @@
                     <div class="flex flex-col mr-5">
                         <a
                             class="cursor-pointer"
-                            (click)="navigate('human')"
+                            (click)="navigate('play')"
                         >
-                            <div>3. Human</div>
-                            <ng-container *ngIf="currentPage === 'human'">
-                                <ng-container *ngTemplateOutlet="underline"></ng-container>
-                            </ng-container>
+                            <div>3. Play</div>
                         </a>
                     </div>
                 </mat-toolbar-row>
             </mat-toolbar>
         </div>
-        <div class="max-w-[800px] min-w-xs ml-auto mr-auto mt-5">
+        <div
+            class="max-w-[800px] min-w-xs ml-auto mr-auto mt-5"
+            *ngIf="this.character"
+        >
             <div class="flex items-center">
                 <div class="hidden sm:block w-40! h-40!">
                     <img src="/girl_dm.png" />
                 </div>
                 <div class="ml-3 mr-3 flex flex-col w-96">
                     <mat-label>Character Name</mat-label>
-                    <mat-form-field appearance="outline">
+                    <mat-form-field
+                        appearance="outline"
+                        *ngFor="let count of [(remainingNameCharacters$ | async)!.valueOf()]; trackBy: trackByFn"
+                        hintLabel="{{count <= Constants.MaxCharactersMediumInput/2 ? `Characters remaining: ${count}` : '' }}"
+                    >
                         <input
                             matInput
+                            maxlength="{{ Constants.MaxCharactersMediumInput }}"
                             [formControl]="nameInput"
+                            (keyup)="updateMaxName()"
                             (blur)="updateName()"
                         />
                     </mat-form-field>

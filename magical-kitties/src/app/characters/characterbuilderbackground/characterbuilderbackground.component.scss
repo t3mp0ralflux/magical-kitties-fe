@@ -1,0 +1,9 @@
+@use "@angular/material" as mat;
+
+.accordion-color {
+    @include mat.expansion-overrides(
+        (
+            container-background-color: var(--primary-background),
+        )
+    );
+}

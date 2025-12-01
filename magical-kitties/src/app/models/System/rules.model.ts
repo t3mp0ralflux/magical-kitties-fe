@@ -3,7 +3,6 @@ import { MagicalPower } from "../Characters/magicalpower.model";
 import { Talent } from "../Characters/talent.model";
 import { DiceDifficulty } from "./dicedifficulty.model";
 import { DiceSuccess } from "./dicesuccess.model";
-import { Emotion } from "./emotion.model";
 import { ProblemSource } from "./problemsource.model";
 import { UpgradeRule } from "./upgraderule.model";
 
@@ -20,7 +19,7 @@ export interface Rules {
     magicalPowers: MagicalPower[];
     upgrades: UpgradeRule[];
     problemSource: ProblemSource[];
-    emotion: Emotion[];
+    emotion: ProblemSource[];
     diceRules: string[];
     diceDifficulties: DiceDifficulty[];
     diceSuccesses: DiceSuccess[];

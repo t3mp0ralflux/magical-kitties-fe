@@ -1,4 +1,4 @@
 export interface ProblemSource {
-    rollValue: number;
-    problemSource: string;
+    rollValue: string;
+    source: string;
 }
