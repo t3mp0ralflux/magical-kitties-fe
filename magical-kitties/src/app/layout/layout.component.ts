@@ -18,14 +18,14 @@ export class LayoutComponent implements OnInit, OnDestroy {
     loading: boolean = true;
     route: ActivatedRoute = inject(ActivatedRoute);
     authService: AuthService = inject(AuthService);
-    routeSubscription?: Subscription;
+    subscriptions: Subscription[] = [];
 
     menuOpened(event: any) {
         this.menuOpen = event.value;
     }
 
     ngOnInit(): void {
-        this.routeSubscription = this.route.params.subscribe({
+        const routeSubscription = this.route.params.subscribe({
             next: () => {
                 // attempt to re-login if a valid token is present.
                 if (this.authService.account === undefined) {
@@ -48,11 +48,13 @@ export class LayoutComponent implements OnInit, OnDestroy {
                 console.log("route params error " + err);
             }
         });
+
+        this.subscriptions.push(routeSubscription);
     }
 
     ngOnDestroy(): void {
-        if (this.routeSubscription) {
-            this.routeSubscription.unsubscribe();
-        }
+        this.subscriptions.forEach((subscription: Subscription) => {
+            subscription.unsubscribe();
+        })
     }
 }

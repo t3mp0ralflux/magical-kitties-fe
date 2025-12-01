@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { Router, RouterEvent, RouterOutlet } from '@angular/router';
-import { BehaviorSubject, filter, forkJoin, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, filter, forkJoin, Observable } from 'rxjs';
 import { Constants } from '../../Constants';
 import { FooterComponent } from '../../layout/footer/footer.component';
 import { HeaderComponent } from '../../layout/header/header.component';
@@ -32,7 +32,6 @@ export class BuilderlayoutComponent extends LayoutComponent implements OnDestroy
     nameInput: FormControl = new FormControl("", [Validators.required]);
     currentPage?: string;
     character?: Character;
-    subscriptions: Subscription[] = [];
     nameMaxCountSubject: BehaviorSubject<number> = new BehaviorSubject(0);
     remainingNameCharacters$: Observable<number> = this.nameMaxCountSubject.asObservable();
 
@@ -68,12 +67,6 @@ export class BuilderlayoutComponent extends LayoutComponent implements OnDestroy
         });
 
         this.subscriptions.push(...[apiSubscription, routerSubscription, characterSubscription]);
-    }
-
-    ngOnDestroy(): void {
-        this.subscriptions.forEach((subscription: Subscription) => {
-            subscription.unsubscribe();
-        })
     }
 
     updateMaxName(): void {
