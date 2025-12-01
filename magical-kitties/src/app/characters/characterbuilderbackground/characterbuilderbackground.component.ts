@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
-import { AfterContentInit, Component, inject } from '@angular/core';
+import { AfterContentInit, Component, inject, OnDestroy } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from "@angular/material/button";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { Constants } from '../../Constants';
 import { getValue } from '../../login/utilities';
 import { Character } from '../../models/Characters/character.model';
@@ -25,7 +25,7 @@ import { HumanBuilderComponent } from "./human-builder/human-builder.component";
     templateUrl: './characterbuilderbackground.component.html',
     styleUrl: './characterbuilderbackground.component.scss'
 })
-export class CharacterBuilderBackgroundComponent implements AfterContentInit {
+export class CharacterBuilderBackgroundComponent implements AfterContentInit, OnDestroy {
     hometownControl: FormControl = new FormControl();
     kittyDescriptionControl: FormControl = new FormControl();
     characterAPI: CharacterAPIService = inject(CharacterAPIService);
@@ -34,6 +34,7 @@ export class CharacterBuilderBackgroundComponent implements AfterContentInit {
     getValue = getValue;
     trackByFn = trackByFn;
     Constants = Constants;
+    characterSubscription?: Subscription;
     descriptionMaxCountSubject = new BehaviorSubject(0);
     remainingDescriptionCharacters$ = this.descriptionMaxCountSubject.asObservable();
     hometownMaxCountSubject = new BehaviorSubject(0);
@@ -42,7 +43,7 @@ export class CharacterBuilderBackgroundComponent implements AfterContentInit {
     constructor() {}
 
     ngAfterContentInit(): void {
-        this.characterAPI.character$.subscribe({
+        this.characterSubscription = this.characterAPI.character$.subscribe({
             next: (character: Character | undefined) => {
                 if (character) {
                     this.character = character
@@ -52,6 +53,12 @@ export class CharacterBuilderBackgroundComponent implements AfterContentInit {
                 this.updateMaxHometown();
             }
         });
+    }
+
+    ngOnDestroy(): void {
+        if (this.characterSubscription) {
+            this.characterSubscription.unsubscribe();
+        }
     }
 
     updateMaxDescription(): void {

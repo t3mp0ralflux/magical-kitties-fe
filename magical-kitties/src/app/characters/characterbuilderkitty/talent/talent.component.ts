@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { AfterContentInit, Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { AfterContentInit, Component, EventEmitter, inject, Input, OnDestroy, Output } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
+import { Subscription } from 'rxjs';
 import { AttributeOption } from '../../../models/Characters/attributeoption.model';
 import { Character } from '../../../models/Characters/character.model';
 import { Talent } from '../../../models/Characters/talent.model';
@@ -26,7 +27,7 @@ import { TalentUpgrade } from './models/talent-upgrade.model';
     templateUrl: './talent.component.html',
     styleUrl: './talent.component.scss'
 })
-export class TalentComponent implements AfterContentInit {
+export class TalentComponent implements AfterContentInit, OnDestroy {
     @Input() id?: string;
     @Input() parentControl!: any;
     @Input() disabled!: boolean;
@@ -37,13 +38,14 @@ export class TalentComponent implements AfterContentInit {
     talentChoice: FormControl = new FormControl({ value: undefined, disabled: this.disabled });
     upgradeRule?: UpgradeRule;
     trackByFn = trackByFn;
+    characterSubscription: Subscription;
     availableTalents: Talent[] = [];
     private character?: Character;
     private upgradeInformation?: Upgrade;
     private talentInformation?: TalentUpgrade;
 
     constructor() {
-        this.characterApi.character$.subscribe({
+        this.characterSubscription = this.characterApi.character$.subscribe({
             next: (character) => {
                 if (character) {
                     this.character = character;
@@ -87,6 +89,12 @@ export class TalentComponent implements AfterContentInit {
                 }
             }
         });
+    }
+
+    ngOnDestroy(): void {
+        if (this.characterSubscription) {
+            this.characterSubscription.unsubscribe();
+        }
     }
 
     checkChange(event: MatCheckboxChange) {

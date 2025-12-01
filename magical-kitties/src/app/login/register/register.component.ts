@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
+import { Subscription } from 'rxjs';
 import { Account } from '../../models/Account/account.model';
 import { AccountCreateRequest } from '../../models/Account/accountcreaterequest.model';
 import { ValidationError } from '../../models/Errors/Error.model';
@@ -21,10 +22,11 @@ import { MatchValidator } from '../utilities';
     templateUrl: './register.component.html',
     styleUrl: './register.component.scss'
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnDestroy {
     private _snackBar = inject(MatSnackBar);
     private fb: FormBuilder = inject(FormBuilder);
     private loginService: LoginAPIService = inject(LoginAPIService);
+    snackbarSubscription?: Subscription;
     formGroup: FormGroup;
     hidePassword: boolean = true;
     formSubmitting: boolean = false;
@@ -46,9 +48,16 @@ export class RegisterComponent {
             })
     }
 
+    ngOnDestroy(): void {
+        if (this.snackbarSubscription) {
+            this.snackbarSubscription.unsubscribe();
+        }
+    }
+
     openSnackBar(message: string, action: string) {
         let snackBar: MatSnackBarRef<TextOnlySnackBar> = this._snackBar.open(message, action, {});
-        snackBar.onAction().subscribe({
+
+        this.snackbarSubscription = snackBar.onAction().subscribe({
             next: (_: any) => {
                 this.submit();
             }
