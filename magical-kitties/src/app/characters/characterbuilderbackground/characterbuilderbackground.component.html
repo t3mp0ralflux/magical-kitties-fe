@@ -1,69 +1,71 @@
 @if (this.character) {
-  <div
-    class="flex flex-col min-w-xs items-center sm:items-baseline ml-3 mr-3 sm:ml-0 sm:mr-0"
-    >
+<div class="flex flex-col min-w-xs items-center sm:items-baseline ml-3 mr-3 sm:ml-0 sm:mr-0">
     <div class="flex flex-col w-full">
-      <span class="mr-2 font-semibold">Hometown</span>
-      @for (count of [(remainingHometownCharacters$ | async)!.valueOf()]; track trackByFn($index, count)) {
+        <span class="mr-2 font-semibold">Hometown</span>
         <mat-form-field
-          appearance="outline"
-          hintLabel="{{count <= Constants.MaxCharactersMediumInput/2 ? `Characters remaining: ${count}` : '' }}"
-          >
-          <input
-            matInput
-            maxlength="{{ Constants.MaxCharactersMediumInput }}"
-            placeholder="Hometown of your Kitty"
-            [(ngModel)]="character.hometown"
-            (keyup)="updateMaxHometown()"
-            (blur)="updateHometown(getValue($event))"
-            />
-          </mat-form-field>
-        }
-      </div>
-      <div class="flex flex-col w-full">
-        <span class="mr-2 font-semibold">Kitty Description</span>
-        @for (count of [(remainingDescriptionCharacters$ | async)!.valueOf()]; track trackByFn($index, count)) {
-          <mat-form-field
             appearance="outline"
-            hintLabel="{{count <= 100 ? `Characters remaining: ${count}` : '' }}"
+            hintLabel="Max {{ Constants.MaxCharactersMediumInput }} characters"
+        >
+            <input
+                matInput
+                maxlength="{{ Constants.MaxCharactersMediumInput }}"
+                placeholder="Hometown of your Kitty"
+                [(ngModel)]="character.hometown"
+                (keyup)="updateMaxHometown()"
+                (blur)="updateHometown(getValue($event))"
+            />
+            <mat-hint
+                align="end"
+                [ngClass]="(character.hometown?.length ? character.hometown!.length : 0) >= Constants.MaxCharactersMediumInput ? 'error' : ''"
+                >{{ character.hometown?.length }}/{{ Constants.MaxCharactersMediumInput }}</mat-hint
             >
+        </mat-form-field>
+    </div>
+    <div class="flex flex-col w-full">
+        <span class="mr-2 font-semibold">Kitty Description</span>
+        <mat-form-field
+            appearance="outline"
+            hintLabel="Max {{ Constants.MaxCharactersBigInput }} characters"
+        >
             <textarea
-              matInput
-              rows="4"
-              maxlength="{{ Constants.MaxCharactersBigInput }}"
-              placeholder="Enter a description up to {{ Constants.MaxCharactersBigInput }} characters for your kitty"
-              [(ngModel)]="character.description"
-              (keyup)="updateMaxDescription()"
-              (blur)="updateKittyDescription(getValue($event))"
+                matInput
+                rows="4"
+                maxlength="{{ Constants.MaxCharactersBigInput }}"
+                placeholder="Enter a description up to {{ Constants.MaxCharactersBigInput }} characters for your kitty"
+                [(ngModel)]="character.description"
+                (keyup)="updateMaxDescription()"
+                (blur)="updateKittyDescription(getValue($event))"
             ></textarea>
-          </mat-form-field>
-        }
-      </div>
-      <div class="flex flex-col w-full">
+            <mat-hint
+                align="end"
+                [ngClass]="character.description.length >= Constants.MaxCharactersMediumInput ? 'error' : ''"
+                >{{ character.description.length }}/{{ Constants.MaxCharactersBigInput }}</mat-hint
+            >
+        </mat-form-field>
+    </div>
+    <div class="flex flex-col w-full">
         <span class="mr-2 font-semibold">Humans</span>
         <mat-accordion multi="true">
-          @for (human of character.humans; track trackByFn($index, human)) {
-            <mat-expansion-panel
-              class="mt-1 accordion-color"
-              >
-              <mat-expansion-panel-header>
-                <mat-panel-title>{{ human.name }}</mat-panel-title>
-              </mat-expansion-panel-header>
-              <app-human-builder
-                [human]="human"
-                (humanRemoved)="removeHuman($event)"
-              ></app-human-builder>
+            @for (human of character.humans; track human.id) {
+            <mat-expansion-panel class="mt-1 accordion-color">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>{{ human.name }}</mat-panel-title>
+                </mat-expansion-panel-header>
+                <app-human-builder
+                    [human]="human"
+                    (humanRemoved)="removeHuman($event)"
+                ></app-human-builder>
             </mat-expansion-panel>
-          }
+            }
         </mat-accordion>
         <button
-          mat-flat-button
-          matPrefix
-          class="mt-2 mb-2"
-          (click)="addNewHuman()"
-          >
-          <mat-icon>add</mat-icon><span class="text-lg">Add Human</span>
+            mat-flat-button
+            matPrefix
+            class="mt-2 mb-2"
+            (click)="addNewHuman()"
+        >
+            <mat-icon>add</mat-icon><span class="text-lg">Add Human</span>
         </button>
-      </div>
     </div>
-  }
+</div>
+}

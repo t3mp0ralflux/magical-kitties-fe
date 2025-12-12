@@ -16,7 +16,6 @@ import { UpgradeRemoveRequest } from '../../../models/Characters/upgraderemovere
 import { UpsertUpgradeRequest } from '../../../models/Characters/upsertupgraderequest.model';
 import { CharacterUpdate } from '../../../models/System/characterupdate.model';
 import { UpgradeRule } from '../../../models/System/upgraderule.model';
-import { trackByFn } from '../../../utilities';
 import { CharacterAPIService } from '../../services/characters.service';
 import { InformationDisplayComponent } from '../information-display/information-display.component';
 import { BonusFeatureUpgrade } from './models/bonus-feature.model';
@@ -36,7 +35,6 @@ export class BonusFeatureComponent implements AfterContentInit, OnDestroy {
     characterApi: CharacterAPIService = inject(CharacterAPIService);
     dialog: MatDialog = inject(MatDialog);
     upgradeRule?: UpgradeRule;
-    trackByFn = trackByFn;
     characterSubscription?: Subscription;
     magicalPowerChoice: FormControl = new FormControl({ value: undefined, disabled: this.disabled });
     bonusFeatureChoice: FormControl = new FormControl({ value: undefined, disabled: this.disabled });

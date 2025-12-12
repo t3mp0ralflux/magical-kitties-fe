@@ -25,7 +25,7 @@ import { UpgradeOption } from '../../models/Characters/upgradeoption.model';
 import { CharacterUpdate } from '../../models/System/characterupdate.model';
 import { UpgradeRule } from '../../models/System/upgraderule.model';
 import { ConfirmModalComponent } from '../../sharedcomponents/confirm-modal/confirm-modal.component';
-import { CopyObject, trackByFn } from '../../utilities';
+import { CopyObject } from '../../utilities';
 import { CharacterAPIService } from '../services/characters.service';
 import { AttributeIncreaseComponent } from "./attribute-increase/attribute-increase.component";
 import { BonusFeatureComponent } from "./bonus-feature/bonus-feature.component";
@@ -48,7 +48,6 @@ export class CharacterBuilderKittyComponent implements AfterContentInit, OnDestr
     character?: Character;
     levelOptions: number[] = Array(10).fill(1).map((_, i) => i + 1);
     getValue = getValue;
-    trackByFn = trackByFn;
     UpgradeOption = UpgradeOption;
     AttributeOption = AttributeOption;
     levelControl: FormControl = new FormControl();

@@ -69,6 +69,8 @@ export class LoginComponent implements OnDestroy {
     login(): void {
         this.formSubmitting = true;
         this.loginError = false;
+        this.accountError = false;
+        this.accountErrorMessage = "";
 
         const loginInfo = new LoginModel({
             email: this.formGroup.controls['email'].value,
@@ -86,8 +88,14 @@ export class LoginComponent implements OnDestroy {
             error: (error: HttpErrorResponse) => {
                 switch (error.status) {
                     case 401:
-                        this.accountError = true;
-                        this.accountErrorMessage = error.error;
+                        if (error.error.includes("incorrect")) {
+                            // wrong password / username
+                            this.loginError = true;
+                        } else {
+                            // not activated or something else
+                            this.accountError = true;
+                            this.accountErrorMessage = error.error;
+                        }
                         break;
                     case 404:
                         this.loginError = true;

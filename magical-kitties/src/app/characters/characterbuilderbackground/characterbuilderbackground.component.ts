@@ -14,7 +14,6 @@ import { Character } from '../../models/Characters/character.model';
 import { DescriptionOption } from '../../models/Characters/descriptionoption.model';
 import { DescriptionUpdateRequest } from '../../models/Characters/descriptionupdaterequest.model';
 import { Human } from '../../models/Characters/human.model';
-import { trackByFn } from '../../utilities';
 import { CharacterAPIService } from '../services/characters.service';
 import { HumanAPIService } from '../services/humans.service';
 import { HumanBuilderComponent } from "./human-builder/human-builder.component";
@@ -32,7 +31,6 @@ export class CharacterBuilderBackgroundComponent implements AfterContentInit, On
     humanAPI: HumanAPIService = inject(HumanAPIService);
     character?: Character;
     getValue = getValue;
-    trackByFn = trackByFn;
     Constants = Constants;
     characterSubscription?: Subscription;
     descriptionMaxCountSubject = new BehaviorSubject(0);

@@ -39,7 +39,6 @@ export class HeaderComponent {
     }
 
     logout(): void {
-        console.log("logout received.")
         this.authService.logout().subscribe({
             next: (response) => {
                 this.router.navigateByUrl('/');

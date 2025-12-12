@@ -16,7 +16,6 @@ import { UpgradeRemoveRequest } from '../../../models/Characters/upgraderemovere
 import { UpsertUpgradeRequest } from '../../../models/Characters/upsertupgraderequest.model';
 import { CharacterUpdate } from '../../../models/System/characterupdate.model';
 import { UpgradeRule } from '../../../models/System/upgraderule.model';
-import { trackByFn } from '../../../utilities';
 import { CharacterAPIService } from '../../services/characters.service';
 import { InformationDisplayComponent } from '../information-display/information-display.component';
 import { TalentUpgrade } from './models/talent-upgrade.model';
@@ -37,7 +36,6 @@ export class TalentComponent implements AfterContentInit, OnDestroy {
     dialog: MatDialog = inject(MatDialog);
     talentChoice: FormControl = new FormControl({ value: undefined, disabled: this.disabled });
     upgradeRule?: UpgradeRule;
-    trackByFn = trackByFn;
     characterSubscription: Subscription;
     availableTalents: Talent[] = [];
     private character?: Character;

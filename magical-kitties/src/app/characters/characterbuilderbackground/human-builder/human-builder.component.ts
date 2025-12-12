@@ -16,7 +16,6 @@ import { DescriptionOption } from '../../../models/Characters/descriptionoption.
 import { Human } from '../../../models/Characters/human.model';
 import { Problem } from '../../../models/Characters/problem.model';
 import { HumanUpdateRequest } from '../../../models/Humans/humanupdaterequest.model';
-import { trackByFn } from '../../../utilities';
 import { HumanAPIService } from '../../services/humans.service';
 import { ProblemBuilderComponent } from "./problem-builder/problem-builder.component";
 
@@ -30,7 +29,6 @@ export class HumanBuilderComponent implements AfterContentInit {
     @Input() human?: Human;
     @Output() humanRemoved = new EventEmitter<string>();
     getValue = getValue;
-    trackByFn = trackByFn;
     Constants = Constants;
     humanAPI: HumanAPIService = inject(HumanAPIService);
     nameMaxCountSubject: BehaviorSubject<number> = new BehaviorSubject(0);

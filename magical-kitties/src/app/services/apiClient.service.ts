@@ -97,23 +97,34 @@ export class ApiClient implements HttpInterceptor, OnDestroy {
     handleError(response: HttpErrorResponse, request?: HttpRequest<any>, next?: HttpHandler) {
         switch (response.status) {
             case 401:
-                return this.refreshToken().pipe(
-                    switchMap(() => {
-                        if (request !== undefined && next !== undefined) {
-                            let httpRequest = this.calculateRequestHeader(request);
-                            return next.handle(httpRequest);
-                        }
-                        return EMPTY;
-                    })
-                )
-            case 400:
-            case 404:
-                const error = JSON.parse(response.error);
-                if (error.errors) {
-                    return throwError(() => error.errors);
+                if (!response.url?.includes("login")) {
+                    return this.refreshToken().pipe(
+                        switchMap(() => {
+                            if (request !== undefined && next !== undefined) {
+                                let httpRequest = this.calculateRequestHeader(request);
+                                return next.handle(httpRequest);
+                            }
+                            return EMPTY;
+                        })
+                    );
                 }
 
                 return throwError(() => response);
+            case 403:
+                return throwError(() => response);
+            case 400:
+            case 404:
+                try {
+                    const error = JSON.parse(response.error);
+                    if (error.errors) {
+                        return throwError(() => error.errors);
+                    }
+
+                    return throwError(() => response);
+
+                } catch {
+                    return throwError(() => response);
+                }
             default:
                 this._snackBar.open("Unknown server error. Contact Support.", "Close", { duration: 10000 });
                 break;

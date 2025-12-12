@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, OnDestroy } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
@@ -14,7 +15,6 @@ import { HeaderComponent } from '../../layout/header/header.component';
 import { LayoutComponent } from '../../layout/layout.component';
 import { Character } from '../../models/Characters/character.model';
 import { UpdateCharacterDescriptors } from '../../models/Characters/updatecharacterdescriptors.model';
-import { trackByFn } from '../../utilities';
 import { CharacterAPIService } from '../services/characters.service';
 
 @Component({
@@ -27,11 +27,12 @@ export class BuilderlayoutComponent extends LayoutComponent implements OnDestroy
     router: Router = inject(Router);
     characterApi: CharacterAPIService = inject(CharacterAPIService);
     Constants = Constants;
-    trackByFn = trackByFn;
     characterId: string;
     nameInput: FormControl = new FormControl("", [Validators.required]);
     currentPage?: string;
     character?: Character;
+    forbidden: boolean = false;
+    notFound: boolean = false;
     nameMaxCountSubject: BehaviorSubject<number> = new BehaviorSubject(0);
     remainingNameCharacters$: Observable<number> = this.nameMaxCountSubject.asObservable();
 
@@ -47,7 +48,19 @@ export class BuilderlayoutComponent extends LayoutComponent implements OnDestroy
                 this.nameInput.setValue(character.name);
 
                 this.updateMaxName();
-            }
+            },
+            error: ((err: HttpErrorResponse) => {
+                switch (err.status) {
+                    case 404:
+                        this.notFound = true;
+                        break;
+                    case 403:
+                        this.forbidden = true;
+                        break;
+                    default:
+                        break;
+                }
+            })
         });
 
         const routerSubscription = this.router.events
@@ -63,7 +76,10 @@ export class BuilderlayoutComponent extends LayoutComponent implements OnDestroy
         const characterSubscription = this.characterApi.character$.subscribe({
             next: (character: Character | undefined) => {
                 this.character = character;
-            }
+            },
+            error: (err => {
+                debugger;
+            })
         });
 
         this.subscriptions.push(...[apiSubscription, routerSubscription, characterSubscription]);

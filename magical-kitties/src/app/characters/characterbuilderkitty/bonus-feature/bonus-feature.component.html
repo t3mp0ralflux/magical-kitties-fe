@@ -1,68 +1,62 @@
 <div class="flex flex-wrap sm:min-h-14 min-w-xs sm:w-[800px]!">
-  <div class="flex self-baseline sm:self-auto items-center w-11/12 sm:w-1/2">
-    <mat-checkbox
-      [formControl]="parentControl"
-      (change)="checkChange($event)"
-      >
-    </mat-checkbox>
-    <div ngClass="{{ disabled ? 'disabled' : '' }}">
-      {{ upgradeRule?.value }}
-    </div>
-  </div>
-  <div class="flex items-center ml-auto upgrade-width-mobile sm:w-1/2!">
-    <mat-form-field
-      appearance="outline"
-      class="sm:max-w-9/20"
-      subscriptSizing="dynamic"
-      [hidden]="!showOptions"
-      >
-      <mat-select
-        [formControl]="magicalPowerChoice"
-        (selectionChange)="changeMagicalPower($event)"
+    <div class="flex self-baseline sm:self-auto items-center w-11/12 sm:w-1/2">
+        <mat-checkbox
+            [formControl]="parentControl"
+            (change)="checkChange($event)"
         >
-        <mat-option
-          [value]="undefined"
-          disabled="true"
-          >-</mat-option
-          >
-          @for (item of characterCurrentPowers; track trackByFn($index, item)) {
-            <mat-option
-              [value]="item.id"
-              >{{ item.name }}</mat-option
-              >
-            }
-          </mat-select>
+        </mat-checkbox>
+        <div ngClass="{{ disabled ? 'disabled' : '' }}">
+            {{ upgradeRule?.value }}
+        </div>
+    </div>
+    <div class="flex items-center ml-auto upgrade-width-mobile sm:w-1/2!">
+        <mat-form-field
+            appearance="outline"
+            class="sm:max-w-9/20"
+            subscriptSizing="dynamic"
+            [hidden]="!showOptions"
+        >
+            <mat-select
+                [formControl]="magicalPowerChoice"
+                (selectionChange)="changeMagicalPower($event)"
+            >
+                <mat-option
+                    [value]="undefined"
+                    disabled="true"
+                    >-</mat-option
+                >
+                @for (item of characterCurrentPowers; track item.id) {
+                <mat-option [value]="item.id">{{ item.name }}</mat-option>
+                }
+            </mat-select>
         </mat-form-field>
         <mat-form-field
-          appearance="outline"
-          class="ml-1 sm:max-w-9/20"
-          subscriptSizing="dynamic"
-          [hidden]="!showOptions"
-          >
-          <mat-select
-            [formControl]="bonusFeatureChoice"
-            (selectionChange)="changeBonusFeature($event)"
+            appearance="outline"
+            class="ml-1 sm:max-w-9/20"
+            subscriptSizing="dynamic"
+            [hidden]="!showOptions"
+        >
+            <mat-select
+                [formControl]="bonusFeatureChoice"
+                (selectionChange)="changeBonusFeature($event)"
             >
-            <mat-option
-              [value]="undefined"
-              disabled="true"
-              >-</mat-option
-              >
-              @for (item of getAvailableBonusFeatures(); track trackByFn($index, item)) {
                 <mat-option
-                  [value]="item.id"
-                  >{{ item.name }}</mat-option
-                  >
+                    [value]="undefined"
+                    disabled="true"
+                    >-</mat-option
+                >
+                @for (item of getAvailableBonusFeatures(); track $index) {
+                <mat-option [value]="item.id">{{ item.name }}</mat-option>
                 }
-              </mat-select>
-            </mat-form-field>
-            <div class="flex ml-1 justify-end sm:w-10 sm:ml-0">
-              <mat-icon
+            </mat-select>
+        </mat-form-field>
+        <div class="flex ml-1 justify-end sm:w-10 sm:ml-0">
+            <mat-icon
                 class="cursor-pointer"
                 (click)="openInfoDialog()"
                 [hidden]="!showOptions"
                 >help</mat-icon
-                >
-              </div>
-            </div>
-          </div>
+            >
+        </div>
+    </div>
+</div>

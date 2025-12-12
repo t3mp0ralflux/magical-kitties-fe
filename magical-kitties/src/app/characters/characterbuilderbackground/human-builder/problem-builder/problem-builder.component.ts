@@ -14,7 +14,6 @@ import { Problem } from '../../../../models/Characters/problem.model';
 import { ProblemOption } from '../../../../models/Humans/problemoption.model';
 import { ProblemUpdateRequest } from '../../../../models/Humans/problemupdaterequest.model';
 import { ProblemSource } from '../../../../models/System/problemsource.model';
-import { trackByFn } from '../../../../utilities';
 import { CharacterAPIService } from '../../../services/characters.service';
 import { HumanAPIService } from '../../../services/humans.service';
 
@@ -38,7 +37,6 @@ export class ProblemBuilderComponent implements AfterContentInit {
     solved: boolean = false;
     Constants = Constants;
     getValue = getValue;
-    trackByFn = trackByFn;
     sourceMaxCountSubject: BehaviorSubject<number> = new BehaviorSubject(0);
     remainingSourceCharacters$: Observable<number> = this.sourceMaxCountSubject.asObservable();
     emotionMaxCountSubject: BehaviorSubject<number> = new BehaviorSubject(0);
