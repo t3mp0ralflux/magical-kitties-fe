@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -9,7 +9,7 @@ import { HeaderComponent } from './header/header.component';
 
 @Component({
     selector: 'app-layout',
-    imports: [RouterOutlet, HeaderComponent, FooterComponent, CommonModule],
+    imports: [RouterOutlet, HeaderComponent, FooterComponent],
     templateUrl: './layout.component.html',
     styleUrl: './layout.component.scss'
 })
