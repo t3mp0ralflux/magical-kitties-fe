@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { AfterContentInit, Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { AfterContentInit, Component, EventEmitter, inject, Input, OnDestroy, Output } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
+import { Subscription } from 'rxjs';
 import { AttributeOption } from '../../../models/Characters/attributeoption.model';
 import { Character } from '../../../models/Characters/character.model';
 import { Endowment } from '../../../models/Characters/endowment.model';
@@ -26,7 +27,7 @@ import { BonusFeatureUpgrade } from './models/bonus-feature.model';
     templateUrl: './bonus-feature.component.html',
     styleUrl: './bonus-feature.component.scss'
 })
-export class BonusFeatureComponent implements AfterContentInit {
+export class BonusFeatureComponent implements AfterContentInit, OnDestroy {
     @Input() id?: string;
     @Input() parentControl!: any;
     @Input() disabled!: boolean;
@@ -36,8 +37,9 @@ export class BonusFeatureComponent implements AfterContentInit {
     dialog: MatDialog = inject(MatDialog);
     upgradeRule?: UpgradeRule;
     trackByFn = trackByFn;
-    magicalPowerChoice: FormControl = new FormControl({ value: undefined, disabled: this.disabled })
-    bonusFeatureChoice: FormControl = new FormControl({ value: undefined, disabled: this.disabled })
+    characterSubscription?: Subscription;
+    magicalPowerChoice: FormControl = new FormControl({ value: undefined, disabled: this.disabled });
+    bonusFeatureChoice: FormControl = new FormControl({ value: undefined, disabled: this.disabled });
     private upgradeInformation?: Upgrade;
     private bonusFeatureInformation?: BonusFeatureUpgrade;
     private character?: Character;
@@ -47,7 +49,7 @@ export class BonusFeatureComponent implements AfterContentInit {
     }
 
     constructor() {
-        this.characterApi.character$.subscribe({
+        this.characterSubscription = this.characterApi.character$.subscribe({
             next: (character) => {
                 if (character) {
                     this.character = character;
@@ -99,6 +101,12 @@ export class BonusFeatureComponent implements AfterContentInit {
                 }
             }
         });
+    }
+
+    ngOnDestroy(): void {
+        if (this.characterSubscription) {
+            this.characterSubscription.unsubscribe();
+        }
     }
 
     checkChange(event: MatCheckboxChange) {

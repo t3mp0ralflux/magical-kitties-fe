@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { Router, RouterEvent, RouterOutlet } from '@angular/router';
-import { BehaviorSubject, filter, forkJoin, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, filter, forkJoin, Observable } from 'rxjs';
 import { Constants } from '../../Constants';
 import { FooterComponent } from '../../layout/footer/footer.component';
 import { HeaderComponent } from '../../layout/header/header.component';
@@ -32,7 +32,6 @@ export class BuilderlayoutComponent extends LayoutComponent implements OnDestroy
     nameInput: FormControl = new FormControl("", [Validators.required]);
     currentPage?: string;
     character?: Character;
-    apiSubscription!: Subscription;
     nameMaxCountSubject: BehaviorSubject<number> = new BehaviorSubject(0);
     remainingNameCharacters$: Observable<number> = this.nameMaxCountSubject.asObservable();
 
@@ -40,7 +39,7 @@ export class BuilderlayoutComponent extends LayoutComponent implements OnDestroy
         super();
         this.characterId = this.route.snapshot.params["id"];
 
-        this.apiSubscription = forkJoin({
+        const apiSubscription = forkJoin({
             character: this.characterApi.getCharacterInformation(this.characterId),
             rules: this.characterApi.getRules()
         }).subscribe({
@@ -51,7 +50,7 @@ export class BuilderlayoutComponent extends LayoutComponent implements OnDestroy
             }
         });
 
-        this.router.events
+        const routerSubscription = this.router.events
             .pipe(
                 filter((e) => e instanceof RouterEvent)
             )
@@ -61,17 +60,13 @@ export class BuilderlayoutComponent extends LayoutComponent implements OnDestroy
                 }
             });
 
-        this.characterApi.character$.subscribe({
+        const characterSubscription = this.characterApi.character$.subscribe({
             next: (character: Character | undefined) => {
                 this.character = character;
             }
-        })
-    }
+        });
 
-    ngOnDestroy(): void {
-        if (this.apiSubscription) {
-            this.apiSubscription.unsubscribe();
-        }
+        this.subscriptions.push(...[apiSubscription, routerSubscription, characterSubscription]);
     }
 
     updateMaxName(): void {

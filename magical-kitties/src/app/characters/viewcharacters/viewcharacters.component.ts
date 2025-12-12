@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
@@ -10,7 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { Router } from '@angular/router';
-import { BehaviorSubject, catchError, combineLatest, debounceTime, EMPTY, Observable, switchMap } from 'rxjs';
+import { BehaviorSubject, catchError, combineLatest, debounceTime, EMPTY, Observable, Subscription, switchMap } from 'rxjs';
 import { getValue } from '../../login/utilities';
 import { CharactersResponse } from '../../models/Characters/charactersresponse.model';
 import { GetAllCharactersResponse } from '../../models/Characters/getallcharactersresponse.model';
@@ -26,7 +26,7 @@ import { DeleteModalComponent } from './delete-modal/delete-modal.component';
     templateUrl: './viewcharacters.component.html',
     styleUrl: './viewcharacters.component.scss',
 })
-export class ViewCharactersComponent {
+export class ViewCharactersComponent implements OnDestroy {
     private router: Router = inject(Router);
     private authService: AuthService = inject(AuthService);
     private apiService: CharacterAPIService = inject(CharacterAPIService);
@@ -35,8 +35,8 @@ export class ViewCharactersComponent {
     private searchText: BehaviorSubject<string> = new BehaviorSubject<string>("");
     private sortOption: BehaviorSubject<string> = new BehaviorSubject<string>("name");
     trackByFn = trackByFn;
+    subscriptions: Subscription[] = [];
     private searchInformation$: Observable<{ input: string, sort: string }> = combineLatest({ input: this.searchText, sort: this.sortOption, refresh: this.refreshSearch });
-
     getValue = getValue;
     isLoading = true;
 
@@ -49,7 +49,7 @@ export class ViewCharactersComponent {
             //debugger;
             return EMPTY;
         })
-    )
+    );
 
     constructor() {
         if (this.authService.account === undefined) {
@@ -60,6 +60,12 @@ export class ViewCharactersComponent {
 
             this.router.navigateByUrl("/login", { state: extras });
         }
+    }
+
+    ngOnDestroy(): void {
+        this.subscriptions.forEach((subscription: Subscription) => {
+            subscription.unsubscribe();
+        });
     }
 
     search(characterSearch: string): void {
@@ -92,7 +98,7 @@ export class ViewCharactersComponent {
     }
 
     copyCharacter(characterId: string): void {
-        this.dialog.open(CopyCharacterModalComponent).afterClosed().subscribe({
+        const dialogSubscription = this.dialog.open(CopyCharacterModalComponent).afterClosed().subscribe({
             next: (value) => {
                 if (!value) {
                     return;
@@ -106,11 +112,13 @@ export class ViewCharactersComponent {
                     }
                 })
             }
-        })
+        });
+
+        this.subscriptions.push(dialogSubscription);
     }
 
     deleteCharacter(character: GetAllCharactersResponse): void {
-        this.dialog.open(DeleteModalComponent, { data: character }).afterClosed().subscribe({
+        const dialogSubscription = this.dialog.open(DeleteModalComponent, { data: character }).afterClosed().subscribe({
             next: (value) => {
                 if (!value) {
                     return;
@@ -125,6 +133,8 @@ export class ViewCharactersComponent {
                     }
                 })
             }
-        })
+        });
+
+        this.subscriptions.push(dialogSubscription);
     }
 }

@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { AfterContentInit, Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { AfterContentInit, Component, EventEmitter, inject, Input, OnDestroy, Output } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
+import { Subscription } from 'rxjs';
 import { Character } from '../../../models/Characters/character.model';
 import { Upgrade } from '../../../models/Characters/upgrade.model';
 import { UpgradeRemoveRequest } from '../../../models/Characters/upgraderemoverequest.model';
@@ -15,7 +16,7 @@ import { CharacterAPIService } from '../../services/characters.service';
     templateUrl: './increase-limit.component.html',
     styleUrl: './increase-limit.component.scss'
 })
-export class IncreaseLimitComponent implements AfterContentInit {
+export class IncreaseLimitComponent implements AfterContentInit, OnDestroy {
     @Input() id?: string;
     @Input() parentControl!: any;
     @Input() disabled!: boolean;
@@ -24,9 +25,10 @@ export class IncreaseLimitComponent implements AfterContentInit {
     characterApi: CharacterAPIService = inject(CharacterAPIService);
     private character?: Character;
     upgradeRule?: UpgradeRule;
+    characterSubscription?: Subscription;
 
     constructor() {
-        this.characterApi.character$.subscribe({
+        this.characterSubscription = this.characterApi.character$.subscribe({
             next: (character) => {
                 this.character = character;
             }
@@ -35,6 +37,12 @@ export class IncreaseLimitComponent implements AfterContentInit {
 
     ngAfterContentInit(): void {
         this.upgradeRule = this.characterApi.rules?.upgrades.find(x => x.id === this.id);
+    }
+
+    ngOnDestroy(): void {
+        if (this.characterSubscription) {
+            this.characterSubscription.unsubscribe();
+        }
     }
 
     checkChange(event: MatCheckboxChange): void {

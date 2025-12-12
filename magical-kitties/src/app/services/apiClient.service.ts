@@ -1,7 +1,7 @@
 import { HttpClient, HttpContext, HttpContextToken, HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpParams, HttpRequest } from "@angular/common/http";
-import { inject, Injectable } from "@angular/core";
+import { inject, Injectable, OnDestroy } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { catchError, EMPTY, finalize, map, Observable, Subject, switchMap, tap, throwError } from "rxjs";
+import { catchError, EMPTY, finalize, map, Observable, Subject, Subscription, switchMap, tap, throwError } from "rxjs";
 import { environment } from "../../environments/environment";
 import { Constants } from "../Constants";
 import { Account } from "../models/Account/account.model";
@@ -39,19 +39,25 @@ export interface RequestConfig {
 }
 
 @Injectable({ providedIn: 'root' })
-export class ApiClient implements HttpInterceptor {
+export class ApiClient implements HttpInterceptor, OnDestroy {
     private loginApiUrl = `${environment.baseUrl}/auth/login`;
     private logoutApiUrl = `${environment.baseUrl}/auth/logout`;
     private refreshApiUrl = `${environment.baseUrl}/auth/token/refresh`;
+    private http: HttpClient = inject(HttpClient);
     private _snackBar: MatSnackBar = inject(MatSnackBar);
-
     private refreshTokenInProgress = false;
     private tokenRefreshedSource = new Subject<Account | undefined>();
     private tokenRefreshed$ = this.tokenRefreshedSource.asObservable();
     private tokenExpiredObserver: (() => void)[] = [];
-    private http: HttpClient = inject(HttpClient);
+    private tokenRefreshedSubscription?: Subscription;
 
     constructor() {}
+
+    ngOnDestroy(): void {
+        if (this.tokenRefreshedSubscription) {
+            this.tokenRefreshedSubscription.unsubscribe();
+        }
+    }
 
     public addTokenExpiredObserver(observer: () => void) {
         this.tokenExpiredObserver.push(observer);
@@ -144,7 +150,7 @@ export class ApiClient implements HttpInterceptor {
             console.log("Refresh token in progress");
 
             return new Observable(observer => {
-                this.tokenRefreshed$.subscribe((refreshed) => {
+                this.tokenRefreshedSubscription = this.tokenRefreshed$.subscribe((refreshed) => {
                     if (refreshed) {
                         observer.next(refreshed);
                         observer.complete();

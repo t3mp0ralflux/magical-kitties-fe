@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Account } from '../../models/Account/account.model';
 import { LoginModel } from '../../models/Login/login.model';
 import { AuthService } from '../../services/authService.service';
@@ -21,7 +22,12 @@ import { ErrorSnackbarComponent } from '../../sharedcomponents/error-snackbar/er
     templateUrl: './login.component.html',
     styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
+    private _snackBar = inject(MatSnackBar);
+    private fb: FormBuilder = inject(FormBuilder);
+    private authService: AuthService = inject(AuthService);
+    private router: Router = inject(Router);
+    snackbarSubscription?: Subscription;
     formGroup: FormGroup;
     formSubmitting: boolean = false;
     loginError: boolean = false;
@@ -30,11 +36,6 @@ export class LoginComponent {
     hidePassword: boolean = true;
     returnUrl: string = "";
     resumeNavigation: boolean = false;
-
-    private _snackBar = inject(MatSnackBar);
-    private fb: FormBuilder = inject(FormBuilder);
-    private authService: AuthService = inject(AuthService);
-    private router: Router = inject(Router);
 
     constructor() {
         this.formGroup = this.fb.group({
@@ -49,14 +50,20 @@ export class LoginComponent {
         }
     }
 
+    ngOnDestroy(): void {
+        if (this.snackbarSubscription) {
+            this.snackbarSubscription.unsubscribe();
+        }
+    }
+
     openSnackBar(message: string, action: string) {
         const snackBar: MatSnackBarRef<ErrorSnackbarComponent> = this._snackBar.openFromComponent(ErrorSnackbarComponent, { data: message });
 
-        snackBar.onAction().subscribe({
+        this.snackbarSubscription = snackBar.onAction().subscribe({
             next: (_: any) => {
                 this.login();
             }
-        })
+        });
     }
 
     login(): void {

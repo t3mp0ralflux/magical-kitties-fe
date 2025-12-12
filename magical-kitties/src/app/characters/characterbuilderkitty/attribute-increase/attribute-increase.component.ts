@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { AfterContentInit, Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { AfterContentInit, Component, EventEmitter, inject, Input, OnDestroy, Output } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
+import { Subscription } from 'rxjs';
 import { AttributeOption } from '../../../models/Characters/attributeoption.model';
 import { Character } from '../../../models/Characters/character.model';
 import { Upgrade } from '../../../models/Characters/upgrade.model';
@@ -22,7 +23,7 @@ import { ImproveAttributeUpgrade } from './models/attribute-increase.model';
     templateUrl: './attribute-increase.component.html',
     styleUrl: './attribute-increase.component.scss'
 })
-export class AttributeIncreaseComponent implements AfterContentInit {
+export class AttributeIncreaseComponent implements AfterContentInit, OnDestroy {
     @Input() id?: string;
     @Input() parentControl!: any;
     @Input() disabled!: boolean;
@@ -34,18 +35,19 @@ export class AttributeIncreaseComponent implements AfterContentInit {
     AttributeOption = AttributeOption;
     upgradeRule?: UpgradeRule;
     trackByFn = trackByFn;
+    subscriptions: Subscription[] = [];
     private character?: Character;
     private upgradeInformation?: Upgrade;
     private attributeInformation?: ImproveAttributeUpgrade;
 
     constructor() {
-        this.characterApi.character$.subscribe({
+        const characterSubscription = this.characterApi.character$.subscribe({
             next: (character) => {
                 this.character = character;
             }
         });
 
-        this.characterApi.characterChanged$.subscribe({
+        const characterChangeSubscription = this.characterApi.characterChanged$.subscribe({
             next: (update: CharacterUpdate) => {
                 if (update.attributeOption === undefined) {
                     return;
@@ -67,7 +69,9 @@ export class AttributeIncreaseComponent implements AfterContentInit {
                         break;
                 }
             }
-        })
+        });
+
+        this.subscriptions.push(...[characterSubscription, characterChangeSubscription]);
     }
 
     ngAfterContentInit(): void {
@@ -83,6 +87,12 @@ export class AttributeIncreaseComponent implements AfterContentInit {
         this.addValidAttributes();
 
         this.showOptions = this.parentControl.value === true;
+    }
+
+    ngOnDestroy(): void {
+        this.subscriptions.forEach((subscription: Subscription) => {
+            subscription.unsubscribe();
+        })
     }
 
     checkChange(event: MatCheckboxChange): void {
