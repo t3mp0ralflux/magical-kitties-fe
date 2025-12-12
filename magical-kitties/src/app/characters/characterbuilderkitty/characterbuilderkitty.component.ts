@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { AfterContentInit, Component, inject, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -36,7 +36,7 @@ import { TalentComponent } from "./talent/talent.component";
 
 @Component({
     selector: 'app-characterbuilderkitty',
-    imports: [CommonModule, MatDividerModule, MatInputModule, MatSelectModule, ReactiveFormsModule, MatIconModule, MatCardModule, MatCheckboxModule, MarkdownComponent, MatExpansionModule, BonusFeatureComponent, AttributeIncreaseComponent, IncreaseLimitComponent, TalentComponent, MagicalPowerComponent],
+    imports: [MatDividerModule, MatInputModule, MatSelectModule, ReactiveFormsModule, MatIconModule, MatCardModule, MatCheckboxModule, MarkdownComponent, MatExpansionModule, BonusFeatureComponent, AttributeIncreaseComponent, IncreaseLimitComponent, TalentComponent, MagicalPowerComponent],
     templateUrl: './characterbuilderkitty.component.html',
     styleUrl: './characterbuilderkitty.component.scss'
 })

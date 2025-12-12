@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -18,7 +18,7 @@ import { ErrorSnackbarComponent } from '../../sharedcomponents/error-snackbar/er
 
 @Component({
     selector: 'app-login',
-    imports: [CommonModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatButtonModule, MatInputModule, RouterLink, RouterLinkActive, MatProgressSpinnerModule, MatIconModule, MatDividerModule],
+    imports: [MatFormFieldModule, FormsModule, ReactiveFormsModule, MatButtonModule, MatInputModule, RouterLink, RouterLinkActive, MatProgressSpinnerModule, MatIconModule, MatDividerModule],
     templateUrl: './login.component.html',
     styleUrl: './login.component.scss'
 })
@@ -43,7 +43,7 @@ export class LoginComponent implements OnDestroy {
             password: new FormControl(null, [Validators.required])
         })
 
-        const returnUrlState = this.router.lastSuccessfulNavigation?.extras.state;
+        const returnUrlState = this.router.lastSuccessfulNavigation()?.extras.state;
         if (returnUrlState) {
             this.returnUrl = returnUrlState!['resumeUrl'];
             this.resumeNavigation = returnUrlState!['resumeNavigation'];

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -10,7 +10,7 @@ import { LoginAPIService } from '../services/login.service';
 
 @Component({
     selector: 'app-accountactivation',
-    imports: [CommonModule, RouterLink],
+    imports: [RouterLink],
     templateUrl: './accountactivation.component.html',
     styleUrl: './accountactivation.component.scss'
 })

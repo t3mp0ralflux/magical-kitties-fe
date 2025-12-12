@@ -1,8 +1,13 @@
-<app-header *ngIf="!loading"></app-header>
-<main
+@if (!loading) {
+  <app-header></app-header>
+}
+@if (!loading) {
+  <main
     class="background w-dvw min-h-10/12"
-    *ngIf="!loading"
->
+    >
     <router-outlet></router-outlet>
-</main>
-<app-footer *ngIf="!loading"></app-footer>
+  </main>
+}
+@if (!loading) {
+  <app-footer></app-footer>
+}
