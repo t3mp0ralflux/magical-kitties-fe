@@ -1,6 +1,6 @@
 import { HttpErrorResponse, HttpResponse } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { catchError, EMPTY, Observable, tap } from "rxjs";
+import { Observable, tap } from "rxjs";
 import { environment } from "../../environments/environment";
 import { Account } from "../models/Account/account.model";
 import { LoginModel } from "../models/Login/login.model";
@@ -31,10 +31,11 @@ export class AuthService {
     refreshLogin() {
         return this.apiClient.refreshToken().pipe(
             tap((response: Account) => {
+                if (!response) {
+                    throw new Error("Not logged in.");
+                }
+
                 this.account = response;
-            }),
-            catchError((error) => {
-                return EMPTY;
             })
         );
     }

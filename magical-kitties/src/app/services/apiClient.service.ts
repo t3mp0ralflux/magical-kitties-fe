@@ -104,12 +104,17 @@ export class ApiClient implements HttpInterceptor, OnDestroy {
                             return next.handle(httpRequest);
                         }
                         return EMPTY;
+                    }),
+                    catchError((err) => {
+                        return EMPTY;
                     })
                 )
-            case 400:
+            case 403:
             case 404:
+                return throwError(() => response);
+            case 400:
                 const error = JSON.parse(response.error);
-                if (error.errors) {
+                if (error?.errors) {
                     return throwError(() => error.errors);
                 }
 
@@ -164,7 +169,7 @@ export class ApiClient implements HttpInterceptor, OnDestroy {
                 this.tokenRefreshedSource.next(new Account());
                 this.clearTokens();
 
-                return EMPTY;
+                return throwError(() => new Error("Cannot refresh token. Not logged in."));
             } else {
                 this.refreshTokenInProgress = true;
                 return this.tryRefreshToken().pipe(
