@@ -5,8 +5,11 @@ import { CharacterBuilderHomeComponent } from './characters/characterbuilderhome
 import { CharacterBuilderKittyComponent } from './characters/characterbuilderkitty/characterbuilderkitty.component';
 import { DisplayCharacterComponent } from './characters/displaycharacter/displaycharacter.component';
 import { ViewCharactersComponent } from './characters/viewcharacters/viewcharacters.component';
+import { CharacterGuard } from './guards/character-guard.guard';
 import { LandingComponent } from './landing/landing.component';
+import { ForbiddenComponent } from './layout/forbidden/forbidden.component';
 import { LayoutComponent } from './layout/layout.component';
+import { NotFoundComponent } from './layout/notfound/notfound.component';
 import { AccountActivationComponent } from './login/accountactivation/accountactivation.component';
 import { ForgotPasswordComponent } from './login/forgotpassword/forgotpassword.component';
 import { LoginLayoutComponent } from './login/layout/loginlayout.component';
@@ -19,7 +22,9 @@ export const routes: Routes = [
         path: '',
         component: LayoutComponent,
         children: [
-            { path: '', component: LandingComponent }
+            { path: '', component: LandingComponent },
+            { path: 'forbidden', component: ForbiddenComponent },
+            { path: 'not-found', component: NotFoundComponent }
         ]
     },
     {
@@ -45,7 +50,7 @@ export const routes: Routes = [
         component: LayoutComponent,
         children: [
             { path: '', component: ViewCharactersComponent },
-            { path: ':id', component: DisplayCharacterComponent },
+            { path: ':id', component: DisplayCharacterComponent, canActivate: [CharacterGuard] },
 
         ]
     },
