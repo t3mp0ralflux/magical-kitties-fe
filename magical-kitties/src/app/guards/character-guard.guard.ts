@@ -9,7 +9,6 @@ export const CharacterGuard: CanActivateFn = (route, state) => {
     const authService = inject(AuthService);
     const characterService = inject(CharacterAPIService);
     const router = inject(Router);
-    let character = undefined;
 
     const id = route.params["id"];
 
@@ -20,7 +19,7 @@ export const CharacterGuard: CanActivateFn = (route, state) => {
 
     if (!authService.account) {
         authService.refreshLogin().subscribe({
-            next: (account: Account) => {
+            next: (_: Account) => {
                 return true;
             },
             error: (err) => {
@@ -30,8 +29,8 @@ export const CharacterGuard: CanActivateFn = (route, state) => {
     }
 
     characterService.getCharacterInformation(id).subscribe({
-        next: (response) => {
-            character = response
+        next: (_) => {
+            // Do nothing. getCharacterInformation() sets the character in the service.
         },
         error: (errorResponse) => {
             switch (errorResponse.status) {

@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from "@angular/material/toolbar";
-import { Router, RouterEvent, RouterOutlet } from '@angular/router';
+import { Router, RouterEvent, RouterLinkWithHref, RouterOutlet } from '@angular/router';
 import { BehaviorSubject, filter, forkJoin, Observable } from 'rxjs';
 import { Constants } from '../../Constants';
 import { FooterComponent } from '../../layout/footer/footer.component';
@@ -19,7 +19,7 @@ import { CharacterAPIService } from '../services/characters.service';
 
 @Component({
     selector: 'app-builderlayout',
-    imports: [CommonModule, RouterOutlet, MatToolbarModule, MatIconModule, HeaderComponent, FooterComponent, MatInputModule, MatFormFieldModule, ReactiveFormsModule, MatDividerModule],
+    imports: [CommonModule, RouterOutlet, MatToolbarModule, MatIconModule, HeaderComponent, FooterComponent, MatInputModule, MatFormFieldModule, ReactiveFormsModule, MatDividerModule, RouterLinkWithHref],
     templateUrl: './builderlayout.component.html',
     styleUrl: './builderlayout.component.scss'
 })

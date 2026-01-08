@@ -1,1 +1,13 @@
-<p>displaycharacter works!</p>
+<div class="flex">
+    <app-stat-bubble [option]="AttributeOption.cute"></app-stat-bubble>
+    <app-stat-bubble [option]="AttributeOption.cunning"></app-stat-bubble>
+    <app-stat-bubble [option]="AttributeOption.fierce"></app-stat-bubble>
+</div>
+<div>
+    <button
+        mat-raised-button
+        (click)="addInjury()"
+    >
+        Add Injury
+    </button>
+</div>
