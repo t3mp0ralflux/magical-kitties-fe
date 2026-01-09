@@ -74,14 +74,21 @@ export class DisplayCharacterComponent implements OnInit, OnDestroy {
                         const bonusFeature = power.bonusFeatures.find(x => x.id === (upgrade.choice as BonusFeatureUpgrade).bonusFeatureId);
 
                         output = `${output}
-                ##### ${bonusFeature?.name}
-                  - ${bonusFeature?.description}`
+                _${bonusFeature?.name}_
+                  - ${bonusFeature?.description}\n`
                     });
                 }
             }
         });
 
         return output;
+    }
+
+    getFlawInformation(): string {
+        return `
+        #### ${this.character?.flaw?.name}
+        - ${this.character?.flaw?.description}`;
+
     }
 
 }
