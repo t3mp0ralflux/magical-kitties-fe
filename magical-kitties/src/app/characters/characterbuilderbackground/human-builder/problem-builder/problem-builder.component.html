@@ -34,10 +34,10 @@
             @if (selectedProblemSource === 'Custom') {
             <div class="flex flex-col ml-1 max-w-1/2">
                 <mat-label class="text-xs pb-[2px] sm:text-base sm:pb-0">Custom Source</mat-label>
-                @if ((remainingSourceCharacters$ | async); as count) {
+                @if ({value: (remainingSourceCharacters$ | async)}; as count) {
                 <mat-form-field
                     appearance="outline"
-                    hintLabel="{{count <= Constants.MaxCharactersSmallInput/2 ? `Characters remaining: ${count}` : '' }}"
+                    hintLabel="{{count.value! <= Constants.MaxCharactersSmallInput/2 ? `Characters remaining: ${count.value!}` : '' }}"
                 >
                     <input
                         matInput
@@ -73,10 +73,10 @@
             @if (selectedProblemEmotion === 'Custom') {
             <div class="flex flex-col ml-1 max-w-1/2">
                 <mat-label class="text-xs pb-[2px] sm:text-base sm:pb-0">Custom Emotion</mat-label>
-                @if ((remainingEmotionCharacters$ | async); as count) {
+                @if ({value: (remainingEmotionCharacters$ | async)}; as count) {
                 <mat-form-field
                     appearance="outline"
-                    hintLabel="{{count <= Constants.MaxCharactersSmallInput/2 ? `Characters remaining: ${count}` : '' }}"
+                    hintLabel="{{count.value! <= Constants.MaxCharactersSmallInput/2 ? `Characters remaining: ${count.value!}` : '' }}"
                 >
                     <input
                         matInput

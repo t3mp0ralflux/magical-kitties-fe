@@ -6,11 +6,11 @@
     <mat-card-header>
         <div class="flex flex-col">
             <mat-label>Name</mat-label>
-            @if ((remainingNameCharacters$ | async); as count) {
+            @if ({value: (remainingNameCharacters$ | async)}; as count) {
             <mat-form-field
                 appearance="outline"
                 class="ml-1"
-                hintLabel="{{count <= Constants.MaxCharactersSmallInput/2 ? `Characters remaining: ${count}` : '' }}"
+                hintLabel="{{count.value! <= Constants.MaxCharactersSmallInput/2 ? `Characters remaining: ${count.value!}` : '' }}"
             >
                 <input
                     matInput
@@ -32,10 +32,10 @@
     <mat-card-content>
         <div class="flex flex-col">
             <mat-label>Description</mat-label>
-            @if ((remainingDescriptionCharacters$ | async); as count) {
+            @if ({value: (remainingDescriptionCharacters$ | async)}; as count) {
             <mat-form-field
                 appearance="outline"
-                hintLabel="{{count <= Constants.MaxCharactersBigInput/2 ? `Characters remaining: ${count}` : '' }}"
+                hintLabel="{{count.value! <= Constants.MaxCharactersBigInput/2 ? `Characters remaining: ${count.value!}` : '' }}"
             >
                 <textarea
                     matInput

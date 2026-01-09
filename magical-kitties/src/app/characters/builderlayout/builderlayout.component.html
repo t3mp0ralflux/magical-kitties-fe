@@ -77,10 +77,10 @@
                 </div>
                 <div class="ml-3 mr-3 flex flex-col w-96">
                     <mat-label>Character Name</mat-label>
-                    @if (remainingNameCharacters$ | async; as count) {
+                    @if ({value: remainingNameCharacters$ | async}; as count) {
                     <mat-form-field
                         appearance="outline"
-                        hintLabel="{{count <= Constants.MaxCharactersMediumInput/2 ? `Characters remaining: ${count}` : '' }}"
+                        hintLabel="{{count.value! <= Constants.MaxCharactersMediumInput/2 ? `Characters remaining: ${count.value!}` : '' }}"
                     >
                         <input
                             matInput
