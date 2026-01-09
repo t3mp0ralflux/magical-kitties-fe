@@ -77,7 +77,7 @@
                 </div>
                 <div class="ml-3 mr-3 flex flex-col w-96">
                     <mat-label>Character Name</mat-label>
-                    @for (count of [(remainingNameCharacters$ | async)!.valueOf()]; track trackByFn($index, count)) {
+                    @if (remainingNameCharacters$ | async; as count) {
                     <mat-form-field
                         appearance="outline"
                         hintLabel="{{count <= Constants.MaxCharactersMediumInput/2 ? `Characters remaining: ${count}` : '' }}"
@@ -85,7 +85,7 @@
                         <input
                             matInput
                             maxlength="{{ Constants.MaxCharactersMediumInput }}"
-                            [formControl]="nameInput"
+                            [(ngModel)]="character.name"
                             (keyup)="updateMaxName()"
                             (blur)="updateName()"
                         />

@@ -1,16 +1,20 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { MatButtonModule } from "@angular/material/button";
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MarkdownComponent } from "ngx-markdown";
 import { Subscription } from 'rxjs';
 import { AttributeOption } from '../../models/Characters/attributeoption.model';
 import { Character } from '../../models/Characters/character.model';
-import { CharacterUpdate } from '../../models/System/characterupdate.model';
+import { UpgradeOption } from '../../models/Characters/upgradeoption.model';
 import { AuthService } from '../../services/authService.service';
+import { BonusFeatureUpgrade } from '../characterbuilderkitty/bonus-feature/models/bonus-feature.model';
 import { CharacterAPIService } from '../services/characters.service';
 import { StatBubbleComponent } from "./stat-bubble/stat-bubble.component";
 
 @Component({
     selector: 'app-displaycharacter',
-    imports: [StatBubbleComponent, MatButtonModule],
+    imports: [StatBubbleComponent, MatButtonModule, MatFormFieldModule, MatInputModule, MarkdownComponent],
     templateUrl: './displaycharacter.component.html',
     styleUrl: './displaycharacter.component.scss'
 })
@@ -25,6 +29,8 @@ export class DisplayCharacterComponent implements OnInit, OnDestroy {
         this.characterService.character$.subscribe({
             next: (character: Character | undefined) => {
                 this.character = character;
+
+                //this.talentInfo = `- fuck you`;
             }
         });
     }
@@ -35,24 +41,47 @@ export class DisplayCharacterComponent implements OnInit, OnDestroy {
         }
     }
 
-    addInjury(): void {
-        // TODO: REMOVE THIS!
-        this.character!.currentInjuries += 1;
+    getTalentInformation(): string {
+        let output = "";
+        this.character?.talents.forEach(talent => {
+            output = `${output}
+            #### ${talent.name}
+              - ${talent.description}
+            `;
+        });
 
-        this.characterService.characterHasChanged(new CharacterUpdate({
-            attributeOption: AttributeOption.currentinjuries
-        }));
+        return output;
     }
 
-    removeInjury(): void {
-        // TODO: REMOVE THIS!
-        if (this.character!.currentInjuries > 0) {
-            this.character!.currentInjuries -= 1;
-        }
+    getMagicalPowerInformation(): string {
+        let output = "";
+        const magicPowerUpgrades = this.character?.upgrades.filter(x => x.option === UpgradeOption.bonusFeature);
 
-        this.characterService.characterHasChanged(new CharacterUpdate({
-            attributeOption: AttributeOption.currentinjuries
-        }));
+        this.character?.magicalPowers.forEach(power => {
+            output = `${output}
+            #### ${power.name}
+              - ${power.description}
+            `;
+
+            if (magicPowerUpgrades) {
+                const relevantUpgrades = magicPowerUpgrades?.filter(x => (x.choice as BonusFeatureUpgrade).magicalPowerId === power.id);
+
+                if (relevantUpgrades.length > 0) {
+                    output = `${output}
+                #### Bonus Features`;
+
+                    relevantUpgrades.forEach(upgrade => {
+                        const bonusFeature = power.bonusFeatures.find(x => x.id === (upgrade.choice as BonusFeatureUpgrade).bonusFeatureId);
+
+                        output = `${output}
+                ##### ${bonusFeature?.name}
+                  - ${bonusFeature?.description}`
+                    });
+                }
+            }
+        });
+
+        return output;
     }
 
 }

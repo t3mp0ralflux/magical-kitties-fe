@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { MatCard, MatCardContent, MatCardImage } from '@angular/material/card';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-landing',
-    imports: [MatCard, MatCardContent, MatCardImage],
+    imports: [MatCard, MatCardContent, MatCardImage, RouterLink],
     templateUrl: './landing.component.html',
     styleUrl: './landing.component.scss'
 })

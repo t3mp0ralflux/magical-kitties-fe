@@ -5,13 +5,13 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Account } from '../../models/Account/account.model';
 import { AuthService } from '../../services/authService.service';
 
 @Component({
     selector: 'app-header',
-    imports: [CommonModule, MatToolbarModule, MatDividerModule, MatButtonModule, MatMenuModule, MatIconModule],
+    imports: [CommonModule, MatToolbarModule, MatDividerModule, MatButtonModule, MatMenuModule, MatIconModule, RouterLink],
     templateUrl: './header.component.html',
     styleUrl: './header.component.scss'
 })
@@ -34,10 +34,6 @@ export class HeaderComponent {
         document.getElementById("minimenu")?.classList.toggle("translate-x-full");
     }
 
-    navigate(desination: string): void {
-        this.router.navigateByUrl(`/${desination}`);
-    }
-
     logout(): void {
         console.log("logout received.")
         this.authService.logout().subscribe({
@@ -48,9 +44,5 @@ export class HeaderComponent {
 
             }
         });
-    }
-
-    checkButton(text: string): void {
-        alert(text);
     }
 }

@@ -1,14 +1,23 @@
 <div class="grid [grid-template-columns:1fr]">
     <span class="flex justify-center [grid-column:1] [grid-row:1]">
         @if (option === AttributeOption.cute) {
-        <img src="/cute_icon.png" />
+        <img
+            src="/cute_icon.png"
+            class="drop-shadow-lg/25"
+        />
         }@else if(option === AttributeOption.cunning){
-        <img src="/cunning_icon.png" />
+        <img
+            src="/cunning_icon.png"
+            class="drop-shadow-lg/25"
+        />
         }@else {
-        <img src="/fierce_icon.png" />
+        <img
+            src="/fierce_icon.png"
+            class="drop-shadow-lg/25"
+        />
         }
     </span>
-    <div class="[grid-column:1] [grid-row:1] place-self-center text-2xl overflow-hidden">
+    <div class="[grid-column:1] [grid-row:1] place-self-center text-3xl mt-3 overflow-hidden z-10">
         <h2>{{ displayedValue }}</h2>
     </div>
 </div>

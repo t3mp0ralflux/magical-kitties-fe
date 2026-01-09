@@ -1,13 +1,53 @@
-<div class="flex">
-    <app-stat-bubble [option]="AttributeOption.cute"></app-stat-bubble>
-    <app-stat-bubble [option]="AttributeOption.cunning"></app-stat-bubble>
-    <app-stat-bubble [option]="AttributeOption.fierce"></app-stat-bubble>
+@if(character){
+<div class="plain-background"></div>
+<div class="relative z-10 m-1">
+    <div class="flex flex-col w-3/4">
+        <div class="flex border-b charactersheet-dark-blue text-2xl">
+            {{ character.name }}
+        </div>
+        <div class="charactersheet-dark-blue text-xs">KITTY NAME</div>
+    </div>
+    <div class="flex flex-col mt-2">
+        <div class="flex w-3/4 border-b charactersheet-dark-blue text-2xl">
+            {{ authService.account?.userName }}
+        </div>
+        <div class="charactersheet-dark-blue text-xs">PLAYER NAME</div>
+    </div>
+    <div class="flex justify-around mt-2">
+        <app-stat-bubble [option]="AttributeOption.cute"></app-stat-bubble>
+        <app-stat-bubble [option]="AttributeOption.cunning"></app-stat-bubble>
+        <app-stat-bubble [option]="AttributeOption.fierce"></app-stat-bubble>
+    </div>
+    <div class="bg-white">
+        <div class="flex flex-col mt-1 border-l-1 border-t-1 border-r-1 border-charactersheet-dark-blue">
+            <div class="flex text-white mt-2 mb-2 bg-sheet-medium-blue w-full">
+                <span class="ml-3 font-semibold text-sm">KITTY DESCRIPTION</span>
+            </div>
+            <markdown
+                class="min-h-24"
+                [data]="character.description"
+            ></markdown>
+        </div>
+        <div class="flex flex-col border-l-1 border-t-1 border-r-1 border-sheet-purple">
+            <div class="flex text-sheet-purple">
+                <span class="ml-3 font-semibold text-sm">TALENT: +1 DIE</span>
+            </div>
+            <markdown
+                class="prose"
+                ngPreserveWhitespaces
+                [data]="getTalentInformation()"
+            ></markdown>
+        </div>
+        <div class="flex flex-col border-l-1 border-t-1 border-r-1 border-sheet-cute">
+            <div class="flex text-sheet-medium-blue">
+                <span class="ml-3 font-semibold text-sm">MAGICAL POWER: +2 DICE</span>
+            </div>
+            <markdown
+                class="prose"
+                ngPreserveWhitespaces
+                [data]="getMagicalPowerInformation()"
+            ></markdown>
+        </div>
+    </div>
 </div>
-<div>
-    <button
-        mat-raised-button
-        (click)="addInjury()"
-    >
-        Add Injury
-    </button>
-</div>
+}

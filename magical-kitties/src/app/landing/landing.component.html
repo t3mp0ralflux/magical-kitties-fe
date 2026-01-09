@@ -1,6 +1,10 @@
 <div class="content">
     <div class="py-5 grid grid-cols-1 gap-y-5 px-5 md:grid-cols-2 md:gap-10 md:pt-5 lg:grid-cols-2 lg:gap-10">
-        <mat-card>
+        <mat-card
+            matRipple
+            class="clickable"
+            [routerLink]="['/characters']"
+        >
             <img
                 mat-card-image
                 src="/magical-kitties-dragon.png"
@@ -9,19 +13,21 @@
                 <p>Create a Character</p>
             </mat-card-content>
         </mat-card>
-        <mat-card
-            (click)="navigateToCharacters()"
-            matRipple
-            class="clickable"
-        >
-            <img
-                mat-card-image
-                src="/wild-ones-conclave.png"
-            />
-            <mat-card-content>
-                <p>View My Characters</p>
-            </mat-card-content>
-        </mat-card>
+        <a>
+            <mat-card
+                matRipple
+                class="clickable"
+                [routerLink]="['/characters']"
+            >
+                <img
+                    mat-card-image
+                    src="/wild-ones-conclave.png"
+                />
+                <mat-card-content>
+                    <p>View My Characters</p>
+                </mat-card-content>
+            </mat-card>
+        </a>
         <mat-card>
             <img
                 mat-card-image

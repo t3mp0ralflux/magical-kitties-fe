@@ -1,6 +1,14 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @theme {
     --container-9\/20: calc(9 / 20 * 100%) /* 45% */;
     --container-1\/10: calc(1 / 10 * 100%); /* 10% */
+    --color-sheet-purple: #492b73;
+    --color-sheet-cute: #6ec9c7;
+    --color-sheet-cunning: #0386ac;
+    --color-sheet-medium-blue: #75a1b6;
+    --color-sheet-dark-blue: #004d66;
+    --color-sheet-orange: #d7712b;
+    --color-sheet-red: #ab4344;
 }

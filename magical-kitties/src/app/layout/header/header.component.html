@@ -1,158 +1,153 @@
 <div class="primary">
-  <div class="content">
-    <!-- Shown only on big screen -->
-    <mat-toolbar class="top">
-      <mat-toolbar-row id="fullMenu">
-        <a
-          (click)="navigate('')"
-          class="logo mr-auto cursor-pointer"
-          >
-          <img
-            src="/magicalkittieslogosquare4-w300h300.png"
-            class="logo mr-auto"
-            />
-          </a>
-          <img
-            src="/github-mark.png"
-            class="size-10"
-            />
-            <mat-divider vertical="true"></mat-divider>
-            <ng-container *ngTemplateOutlet="signInOut"></ng-container>
-          </mat-toolbar-row>
-          <mat-toolbar-row id="miniMenu">
-            <a
-              href=""
-              class="logo mr-auto"
-              >
-              <img
-                src="/magicalkittieslogosquare4-w300h300.png"
-                class="logo mr-auto"
+    <div class="content">
+        <!-- Shown only on big screen -->
+        <mat-toolbar class="top">
+            <mat-toolbar-row id="fullMenu">
+                <a
+                    class="logo mr-auto cursor-pointer"
+                    [routerLink]="['']"
+                >
+                    <img
+                        src="/magicalkittieslogosquare4-w300h300.png"
+                        class="logo mr-auto"
+                    />
+                </a>
+                <img
+                    src="/github-mark.png"
+                    class="size-10"
                 />
-              </a>
-              <button
-                mat-button
-                (click)="toggleMenu()"
-                class="mini-menu"
-                >
-                <mat-icon>menu</mat-icon>
-              </button>
-            </mat-toolbar-row>
-          </mat-toolbar>
-        </div>
-      </div>
-      <div
-        id="linkMenu"
-        class="secondary"
-        >
-        <div class="content">
-          <mat-toolbar class="bottom">
-            <mat-toolbar-row>
-              <button
-                mat-button
-                (click)="navigate('characters')"
-                >
-                Characters
-              </button>
-              <button mat-button>Game Rules</button>
-              <button mat-button>Source</button>
-              <button mat-button>Learn to Play</button>
-            </mat-toolbar-row>
-          </mat-toolbar>
-        </div>
-      </div>
-      <div
-        id="minimenu-container"
-        class="fixed w-full h-full z-100 invisible"
-        >
-        <div
-          id="minimenu-bg"
-          class="absolute duration-500 ease-out transition-all inset-0 w-full h-full bg-gray-900 opacity-0"
-          (click)="toggleMenu()"
-        ></div>
-        <div
-          id="minimenu"
-          class="absolute duration-500 ease-out transition-all right-0 w-2/3 translate-x-full"
-          >
-          <div class="relative z-30 flex grow">
-            <div class="flex flex-col mat-toolbar grow pb-3">
-              <div class="flex grow justify-center py-3">
+                <mat-divider vertical="true"></mat-divider>
                 <ng-container *ngTemplateOutlet="signInOut"></ng-container>
-              </div>
-              <mat-divider></mat-divider>
-              <div class="flex flex-col">
+            </mat-toolbar-row>
+            <mat-toolbar-row id="miniMenu">
+                <a
+                    href=""
+                    class="logo mr-auto"
+                >
+                    <img
+                        src="/magicalkittieslogosquare4-w300h300.png"
+                        class="logo mr-auto"
+                    />
+                </a>
                 <button
-                  mat-button
-                  (click)="checkButton('Characters')"
-                  >
-                  Characters
+                    mat-button
+                    (click)="toggleMenu()"
+                    class="mini-menu"
+                >
+                    <mat-icon>menu</mat-icon>
+                </button>
+            </mat-toolbar-row>
+        </mat-toolbar>
+    </div>
+</div>
+<div
+    id="linkMenu"
+    class="secondary"
+>
+    <div class="content">
+        <mat-toolbar class="bottom">
+            <mat-toolbar-row>
+                <button
+                    mat-button
+                    [routerLink]="['/characters']"
+                >
+                    Characters
                 </button>
                 <button mat-button>Game Rules</button>
                 <button mat-button>Source</button>
                 <button mat-button>Learn to Play</button>
-              </div>
-              @if (account !== undefined) {
+            </mat-toolbar-row>
+        </mat-toolbar>
+    </div>
+</div>
+<div
+    id="minimenu-container"
+    class="fixed w-full h-full z-100 invisible"
+>
+    <div
+        id="minimenu-bg"
+        class="absolute duration-500 ease-out transition-all inset-0 w-full h-full bg-gray-900 opacity-0"
+        (click)="toggleMenu()"
+    ></div>
+    <div
+        id="minimenu"
+        class="absolute duration-500 ease-out transition-all right-0 w-2/3 translate-x-full"
+    >
+        <div class="relative z-30 flex grow">
+            <div class="flex flex-col mat-toolbar grow pb-3">
+                <div class="flex grow justify-center py-3">
+                    <ng-container *ngTemplateOutlet="signInOut"></ng-container>
+                </div>
                 <mat-divider></mat-divider>
-              }
-              @if (account !== undefined) {
+                <div class="flex flex-col">
+                    <button
+                        mat-button
+                        (click)="toggleMenu()"
+                        [routerLink]="['/characters']"
+                    >
+                        Characters
+                    </button>
+                    <button mat-button>Game Rules</button>
+                    <button mat-button>Source</button>
+                    <button mat-button>Learn to Play</button>
+                </div>
+                @if (account !== undefined) {
+                <mat-divider></mat-divider>
+                } @if (account !== undefined) {
                 <button
-                  mat-button
-                  (click)="logout()"
-                  class="font-bold"
-                  >
-                  Sign Out
+                    mat-button
+                    (click)="logout()"
+                    class="font-bold"
+                >
+                    Sign Out
                 </button>
-              }
+                }
             </div>
-          </div>
         </div>
-      </div>
+    </div>
+</div>
 
-      <ng-template #signInOut>
-        @if (account === undefined) {
-          <button
-            mat-stroked-button
-            class="mr-5"
-            (click)="navigate('login')"
-            >
-            Sign In
-          </button>
-        }
-        @if (account === undefined) {
-          <button
-            mat-raised-button
-            class="sign-up"
-            (click)="navigate('register')"
-            >
-            Sign Up
-          </button>
-        }
+<ng-template #signInOut>
+    @if (account === undefined) {
+    <button
+        mat-stroked-button
+        class="mr-5"
+        [routerLink]="['/login']"
+    >
+        Sign In
+    </button>
+    } @if (account === undefined) {
+    <button
+        mat-raised-button
+        class="sign-up"
+        [routerLink]="['/register']"
+    >
+        Sign Up
+    </button>
+    }
 
-        <div class="hidden sm:block">
-          @if (account !== undefined) {
-            <button
-              mat-button
-              [matMenuTriggerFor]="accountMenu"
-              >
-              <mat-icon>person</mat-icon>{{ account.userName }}
-            </button>
-          }
-          <mat-menu #accountMenu="matMenu">
+    <div class="hidden sm:block">
+        @if (account !== undefined) {
+        <button
+            mat-button
+            [matMenuTriggerFor]="accountMenu"
+        >
+            <mat-icon>person</mat-icon>{{ account.userName }}
+        </button>
+        }
+        <mat-menu #accountMenu="matMenu">
             <button mat-menu-item>Settings</button>
             <button
-              mat-menu-item
-              (click)="logout()"
-              >
-              Logout
+                mat-menu-item
+                (click)="logout()"
+            >
+                Logout
             </button>
-          </mat-menu>
-        </div>
-        <div class="sm:hidden">
-          @if (account !== undefined) {
-            <button
-              mat-button
-              >
-              <mat-icon>person</mat-icon>{{ account.userName }}
-            </button>
-          }
-        </div>
-      </ng-template>
+        </mat-menu>
+    </div>
+    <div class="sm:hidden">
+        @if (account !== undefined) {
+        <button mat-button><mat-icon>person</mat-icon>{{ account.userName }}</button>
+        }
+    </div>
+</ng-template>

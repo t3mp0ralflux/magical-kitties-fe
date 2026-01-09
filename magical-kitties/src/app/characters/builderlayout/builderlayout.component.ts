@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy } from '@angular/core';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -19,7 +19,7 @@ import { CharacterAPIService } from '../services/characters.service';
 
 @Component({
     selector: 'app-builderlayout',
-    imports: [CommonModule, RouterOutlet, MatToolbarModule, MatIconModule, HeaderComponent, FooterComponent, MatInputModule, MatFormFieldModule, ReactiveFormsModule, MatDividerModule, RouterLinkWithHref],
+    imports: [CommonModule, RouterOutlet, MatToolbarModule, MatIconModule, HeaderComponent, FooterComponent, MatInputModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatDividerModule, RouterLinkWithHref],
     templateUrl: './builderlayout.component.html',
     styleUrl: './builderlayout.component.scss'
 })
@@ -29,7 +29,6 @@ export class BuilderlayoutComponent extends LayoutComponent implements OnDestroy
     Constants = Constants;
     trackByFn = trackByFn;
     characterId: string;
-    nameInput: FormControl = new FormControl("", [Validators.required]);
     currentPage?: string;
     character?: Character;
     nameMaxCountSubject: BehaviorSubject<number> = new BehaviorSubject(0);
@@ -43,9 +42,7 @@ export class BuilderlayoutComponent extends LayoutComponent implements OnDestroy
             character: this.characterApi.getCharacterInformation(this.characterId),
             rules: this.characterApi.getRules()
         }).subscribe({
-            next: ({ character }) => {
-                this.nameInput.setValue(character.name);
-
+            next: (_) => {
                 this.updateMaxName();
             }
         });
@@ -85,12 +82,11 @@ export class BuilderlayoutComponent extends LayoutComponent implements OnDestroy
     updateName(): void {
         const payload: UpdateCharacterDescriptors = {
             characterId: this.character!.id,
-            name: this.nameInput.value,
+            name: this.character?.name,
         };
 
         this.characterApi.updateName(payload).subscribe({
-            next: (response) => {
-                this.character!.name = this.nameInput.value;
+            next: (_) => {
             },
             error: (err) => {
                 console.log("Name update error: " + err);
