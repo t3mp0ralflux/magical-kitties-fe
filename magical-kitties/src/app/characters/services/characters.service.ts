@@ -183,6 +183,16 @@ export class CharacterAPIService {
         });
     }
 
+    updateOwies(payload: UpdateCharacterAttributes): Observable<string> {
+        return this.apiClient.request<string>({
+            path: `${this.baseUrl}/characters/attributes/${AttributeOption.currentowies}`,
+            method: HttpMethod.PUT,
+            body: payload,
+            headerResponse: true,
+            responseType: "text"
+        });
+    }
+
     upsertUpgrade(characterId: string, upgrade: UpsertUpgradeRequest): Observable<string> {
         return this.apiClient.request<string>({
             path: `${this.baseUrl}/characters/${characterId}/upgrade/upsert`,
