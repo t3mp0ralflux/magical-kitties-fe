@@ -53,12 +53,52 @@ body {
     color: var(--mat-sys-on-secondary);
 }
 
+.charactersheet {
+    &-purple {
+        color: rgba(#492b73, 1);
+    }
+    &-cute {
+        color: rgba(#6ec9c7, 1);
+    }
+    &-cunning {
+        color: rgba(#0386ac, 1);
+    }
+    &-medium-blue {
+        color: rgba(#75a1b6, 1);
+    }
+    &-dark-blue {
+        color: rgba(#004d66, 1);
+    }
+    &-orange {
+        color: rgba(#d7712b, 1);
+    }
+    &-red {
+        color: rgba(#ab4344, 1);
+    }
+}
+
 .background {
     background-color: var(--primary-background);
     background-image: url(/Cat-Paw-Print-Clipart-white.png);
     background-repeat: repeat;
     background-size: 40px;
     background-blend-mode: overlay;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    position: fixed;
+    z-index: -1;
+}
+
+.plain-background {
+    background-color: var(--primary-background);
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    position: fixed;
+    z-index: -1;
 }
 
 .logo {

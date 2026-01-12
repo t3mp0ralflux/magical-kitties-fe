@@ -1,13 +1,8 @@
 @if (!loading) {
-  <app-header></app-header>
-}
-@if (!loading) {
-  <main
-    class="background w-dvw min-h-10/12"
-    >
+<app-header></app-header>
+<div class="background"></div>
+<main class="w-dvw min-h-10/12">
     <router-outlet></router-outlet>
-  </main>
-}
-@if (!loading) {
-  <app-footer></app-footer>
+</main>
+<app-footer></app-footer>
 }

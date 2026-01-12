@@ -61,6 +61,10 @@ export class CharacterBuilderBackgroundComponent implements AfterContentInit, On
         }
     }
 
+    preventOverflow(event: any) {
+        debugger;
+    }
+
     updateMaxDescription(): void {
         if (!this.character) {
             return;

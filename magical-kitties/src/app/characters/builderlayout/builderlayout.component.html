@@ -1,111 +1,115 @@
 <app-header></app-header>
 <div class="edit-background min-h-10/12 lg:flex">
-  <div class="relative z-10 hidden xl:block side-panel">
-    <div>
-      <img
-        src="/kitty_counsel.png"
-        class="left-picture"
-        />
-      </div>
+    <div class="relative z-10 hidden xl:block side-panel">
+        <div>
+            <img
+                src="/kitty_counsel.png"
+                class="left-picture"
+            />
+        </div>
     </div>
     <div class="w-dvw lg:w-[1200px] relative z-20">
-      <div class="max-w-[800px] min-w-xs lg:max-w-[1200px] ml-auto mr-auto">
-        <mat-toolbar>
-          <mat-toolbar-row class="flex justify-between text-sm md:text-xl lg:justify-start">
-            <div class="hidden sm:flex flex-col mr-5">
-              <div class="text-xl">Character Builder</div>
-              <div class="text-sm flex items-center">
-                <mat-icon>person</mat-icon>
-                {{ character?.name }}
-              </div>
-            </div>
-            <div class="flex flex-col mr-5">
-              <a
-                class="cursor-pointer"
-                (click)="navigate('.')"
-                >
-                <div class="flex items-center"><mat-icon class="mr-1">settings</mat-icon>Home</div>
-                @if (currentPage === 'builder') {
-                  <ng-container *ngTemplateOutlet="underline"></ng-container>
-                }
-              </a>
-            </div>
-            <div class="flex flex-col mr-5">
-              <a
-                class="cursor-pointer"
-                (click)="navigate('kitty')"
-                >
-                <div>1. Kitty</div>
-                @if (currentPage === 'kitty') {
-                  <ng-container *ngTemplateOutlet="underline"></ng-container>
-                }
-              </a>
-            </div>
-            <div class="flex flex-col mr-5">
-              <a
-                class="cursor-pointer"
-                (click)="navigate('background')"
-                >
-                <div>2. Background</div>
-                @if (currentPage === 'background') {
-                  <ng-container *ngTemplateOutlet="underline"></ng-container>
-                }
-              </a>
-            </div>
-            <div class="flex flex-col mr-5">
-              <a
-                class="cursor-pointer"
-                (click)="navigate('play')"
-                >
-                <div>3. Play</div>
-              </a>
-            </div>
-          </mat-toolbar-row>
-        </mat-toolbar>
-      </div>
-      @if (this.character) {
-        <div
-          class="max-w-[800px] min-w-xs ml-auto mr-auto mt-5"
-          >
-          <div class="flex items-center">
-            <div class="hidden sm:block w-40! h-40!">
-              <img src="/girl_dm.png" />
-            </div>
-            <div class="ml-3 mr-3 flex flex-col w-96">
-              <mat-label>Character Name</mat-label>
-              @for (count of [(remainingNameCharacters$ | async)!.valueOf()]; track trackByFn($index, count)) {
-                <mat-form-field
-                  appearance="outline"
-                  hintLabel="{{count <= Constants.MaxCharactersMediumInput/2 ? `Characters remaining: ${count}` : '' }}"
-                  >
-                  <input
-                    matInput
-                    maxlength="{{ Constants.MaxCharactersMediumInput }}"
-                    [formControl]="nameInput"
-                    (keyup)="updateMaxName()"
-                    (blur)="updateName()"
-                    />
-                  </mat-form-field>
-                }
-              </div>
+        <div class="max-w-[800px] min-w-xs lg:max-w-[1200px] ml-auto mr-auto">
+            <mat-toolbar>
+                <mat-toolbar-row class="flex justify-between text-sm md:text-xl lg:justify-start">
+                    <div class="hidden sm:flex flex-col mr-5">
+                        <div class="text-xl">Character Builder</div>
+                        <div class="text-sm flex items-center">
+                            <mat-icon>person</mat-icon>
+                            {{ character?.name }}
+                        </div>
+                    </div>
+                    <div class="flex flex-col mr-5">
+                        <a
+                            class="cursor-pointer"
+                            (click)="navigate('.')"
+                        >
+                            <div class="flex items-center"><mat-icon class="mr-1">settings</mat-icon>Home</div>
+                            @if (currentPage === 'builder') {
+                            <ng-container *ngTemplateOutlet="underline"></ng-container>
+                            }
+                        </a>
+                    </div>
+                    <div class="flex flex-col mr-5">
+                        <a
+                            class="cursor-pointer"
+                            [routerLink]="['kitty']"
+                        >
+                            <div>1. Kitty</div>
+                            @if (currentPage === 'kitty') {
+                            <ng-container *ngTemplateOutlet="underline"></ng-container>
+                            }
+                        </a>
+                    </div>
+                    <div class="flex flex-col mr-5">
+                        <a
+                            class="cursor-pointer"
+                            [routerLink]="['background']"
+                        >
+                            <div>2. Background</div>
+                            @if (currentPage === 'background') {
+                            <ng-container *ngTemplateOutlet="underline"></ng-container>
+                            }
+                        </a>
+                    </div>
+                    <div class="flex flex-col mr-5">
+                        <!-- <a
+                            class="cursor-pointer"
+                            (click)="navigate('play')"
+                        >
+                            <div>3. Play</div>
+                        </a> -->
+                        <a
+                            class="cursor-pointer"
+                            [routerLink]="['../']"
+                        >
+                            <div>3. Play</div>
+                        </a>
+                    </div>
+                </mat-toolbar-row>
+            </mat-toolbar>
+        </div>
+        @if (this.character) {
+        <div class="max-w-[800px] min-w-xs ml-auto mr-auto mt-5">
+            <div class="flex items-center">
+                <div class="hidden sm:block w-40! h-40!">
+                    <img src="/girl_dm.png" />
+                </div>
+                <div class="ml-3 mr-3 flex flex-col w-96">
+                    <mat-label>Character Name</mat-label>
+                    @if ({value: remainingNameCharacters$ | async}; as count) {
+                    <mat-form-field
+                        appearance="outline"
+                        hintLabel="{{count.value! <= Constants.MaxCharactersMediumInput/2 ? `Characters remaining: ${count.value!}` : '' }}"
+                    >
+                        <input
+                            matInput
+                            maxlength="{{ Constants.MaxCharactersMediumInput }}"
+                            [(ngModel)]="character.name"
+                            (keyup)="updateMaxName()"
+                            (blur)="updateName()"
+                        />
+                    </mat-form-field>
+                    }
+                </div>
             </div>
             <div class="mt-2 mb-2 sm:mt-5 sm:mb-5">
-              <mat-divider class="editor"></mat-divider>
+                <mat-divider class="editor"></mat-divider>
             </div>
             <router-outlet></router-outlet>
-          </div>
-        }
-      </div>
-      <div class="relative z-10 hidden xl:block side-panel">
-        <img
-          src="/d6_collection.png"
-          class="right-picture"
-          />
         </div>
-      </div>
-      <div class="faded-primary w-dvw absolute inset-0 left-0 top-14 lg:top-32 h-14 sm:h-16 z-10"></div>
-      <app-footer></app-footer>
+        }
+    </div>
+    <div class="relative z-10 hidden xl:block side-panel">
+        <img
+            src="/d6_collection.png"
+            class="right-picture"
+        />
+    </div>
+</div>
+<div class="faded-primary w-dvw absolute inset-0 left-0 top-14 lg:top-32 h-14 sm:h-16 z-10"></div>
+<app-footer></app-footer>
 
-      <ng-template #underline>
-        <mat-divider></mat-divider>
-      </ng-template>
+<ng-template #underline>
+    <mat-divider></mat-divider>
+</ng-template>

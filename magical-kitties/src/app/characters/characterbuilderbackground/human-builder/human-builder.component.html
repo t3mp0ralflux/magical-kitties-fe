@@ -1,80 +1,78 @@
 @if (this.human) {
-  <mat-card
+<mat-card
     class="min-w-full edit-background"
     appearance="outlined"
-    >
+>
     <mat-card-header>
-      <div class="flex flex-col">
-        <mat-label>Name</mat-label>
-        @for (count of [(remainingNameCharacters$ | async)!.valueOf()]; track trackByFn($index, count)) {
-          <mat-form-field
-            appearance="outline"
-            class="ml-1"
-            hintLabel="{{count <= Constants.MaxCharactersSmallInput/2 ? `Characters remaining: ${count}` : '' }}"
+        <div class="flex flex-col">
+            <mat-label>Name</mat-label>
+            @if ({value: (remainingNameCharacters$ | async)}; as count) {
+            <mat-form-field
+                appearance="outline"
+                class="ml-1"
+                hintLabel="{{count.value! <= Constants.MaxCharactersSmallInput/2 ? `Characters remaining: ${count.value!}` : '' }}"
             >
-            <input
-              matInput
-              maxlength="{{ Constants.MaxCharactersSmallInput }}"
-              [(ngModel)]="human.name"
-              (blur)="updateName(getValue($event))"
-              />
+                <input
+                    matInput
+                    maxlength="{{ Constants.MaxCharactersSmallInput }}"
+                    [(ngModel)]="human.name"
+                    (blur)="updateName(getValue($event))"
+                />
             </mat-form-field>
-          }
+            }
         </div>
         <div class="ml-auto">
-          <mat-icon
-            class="cursor-pointer"
-            (click)="removeHuman()"
-            >remove</mat-icon
+            <mat-icon
+                class="cursor-pointer"
+                (click)="removeHuman()"
+                >remove</mat-icon
             >
-          </div>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="flex flex-col">
+        </div>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="flex flex-col">
             <mat-label>Description</mat-label>
-            @for (count of [(remainingDescriptionCharacters$ | async)!.valueOf()]; track trackByFn($index, count)) {
-              <mat-form-field
+            @if ({value: (remainingDescriptionCharacters$ | async)}; as count) {
+            <mat-form-field
                 appearance="outline"
-                hintLabel="{{count <= Constants.MaxCharactersBigInput/2 ? `Characters remaining: ${count}` : '' }}"
-                >
+                hintLabel="{{count.value! <= Constants.MaxCharactersBigInput/2 ? `Characters remaining: ${count.value!}` : '' }}"
+            >
                 <textarea
-                  matInput
-                  rows="3"
-                  maxlength="{{ Constants.MaxCharactersBigInput }}"
-                  [(ngModel)]="human.description"
-                  (keyup)="updateMaxDescription()"
-                  (blur)="updateDescription(getValue($event))"
+                    matInput
+                    rows="3"
+                    maxlength="{{ Constants.MaxCharactersBigInput }}"
+                    [(ngModel)]="human.description"
+                    (keyup)="updateMaxDescription()"
+                    (blur)="updateDescription(getValue($event))"
                 ></textarea>
-              </mat-form-field>
+            </mat-form-field>
             }
-          </div>
-          <div class="flex flex-col">
+        </div>
+        <div class="flex flex-col">
             <mat-label>Problems</mat-label>
             <mat-accordion multi="true">
-              @for (problem of human.problems; track trackByFn($index, problem)) {
-                <mat-expansion-panel
-                  class="mt-1 accordion-color"
-                  >
-                  <mat-expansion-panel-header>
-                    <mat-panel-title>Source: {{ problem.source === "Custom" ? problem.customSource : problem.source }} Solved: {{ problem.solved ? "Yes" : "No" }}</mat-panel-title>
-                  </mat-expansion-panel-header>
-                  <app-problem-builder
-                    [problem]="problem"
-                    [characterId]="human.characterId"
-                    (problemRemoved)="removeProblem($event)"
-                  ></app-problem-builder>
+                @for (problem of human.problems; track trackByFn(problem.id, "HumanProblems")) {
+                <mat-expansion-panel class="mt-1 accordion-color">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>Source: {{ problem.source === "Custom" ? problem.customSource : problem.source }} Solved: {{ problem.solved ? "Yes" : "No" }}</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <app-problem-builder
+                        [problem]="problem"
+                        [characterId]="human.characterId"
+                        (problemRemoved)="removeProblem($event)"
+                    ></app-problem-builder>
                 </mat-expansion-panel>
-              }
+                }
             </mat-accordion>
             <button
-              mat-flat-button
-              matPrefix
-              class="mt-2 mb-2"
-              (click)="addNewProblem()"
-              >
-              <mat-icon>add</mat-icon><span class="text-lg">Add Problem</span>
+                mat-flat-button
+                matPrefix
+                class="mt-2 mb-2"
+                (click)="addNewProblem()"
+            >
+                <mat-icon>add</mat-icon><span class="text-lg">Add Problem</span>
             </button>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    }
+        </div>
+    </mat-card-content>
+</mat-card>
+}

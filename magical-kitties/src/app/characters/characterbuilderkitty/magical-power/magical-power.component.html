@@ -1,45 +1,42 @@
 <div class="flex flex-wrap sm:min-h-14 min-w-xs sm:w-[800px]!">
-  <div class="flex items-center sm:w-1/2">
-    <mat-checkbox
-      [formControl]="parentControl"
-      (change)="checkChange($event)"
-      >
-    </mat-checkbox>
-    <div ngClass="{{ disabled ? 'disabled' : '' }}">
-      {{ upgradeRule?.value }}
-    </div>
-  </div>
-  <div class="flex items-center w-full sm:w-1/2">
-    <mat-form-field
-      appearance="outline"
-      class="sm:max-w-9/20"
-      subscriptSizing="dynamic"
-      [hidden]="!showOptions"
-      >
-      <mat-select
-        [formControl]="magicalPowerChoice"
-        (selectionChange)="changeMagicalPower($event)"
+    <div class="flex items-center sm:w-1/2">
+        <mat-checkbox
+            [formControl]="parentControl"
+            (change)="checkChange($event)"
         >
-        <mat-option
-          [value]="undefined"
-          disabled="true"
-          >-</mat-option
-          >
-          @for (item of availableMagicalPowers; track trackByFn($index, item)) {
-            <mat-option
-              [value]="item.id"
-              >{{ item.name }}</mat-option
-              >
-            }
-          </mat-select>
+        </mat-checkbox>
+        <div ngClass="{{ disabled ? 'disabled' : '' }}">
+            {{ upgradeRule?.value }}
+        </div>
+    </div>
+    <div class="flex items-center w-full sm:w-1/2">
+        <mat-form-field
+            appearance="outline"
+            class="sm:max-w-9/20"
+            subscriptSizing="dynamic"
+            [hidden]="!showOptions"
+        >
+            <mat-select
+                [formControl]="magicalPowerChoice"
+                (selectionChange)="changeMagicalPower($event)"
+            >
+                <mat-option
+                    [value]="undefined"
+                    disabled="true"
+                    >-</mat-option
+                >
+                @for (item of availableMagicalPowers; track trackByFn(item.id, "AvailableMagicPowers")) {
+                <mat-option [value]="item.id">{{ item.name }}</mat-option>
+                }
+            </mat-select>
         </mat-form-field>
         <div class="flex ml-1 justify-end sm:w-10 sm:ml-0">
-          <mat-icon
-            class="ml-auto cursor-pointer"
-            (click)="openInfoDialog(characterApi.rules?.magicalPowers, magicalPowerChoice.value)"
-            [hidden]="!showOptions"
-            >help</mat-icon
+            <mat-icon
+                class="ml-auto cursor-pointer"
+                (click)="openInfoDialog(characterApi.rules?.magicalPowers, magicalPowerChoice.value)"
+                [hidden]="!showOptions"
+                >help</mat-icon
             >
-          </div>
         </div>
-      </div>
+    </div>
+</div>
