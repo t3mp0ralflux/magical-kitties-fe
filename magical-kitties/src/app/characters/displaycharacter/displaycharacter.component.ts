@@ -10,11 +10,12 @@ import { UpgradeOption } from '../../models/Characters/upgradeoption.model';
 import { AuthService } from '../../services/authService.service';
 import { BonusFeatureUpgrade } from '../characterbuilderkitty/bonus-feature/models/bonus-feature.model';
 import { CharacterAPIService } from '../services/characters.service';
+import { OwiesComponent } from "./owies/owies.component";
 import { StatBubbleComponent } from "./stat-bubble/stat-bubble.component";
 
 @Component({
     selector: 'app-displaycharacter',
-    imports: [StatBubbleComponent, MatButtonModule, MatFormFieldModule, MatInputModule, MarkdownComponent],
+    imports: [StatBubbleComponent, MatButtonModule, MatFormFieldModule, MatInputModule, MarkdownComponent, OwiesComponent],
     templateUrl: './displaycharacter.component.html',
     styleUrl: './displaycharacter.component.scss'
 })
@@ -26,11 +27,9 @@ export class DisplayCharacterComponent implements OnInit, OnDestroy {
     characterSubscription!: Subscription;
 
     ngOnInit(): void {
-        this.characterService.character$.subscribe({
+        this.characterSubscription = this.characterService.character$.subscribe({
             next: (character: Character | undefined) => {
                 this.character = character;
-
-                //this.talentInfo = `- fuck you`;
             }
         });
     }

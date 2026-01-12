@@ -145,3 +145,7 @@ mat-divider.editor {
 .upgrade-text {
     width: 23rem;
 }
+
+.full-width-mobile {
+    width: calc(100dvw - 8px);
+}
