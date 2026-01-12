@@ -1,6 +1,6 @@
 import { HttpErrorResponse, HttpResponse } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, Subject, tap } from "rxjs";
+import { BehaviorSubject, catchError, Observable, of, Subject, tap } from "rxjs";
 import { environment } from "../../../environments/environment";
 import { AttributeOption } from "../../models/Characters/attributeoption.model";
 import { Character } from "../../models/Characters/character.model";
@@ -50,11 +50,7 @@ export class CharacterAPIService {
         });
     }
 
-    addCharacter(character: Character) {
-        this.character.next(character);
-    }
-
-    get character$() {
+    get character$(): Observable<Character | undefined> {
         return this.character.asObservable();
     }
 
@@ -67,7 +63,17 @@ export class CharacterAPIService {
             path: `${this.baseUrl}/characters/${characterId}`,
             method: HttpMethod.GET
         }).pipe(
-            tap(character => this.character.next(character))
+            tap(character => {
+                const returnValue = new Character({ ...character });
+
+                returnValue.updateCalculatedValues();
+
+                this.character.next(returnValue);
+            }),
+            catchError(err => {
+                debugger;
+                return of(false);
+            })
         );
     }
 
@@ -133,59 +139,9 @@ export class CharacterAPIService {
         });
     }
 
-    updateAttribute(payload: UpdateCharacterAttributes, choice: AttributeOption): Observable<string> {
+    updateAttribute(choice: AttributeOption, payload: UpdateCharacterAttributes): Observable<string> {
         return this.apiClient.request<any>({
             path: `${this.baseUrl}/characters/attributes/${choice}`,
-            method: HttpMethod.PUT,
-            body: payload,
-            headerResponse: true,
-            responseType: "text"
-        });
-    }
-
-    updateXP(payload: UpdateCharacterAttributes): Observable<string> {
-        return this.apiClient.request<any>({
-            path: `${this.baseUrl}/characters/attributes/${AttributeOption.xp}`,
-            method: HttpMethod.PUT,
-            body: payload,
-            headerResponse: true,
-            responseType: "text"
-        });
-    }
-
-    updateFlaw(payload: UpdateCharacterAttributes): Observable<string> {
-        return this.apiClient.request<string>({
-            path: `${this.baseUrl}/characters/attributes/${AttributeOption.flaw}`,
-            method: HttpMethod.PUT,
-            body: payload,
-            headerResponse: true,
-            responseType: "text"
-        });
-    }
-
-    updateTalent(payload: UpdateCharacterAttributes): Observable<string> {
-        return this.apiClient.request<string>({
-            path: `${this.baseUrl}/characters/attributes/${AttributeOption.talent}`,
-            method: HttpMethod.PUT,
-            body: payload,
-            headerResponse: true,
-            responseType: "text"
-        });
-    }
-
-    updateMagicalPower(payload: UpdateCharacterAttributes): Observable<string> {
-        return this.apiClient.request<string>({
-            path: `${this.baseUrl}/characters/attributes/${AttributeOption.magicalpower}`,
-            method: HttpMethod.PUT,
-            body: payload,
-            headerResponse: true,
-            responseType: "text"
-        });
-    }
-
-    updateOwies(payload: UpdateCharacterAttributes): Observable<string> {
-        return this.apiClient.request<string>({
-            path: `${this.baseUrl}/characters/attributes/${AttributeOption.currentowies}`,
             method: HttpMethod.PUT,
             body: payload,
             headerResponse: true,

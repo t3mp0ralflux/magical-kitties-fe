@@ -170,15 +170,15 @@ export class AttributeIncreaseComponent implements AfterContentInit, OnDestroy {
             maxValue = 4;
         }
 
-        if (this.character!.cunning < maxValue) {
+        if (this.character!.getBaseCunningValue() < maxValue) {
             this.Attributes.push(AttributeOption.cunning);
         }
 
-        if (this.character!.cute < maxValue) {
+        if (this.character!.getBaseCuteValue() < maxValue) {
             this.Attributes.push(AttributeOption.cute);
         }
 
-        if (this.character!.fierce < maxValue) {
+        if (this.character!.getBaseFierceValue() < maxValue) {
             this.Attributes.push(AttributeOption.fierce);
         }
     }

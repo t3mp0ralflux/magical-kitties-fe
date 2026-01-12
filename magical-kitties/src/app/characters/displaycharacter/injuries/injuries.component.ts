@@ -7,16 +7,17 @@ import { DebounceClickDirective } from "../../../directives/debounce-click.direc
 import { AttributeOption } from '../../../models/Characters/attributeoption.model';
 import { Character } from '../../../models/Characters/character.model';
 import { UpdateCharacterAttributes } from '../../../models/Characters/updateacharacterattributes.model';
+import { CharacterUpdate } from '../../../models/System/characterupdate.model';
 import { AuthService } from '../../../services/authService.service';
 import { CharacterAPIService } from '../../services/characters.service';
 
 @Component({
-    selector: 'app-owies',
+    selector: 'app-injuries',
     imports: [CommonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, DebounceClickDirective],
-    templateUrl: './owies.component.html',
-    styleUrl: './owies.component.scss',
+    templateUrl: './injuries.component.html',
+    styleUrl: './injuries.component.scss',
 })
-export class OwiesComponent {
+export class InjuriesComponent {
     characterService: CharacterAPIService = inject(CharacterAPIService);
     authService: AuthService = inject(AuthService);
     character?: Character;
@@ -37,22 +38,42 @@ export class OwiesComponent {
             return;
         }
 
-        if (itemClicked > this.character.currentOwies) {
-            this.character.currentOwies += 1;
+        if (itemClicked > this.character.currentInjuries) {
+            this.character.currentInjuries += 1;
         } else {
-            this.character.currentOwies -= 1;
+            this.character.currentInjuries -= 1;
         }
 
         const payload: UpdateCharacterAttributes = {
             characterId: this.character.id,
-            currentOwies: this.character.currentOwies,
+            currentInjuries: this.character.currentInjuries,
         }
 
-        this.characterService.updateAttribute(AttributeOption.currentowies, payload).subscribe({
+        this.characterService.updateAttribute(AttributeOption.currentinjuries, payload).subscribe({
             next: (_) => {
+                this.characterService.characterHasChanged(new CharacterUpdate({ attributeOption: AttributeOption.currentinjuries }));
             },
             error: () => {
             }
         });
+    }
+
+    updateIncapacitation(): void {
+        if (!this.character) {
+            return;
+        }
+
+        this.character.incapacitated = !this.character.incapacitated
+
+        const payload: UpdateCharacterAttributes = {
+            characterId: this.character.id,
+            incapacitated: this.character.incapacitated
+        };
+
+        this.characterService.updateAttribute(AttributeOption.incapacitated, payload).subscribe({
+            next: () => {
+                this.characterService.characterHasChanged(new CharacterUpdate({ attributeOption: AttributeOption.incapacitated }));
+            }
+        })
     }
 }

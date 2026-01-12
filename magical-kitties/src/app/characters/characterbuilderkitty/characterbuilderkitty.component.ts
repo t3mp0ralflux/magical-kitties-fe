@@ -156,9 +156,9 @@ export class CharacterBuilderKittyComponent implements AfterContentInit, OnDestr
 
                 this.levelControl.setValue(character?.level);
                 this.xpControl.setValue(character?.currentXp);
-                this.cuteControl.setValue(character.cute);
-                this.cunningControl.setValue(character.cunning);
-                this.fierceControl.setValue(character.fierce);
+                this.cuteControl.setValue(character?.getBaseCuteValue());
+                this.cunningControl.setValue(character?.getBaseCunningValue());
+                this.fierceControl.setValue(character?.getBaseFierceValue());
 
                 if (character.flaw) {
                     this.flawControl.setValue(character.flaw.id);
@@ -365,17 +365,17 @@ export class CharacterBuilderKittyComponent implements AfterContentInit, OnDestr
                 break;
         }
 
-        this.characterApi.updateAttribute(payload, option).subscribe({
+        this.characterApi.updateAttribute(option, payload).subscribe({
             next: (_) => {
                 switch (option) {
                     case AttributeOption.cunning:
-                        this.character!.cunning = event.value;
+                        this.character!.setBaseCunningValue(event.value);
                         break;
                     case AttributeOption.cute:
-                        this.character!.cute = event.value;
+                        this.character!.setBaseCuteValue(event.value);
                         break;
                     case AttributeOption.fierce:
-                        this.character!.fierce = event.value;
+                        this.character!.setBaseFierceValue(event.value);
                         break;
                     default:
                         break;
@@ -401,7 +401,7 @@ export class CharacterBuilderKittyComponent implements AfterContentInit, OnDestr
             xp: numberOfXp
         }
 
-        this.characterApi.updateXP(payload).subscribe({
+        this.characterApi.updateAttribute(AttributeOption.xp, payload).subscribe({
             next: () => {
                 this.characterApi.characterHasChanged(new CharacterUpdate({ descriptionOption: DescriptionOption.xp }));
             },
@@ -465,7 +465,7 @@ export class CharacterBuilderKittyComponent implements AfterContentInit, OnDestr
             flawChange: flawUpdate
         }
 
-        this.characterApi.updateFlaw(payload).subscribe({
+        this.characterApi.updateAttribute(AttributeOption.flaw, payload).subscribe({
             next: (_) => {
                 this.character!.flaw = updatedFlaw;
             }
@@ -488,7 +488,7 @@ export class CharacterBuilderKittyComponent implements AfterContentInit, OnDestr
             talentChange: talentUpdate
         }
 
-        this.characterApi.updateTalent(payload).subscribe({
+        this.characterApi.updateAttribute(AttributeOption.talent, payload).subscribe({
             next: (_) => {
                 this.character!.talents[0] = updatedTalent;
 
@@ -512,7 +512,7 @@ export class CharacterBuilderKittyComponent implements AfterContentInit, OnDestr
             magicalPowerChange: magicalPowerUpdate
         }
 
-        this.characterApi.updateMagicalPower(payload).subscribe({
+        this.characterApi.updateAttribute(AttributeOption.magicalpower, payload).subscribe({
             next: () => {
                 this.character!.magicalPowers[0] = updatedMagicalPower;
                 this.characterApi.characterHasChanged(new CharacterUpdate({ attributeOption: AttributeOption.magicalpower }));
