@@ -48,33 +48,14 @@ export class StatBubbleComponent implements OnInit, OnDestroy {
     updateValues(): void {
         switch (this.option) {
             case AttributeOption.cute:
-                this.displayedValue = this.character!.cute;
+                this.displayedValue = this.character!.cuteDisplay;
                 break;
             case AttributeOption.cunning:
-                this.displayedValue = this.character!.cunning;
+                this.displayedValue = this.character!.cunningDisplay;
                 break;
             case AttributeOption.fierce:
-                this.displayedValue = this.character!.fierce;
+                this.displayedValue = this.character!.fierceDisplay;
                 break;
-        }
-
-        this.character?.upgrades.forEach(element => {
-            if (element.choice) {
-                const option = (element.choice as any).attributeOption;
-                if (option) {
-                    if (option === this.option) {
-                        this.displayedValue += 1;
-                    }
-                }
-            }
-        });
-
-        if (this.character) {
-            this.displayedValue -= this.character?.currentInjuries;
-        }
-
-        if (this.displayedValue < 0) {
-            this.displayedValue = 0;
         }
     }
 }
