@@ -26,20 +26,22 @@ export class DisplayCharacterComponent implements OnInit, OnDestroy {
     authService: AuthService = inject(AuthService);
     AttributeOption = AttributeOption;
     character?: Character;
-    characterSubscription!: Subscription;
+    subscriptions: Subscription[] = [];
 
     ngOnInit(): void {
-        this.characterSubscription = this.characterService.character$.subscribe({
+        this.subscriptions.push(this.characterService.character$.subscribe({
             next: (character: Character | undefined) => {
                 this.character = character;
             }
-        });
+        }));
+
+        this.characterService.getRules().subscribe();
     }
 
     ngOnDestroy(): void {
-        if (this.characterSubscription) {
-            this.characterSubscription.unsubscribe();
-        }
+        this.subscriptions.forEach(subscription => {
+            subscription.unsubscribe();
+        })
     }
 
     getTalentInformation(): string {

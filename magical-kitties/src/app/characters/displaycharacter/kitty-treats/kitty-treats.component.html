@@ -68,5 +68,16 @@
                 <span class="text-sheet-orange text-2xl">{{ character ? character.treatsDisplay : 0 }}</span>
             </div>
         </div>
+        <div class="flex flex-col">
+            @if (characterService.rules) {
+                <span class="font-bold text-sheet-red text-sm">SPEND ONE KITTY TREAT TO:</span>
+                <p></p>
+                <ul class="list-disc pl-3 text-xs text-sheet-red">
+                    @for (treatRule of characterService.rules.spendingKittyTreats; track $index) {
+                        <li>{{ treatRule }}</li>
+                    }
+                </ul>
+            }
+        </div>
     </div>
 }
