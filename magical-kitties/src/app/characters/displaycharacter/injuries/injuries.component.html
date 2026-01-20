@@ -1,5 +1,5 @@
 @if (character) {
-    <div class="flex flex-row items-start full-width-mobile md:!w-full pr-2 lg:justify-between">
+    <div class="flex flex-row full-width-mobile md:!w-full pr-2 lg:justify-between">
         <div
             id="injuries"
             class="flex flex-col"
@@ -85,11 +85,11 @@
         </div>
         <div
             id="incapacitated"
-            class="flex flex-col align-top ml-auto lg:ml-0"
+            class="flex flex-col ml-auto lg:ml-0"
             (click)="updateIncapacitation()"
         >
-            <span class="font-bold text-lg text-sheet-red mb-4">INCAPACITATED</span>
-            <div class="flex justify-center h-16 w-16 border-2 border-sheet-red bg-white mx-auto">
+            <span class="font-bold sm:text-lg text-sheet-red mb-4">INCAPACITATED</span>
+            <div class="flex justify-center h-16 w-16 border-2 border-sheet-red bg-white ml-auto md:mx-auto mt-1.5">
                 @if (character!.incapacitated) {
                     <span class="text-sheet-red font-bold text-6xl">X</span>
                 }
