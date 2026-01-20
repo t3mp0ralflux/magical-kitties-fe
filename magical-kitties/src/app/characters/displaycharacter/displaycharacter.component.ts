@@ -11,12 +11,13 @@ import { AuthService } from '../../services/authService.service';
 import { BonusFeatureUpgrade } from '../characterbuilderkitty/bonus-feature/models/bonus-feature.model';
 import { CharacterAPIService } from '../services/characters.service';
 import { InjuriesComponent } from "./injuries/injuries.component";
+import { KittyTreatsComponent } from "./kitty-treats/kitty-treats.component";
 import { OwiesComponent } from "./owies/owies.component";
 import { StatBubbleComponent } from "./stat-bubble/stat-bubble.component";
 
 @Component({
     selector: 'app-displaycharacter',
-    imports: [StatBubbleComponent, MatButtonModule, MatFormFieldModule, MatInputModule, MarkdownComponent, OwiesComponent, InjuriesComponent],
+    imports: [StatBubbleComponent, MatButtonModule, MatFormFieldModule, MatInputModule, MarkdownComponent, OwiesComponent, InjuriesComponent, KittyTreatsComponent],
     templateUrl: './displaycharacter.component.html',
     styleUrl: './displaycharacter.component.scss'
 })

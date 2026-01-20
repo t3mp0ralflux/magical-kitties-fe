@@ -7,7 +7,7 @@ export enum AttributeOption {
     talent,
     magicalpower,
     currentowies,
-    currenttreats,
+    usedtreats,
     currentinjuries,
     incapacitated,
     magicalpowerbonus,

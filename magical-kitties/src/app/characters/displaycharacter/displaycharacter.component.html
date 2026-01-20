@@ -1,69 +1,77 @@
-@if(character){
-<div class="relative plain-background z-10 pl-1 pr-1 lg:max-w-[1200px] lg:ml-auto lg:mr-auto">
-    <div class="flex flex-col w-3/4">
-        <div class="flex border-b charactersheet-dark-blue text-2xl">{{ character.name }} @if(character.incapacitated){ (Incapacitated)}</div>
-        <div class="charactersheet-dark-blue text-xs">KITTY NAME</div>
-    </div>
-    <div class="flex flex-col mt-2">
-        <div class="flex w-3/4 border-b charactersheet-dark-blue text-2xl">
-            {{ authService.account?.userName }}
-        </div>
-        <div class="charactersheet-dark-blue text-xs">PLAYER NAME</div>
-    </div>
-    <div class="hidden md:flex md:rounded-l-full md:rounded-r-full md:border-4 md:bg-white md:absolute md:-top-50 md:-right-20 md:w-[25rem] md:h-[25rem] border-sheet-medium-blue"></div>
-    <div class="flex justify-around mt-2 md:mt-0 md:grid md:grid-cols-3 md:grid-rows-12 md:max-w-72 md:max-h-20 md:ml-auto">
-        <div class="row-1 col-1"><app-stat-bubble [option]="AttributeOption.cute"></app-stat-bubble></div>
-        <div class="row-4 col-2"><app-stat-bubble [option]="AttributeOption.cunning"></app-stat-bubble></div>
-        <div class="row-3 col-3"><app-stat-bubble [option]="AttributeOption.fierce"></app-stat-bubble></div>
-    </div>
-    <div class="bg-white">
-        <div class="flex flex-col pt-1 mt-1 md:mt-0 border-l-1 border-t-1 border-r-1 border-sheet-dark-blue">
-            <div class="flex mb-2 bg-sheet-medium-blue w-full">
-                <span class="ml-3 font-semibold text-sm text-white lg:text-base">KITTY DESCRIPTION</span>
+@if (character) {
+    <div class="relative plain-background z-10 pl-1 pr-1 lg:max-w-[1200px] lg:ml-auto lg:mr-auto">
+        <div class="flex flex-col w-3/4">
+            <div class="flex border-b charactersheet-dark-blue text-2xl">
+                {{ character.name }}
+                @if (character.incapacitated) {
+                    (Incapacitated)
+                }
             </div>
-            <markdown
-                class="h-32"
-                [data]="character.description"
-            ></markdown>
+            <div class="charactersheet-dark-blue text-xs">KITTY NAME</div>
         </div>
-        <div class="flex flex-col pt-1 border-l-1 border-t-1 border-r-1 border-sheet-purple">
-            <div class="flex bg-sheet-purple">
-                <span class="ml-3 font-semibold text-sm text-white lg:text-base">TALENT: +1 DIE</span>
+        <div class="flex flex-col mt-2">
+            <div class="flex w-3/4 border-b charactersheet-dark-blue text-2xl">
+                {{ authService.account?.userName }}
             </div>
-            <markdown
-                class="prose pl-1 pr-1 max-w-full"
-                ngPreserveWhitespaces
-                [data]="getTalentInformation()"
-            ></markdown>
+            <div class="charactersheet-dark-blue text-xs">PLAYER NAME</div>
         </div>
-        <div class="flex flex-col pt-1 border-l-1 border-t-1 border-r-1 border-sheet-cute">
-            <div class="flex bg-sheet-medium-blue">
-                <span class="ml-3 font-semibold text-sm text-white lg:text-base">MAGICAL POWER: +2 DICE</span>
-            </div>
-            <markdown
-                class="prose pl-1 pr-1 max-w-full"
-                ngPreserveWhitespaces
-                [data]="getMagicalPowerInformation()"
-            ></markdown>
+        <div class="hidden md:flex md:rounded-l-full md:rounded-r-full md:border-4 md:bg-white md:absolute md:-top-50 md:-right-20 md:w-[25rem] md:h-[25rem] border-sheet-medium-blue"></div>
+        <div class="flex justify-around mt-2 md:mt-0 md:grid md:grid-cols-3 md:grid-rows-12 md:max-w-72 md:max-h-20 md:ml-auto">
+            <div class="row-1 col-1"><app-stat-bubble [option]="AttributeOption.cute"></app-stat-bubble></div>
+            <div class="row-4 col-2"><app-stat-bubble [option]="AttributeOption.cunning"></app-stat-bubble></div>
+            <div class="row-3 col-3"><app-stat-bubble [option]="AttributeOption.fierce"></app-stat-bubble></div>
         </div>
-        <div class="flex flex-col pt-1 border-1 border-sheet-orange">
-            <div class="flex bg-sheet-orange">
-                <span class="ml-3 font-semibold text-sm text-white lg:text-base">FLAW: +1 KITTY TREAT</span>
+        <div class="bg-white">
+            <div class="flex flex-col pt-1 mt-1 md:mt-0 border-l-1 border-t-1 border-r-1 border-sheet-dark-blue">
+                <div class="flex mb-2 bg-sheet-medium-blue w-full">
+                    <span class="ml-3 font-semibold text-sm text-white lg:text-base">KITTY DESCRIPTION</span>
+                </div>
+                <markdown
+                    class="h-32"
+                    [data]="character.description"
+                ></markdown>
             </div>
-            <markdown
-                class="prose pl-1 pr-1 max-w-full"
-                ngPreserveWhitespaces
-                [data]="getFlawInformation()"
-            ></markdown>
+            <div class="flex flex-col pt-1 border-l-1 border-t-1 border-r-1 border-sheet-purple">
+                <div class="flex bg-sheet-purple">
+                    <span class="ml-3 font-semibold text-sm text-white lg:text-base">TALENT: +1 DIE</span>
+                </div>
+                <markdown
+                    class="prose pl-1 pr-1 max-w-full"
+                    ngPreserveWhitespaces
+                    [data]="getTalentInformation()"
+                ></markdown>
+            </div>
+            <div class="flex flex-col pt-1 border-l-1 border-t-1 border-r-1 border-sheet-cute">
+                <div class="flex bg-sheet-medium-blue">
+                    <span class="ml-3 font-semibold text-sm text-white lg:text-base">MAGICAL POWER: +2 DICE</span>
+                </div>
+                <markdown
+                    class="prose pl-1 pr-1 max-w-full"
+                    ngPreserveWhitespaces
+                    [data]="getMagicalPowerInformation()"
+                ></markdown>
+            </div>
+            <div class="flex flex-col pt-1 border-1 border-sheet-orange">
+                <div class="flex bg-sheet-orange">
+                    <span class="ml-3 font-semibold text-sm text-white lg:text-base">FLAW: +1 KITTY TREAT</span>
+                </div>
+                <markdown
+                    class="prose pl-1 pr-1 max-w-full"
+                    ngPreserveWhitespaces
+                    [data]="getFlawInformation()"
+                ></markdown>
+            </div>
+        </div>
+        <div class="flex flex-col lg:flex-row">
+            <div class="lg:mr-5">
+                <app-owies></app-owies>
+            </div>
+            <div>
+                <app-injuries></app-injuries>
+            </div>
+            <div>
+                <app-kitty-treats></app-kitty-treats>
+            </div>
         </div>
     </div>
-    <div class="flex flex-col lg:flex-row">
-        <div class="lg:mr-5">
-            <app-owies></app-owies>
-        </div>
-        <div>
-            <app-injuries></app-injuries>
-        </div>
-    </div>
-</div>
 }

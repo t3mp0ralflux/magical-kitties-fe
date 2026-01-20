@@ -8,7 +8,7 @@ export interface UpdateCharacterAttributes {
     level?: number;
     xp?: number;
     currentOwies?: number;
-    currentTreats?: number;
+    usedTreats?: number;
     currentInjuries?: number;
     incapacitated?: boolean;
     flawChange?: EndowmentUpdate;
