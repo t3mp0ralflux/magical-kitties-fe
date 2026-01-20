@@ -1,72 +1,73 @@
-@if(character) {
-<div class="flex flex-col">
-    <div class="flex flex-col">
-        <span class="font-bold text-lg text-sheet-red">CURRENT OWIES</span>
-        <span class="text-sheet-red">New Owie > Owie limit = +1 Injury</span>
+@if (character) {
+    <div class="flex flex-col full-width-mobile md:!w-full">
+        <div class="flex flex-col">
+            <span class="font-bold text-lg text-sheet-red">CURRENT OWIES</span>
+            <span class="text-sheet-red">New Owie > Owie limit = +1 Injury</span>
+        </div>
+        <div class="flex space-x-1 bg-sheet-red h-10 items-center mt-2 mb-5 pr-2">
+            <div
+                class="max-h-14 max-w-14 relative"
+                appDebounceClick
+                [debounceTime]="80"
+                (debounceClick)="clickedItem(1)"
+            >
+                <img src="/red_paw.png" />
+                @if (character!.currentOwies > 0) {
+                    <div class="bg-sheet-red rounded-full h-8 w-8 absolute top-3 left-3"></div>
+                }
+            </div>
+            <div
+                class="max-h-14 max-w-14 relative"
+                appDebounceClick
+                [debounceTime]="80"
+                (debounceClick)="clickedItem(2)"
+            >
+                <img src="/red_paw.png" />
+                @if (character!.currentOwies > 1) {
+                    <div class="bg-sheet-red rounded-full h-8 w-8 absolute top-3 left-3"></div>
+                }
+            </div>
+            <div
+                class="max-h-14 max-w-14 relative"
+                appDebounceClick
+                [debounceTime]="80"
+                (debounceClick)="clickedItem(3)"
+            >
+                @if (character!.maxOwiesDisplay >= 3) {
+                    <img src="/red_paw.png" />
+                } @else {
+                    <img src="/gray_paw.png" />
+                }
+                @if (character!.currentOwies > 2) {
+                    <div class="bg-sheet-red rounded-full h-8 w-8 absolute top-3 left-3"></div>
+                }
+            </div>
+            <div
+                class="max-h-14 max-w-14 relative"
+                appDebounceClick
+                [debounceTime]="80"
+                (debounceClick)="clickedItem(4)"
+            >
+                <img src="/gray_paw.png" />
+                @if (character!.currentOwies > 3) {
+                    <div class="bg-sheet-red rounded-full h-8 w-8 absolute top-3 left-3"></div>
+                }
+            </div>
+            <div
+                class="max-h-14 max-w-14 relative"
+                appDebounceClick
+                [debounceTime]="80"
+                (debounceClick)="clickedItem(5)"
+            >
+                <img src="/gray_paw.png" />
+                @if (character!.currentOwies > 4) {
+                    <div class="bg-sheet-red rounded-full h-8 w-8 absolute top-3 left-3"></div>
+                }
+            </div>
+            <div class="flex flex-col h-16 min-h-16 w-16 min-w-16 text-center border-2 border-sheet-red bg-white ml-auto">
+                <span class="font-bold text-sheet-red">LIMIT</span>
+                <span class="text-sheet-red text-2xl">{{ character ? character.maxOwiesDisplay : 0 }}</span>
+            </div>
+        </div>
     </div>
-    <div class="flex space-x-1 bg-sheet-red h-10 items-center mt-2 mb-5 full-width-mobile sm:max-w-[592px]! pr-2">
-        <div
-            class="max-h-14 max-w-14 relative"
-            appDebounceClick
-            [debounceTime]="80"
-            (debounceClick)="clickedItem(1)"
-        >
-            <img src="/red_paw.png" />
-            @if(character!.currentOwies > 0){
-            <div class="bg-sheet-red rounded-full h-8 w-8 absolute top-3 left-3"></div>
-            }
-        </div>
-        <div
-            class="max-h-14 max-w-14 relative"
-            appDebounceClick
-            [debounceTime]="80"
-            (debounceClick)="clickedItem(2)"
-        >
-            <img src="/red_paw.png" />
-            @if(character!.currentOwies > 1){
-            <div class="bg-sheet-red rounded-full h-8 w-8 absolute top-3 left-3"></div>
-            }
-        </div>
-        <div
-            class="max-h-14 max-w-14 relative"
-            appDebounceClick
-            [debounceTime]="80"
-            (debounceClick)="clickedItem(3)"
-        >
-            @if(character!.maxOwiesDisplay >= 3){
-            <img src="/red_paw.png" />
-            } @else{
-            <img src="/gray_paw.png" />
-            } @if(character!.currentOwies > 2){
-            <div class="bg-sheet-red rounded-full h-8 w-8 absolute top-3 left-3"></div>
-            }
-        </div>
-        <div
-            class="max-h-14 max-w-14 relative"
-            appDebounceClick
-            [debounceTime]="80"
-            (debounceClick)="clickedItem(4)"
-        >
-            <img src="/gray_paw.png" />
-            @if(character!.currentOwies > 3){
-            <div class="bg-sheet-red rounded-full h-8 w-8 absolute top-3 left-3"></div>
-            }
-        </div>
-        <div
-            class="max-h-14 max-w-14 relative"
-            appDebounceClick
-            [debounceTime]="80"
-            (debounceClick)="clickedItem(5)"
-        >
-            <img src="/gray_paw.png" />
-            @if(character!.currentOwies > 4){
-            <div class="bg-sheet-red rounded-full h-8 w-8 absolute top-3 left-3"></div>
-            }
-        </div>
-        <div class="flex flex-col h-16 w-16 text-center border-2 border-sheet-red bg-white ml-auto">
-            <span class="font-bold text-sheet-red">LIMIT</span>
-            <span class="text-sheet-red text-2xl">{{ character ? character.maxOwiesDisplay : 0 }}</span>
-        </div>
-    </div>
-</div>
 }

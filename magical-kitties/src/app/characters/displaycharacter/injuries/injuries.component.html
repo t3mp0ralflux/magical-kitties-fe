@@ -1,99 +1,99 @@
-@if(character) {
-<div class="flex flex-row items-start full-width-mobile sm:max-w-[592px]! pr-2 lg:justify-around">
-    <div
-        id="injuries"
-        class="flex flex-col"
-    >
-        <div class="flex">
-            <span class="font-bold text-lg text-sheet-red">CURRENT INJURIES</span>
-        </div>
-        <div class="flex space-x-1 items-center mb-5 pb-5">
-            <div
-                class="max-h-14 max-w-14 relative"
-                appDebounceClick
-                [debounceTime]="80"
-                (debounceClick)="clickedItem(1)"
-            >
-                <div class="flex flex-col text-center">
-                    <span class="text-sm text-sheet-red">-1 dice</span>
-                    <img
-                        src="/red_paw.png"
-                        class="relative z-0"
-                    />
-                    <span class="text-sm text-gray-500">-1 dice</span>
-                </div>
-                @if(character!.currentInjuries > 0){
-                <div class="bg-sheet-red rounded-full h-8 w-8 absolute top-8 left-3"></div>
-                }
+@if (character) {
+    <div class="flex flex-row items-start full-width-mobile md:!w-full pr-2 lg:justify-between">
+        <div
+            id="injuries"
+            class="flex flex-col"
+        >
+            <div class="flex">
+                <span class="font-bold text-lg text-sheet-red">CURRENT INJURIES</span>
             </div>
-            <div
-                class="max-h-14 max-w-14 relative"
-                appDebounceClick
-                [debounceTime]="80"
-                (debounceClick)="clickedItem(2)"
-            >
-                <div class="flex flex-col text-center">
-                    <span class="text-sm text-sheet-red">-2 dice</span>
-                    <img
-                        src="/red_paw.png"
-                        class="relative z-0"
-                    />
-                    <span class="text-sm text-gray-500">-2 dice</span>
+            <div class="flex space-x-1 items-center mb-5 pb-5">
+                <div
+                    class="max-h-14 max-w-14 relative"
+                    appDebounceClick
+                    [debounceTime]="80"
+                    (debounceClick)="clickedItem(1)"
+                >
+                    <div class="flex flex-col text-center">
+                        <span class="text-sm text-sheet-red">-1 dice</span>
+                        <img
+                            src="/red_paw.png"
+                            class="relative z-0"
+                        />
+                        <span class="text-sm text-gray-500">-1 dice</span>
+                    </div>
+                    @if (character!.currentInjuries > 0) {
+                        <div class="bg-sheet-red rounded-full h-8 w-8 absolute top-8 left-3"></div>
+                    }
                 </div>
-                @if(character!.currentInjuries > 1){
-                <div class="bg-sheet-red rounded-full h-8 w-8 absolute top-8 left-3"></div>
-                }
-            </div>
-            <div
-                class="max-h-14 max-w-14 relative"
-                appDebounceClick
-                [debounceTime]="80"
-                (debounceClick)="clickedItem(3)"
-            >
-                <div class="flex flex-col text-center">
-                    <span class="text-sm text-sheet-red text-center">X</span>
-                    <img
-                        src="/red_paw.png"
-                        class="relative z-0"
-                    />
-                    <span class="text-sm text-gray-500">-3 dice</span>
+                <div
+                    class="max-h-14 max-w-14 relative"
+                    appDebounceClick
+                    [debounceTime]="80"
+                    (debounceClick)="clickedItem(2)"
+                >
+                    <div class="flex flex-col text-center">
+                        <span class="text-sm text-sheet-red">-2 dice</span>
+                        <img
+                            src="/red_paw.png"
+                            class="relative z-0"
+                        />
+                        <span class="text-sm text-gray-500">-2 dice</span>
+                    </div>
+                    @if (character!.currentInjuries > 1) {
+                        <div class="bg-sheet-red rounded-full h-8 w-8 absolute top-8 left-3"></div>
+                    }
                 </div>
+                <div
+                    class="max-h-14 max-w-14 relative"
+                    appDebounceClick
+                    [debounceTime]="80"
+                    (debounceClick)="clickedItem(3)"
+                >
+                    <div class="flex flex-col text-center">
+                        <span class="text-sm text-sheet-red text-center">X</span>
+                        <img
+                            src="/red_paw.png"
+                            class="relative z-0"
+                        />
+                        <span class="text-sm text-gray-500">-3 dice</span>
+                    </div>
 
-                @if(character!.currentInjuries > 2){
-                <div class="bg-sheet-red rounded-full h-8 w-8 absolute top-8 left-3"></div>
-                }
-            </div>
-            <div
-                class="max-h-14 max-w-14 relative"
-                appDebounceClick
-                [debounceTime]="80"
-                (debounceClick)="clickedItem(4)"
-            >
-                <div class="flex flex-col text-center">
-                    <span class="text-sm text-gray-500">X</span>
-                    <img
-                        src="/gray_paw.png"
-                        class="relative z-0"
-                    />
-                    <span class="text-sm text-gray-500">X</span>
+                    @if (character!.currentInjuries > 2) {
+                        <div class="bg-sheet-red rounded-full h-8 w-8 absolute top-8 left-3"></div>
+                    }
                 </div>
-                @if(character!.currentInjuries > 3){
-                <div class="bg-sheet-red rounded-full h-8 w-8 absolute top-8 left-3"></div>
+                <div
+                    class="max-h-14 max-w-14 relative"
+                    appDebounceClick
+                    [debounceTime]="80"
+                    (debounceClick)="clickedItem(4)"
+                >
+                    <div class="flex flex-col text-center">
+                        <span class="text-sm text-gray-500">X</span>
+                        <img
+                            src="/gray_paw.png"
+                            class="relative z-0"
+                        />
+                        <span class="text-sm text-gray-500">X</span>
+                    </div>
+                    @if (character!.currentInjuries > 3) {
+                        <div class="bg-sheet-red rounded-full h-8 w-8 absolute top-8 left-3"></div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div
+            id="incapacitated"
+            class="flex flex-col align-top ml-auto lg:ml-0"
+            (click)="updateIncapacitation()"
+        >
+            <span class="font-bold text-lg text-sheet-red mb-4">INCAPACITATED</span>
+            <div class="flex justify-center h-16 w-16 border-2 border-sheet-red bg-white mx-auto">
+                @if (character!.incapacitated) {
+                    <span class="text-sheet-red font-bold text-6xl">X</span>
                 }
             </div>
         </div>
     </div>
-    <div
-        id="incapacitated"
-        class="flex flex-col align-top ml-auto lg:ml-0"
-        (click)="updateIncapacitation()"
-    >
-        <span class="font-bold text-lg text-sheet-red mb-4">INCAPACITATED</span>
-        <div class="flex justify-center h-16 w-16 border-2 border-sheet-red bg-white mx-auto">
-            @if(character!.incapacitated){
-            <span class="text-sheet-red font-bold text-6xl">X</span>
-            }
-        </div>
-    </div>
-</div>
 }
