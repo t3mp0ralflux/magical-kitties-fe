@@ -14,10 +14,11 @@ import { InjuriesComponent } from "./injuries/injuries.component";
 import { KittyTreatsComponent } from "./kitty-treats/kitty-treats.component";
 import { OwiesComponent } from "./owies/owies.component";
 import { StatBubbleComponent } from "./stat-bubble/stat-bubble.component";
+import { XpComponent } from './xp/xp.component';
 
 @Component({
     selector: 'app-displaycharacter',
-    imports: [StatBubbleComponent, MatButtonModule, MatFormFieldModule, MatInputModule, MarkdownComponent, OwiesComponent, InjuriesComponent, KittyTreatsComponent],
+    imports: [StatBubbleComponent, MatButtonModule, MatFormFieldModule, MatInputModule, MarkdownComponent, OwiesComponent, InjuriesComponent, KittyTreatsComponent, XpComponent],
     templateUrl: './displaycharacter.component.html',
     styleUrl: './displaycharacter.component.scss'
 })

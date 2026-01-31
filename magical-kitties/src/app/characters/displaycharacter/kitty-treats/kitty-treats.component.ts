@@ -21,6 +21,7 @@ export class KittyTreatsComponent {
     authService: AuthService = inject(AuthService);
     character?: Character;
     characterSubscription!: Subscription;
+    indexRange: number[] = [1, 2, 3, 4, 5];
 
     ngOnInit(): void {
         this.characterSubscription = this.characterService.character$.subscribe({

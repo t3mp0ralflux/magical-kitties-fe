@@ -3,65 +3,12 @@
         <div class="flex flex-col mt-2 md:w-1/2">
             <span class="font-bold text-sheet-orange text-lg">KITTY TREATS</span>
             <div class="flex space-x-1 bg-sheet-orange h-10 items-center mt-2 mb-5 full-width-mobile md:!w-full pr-2">
-                <div
-                    class="max-h-14 max-w-14 relative"
-                    appDebounceClick
-                    [debounceTime]="80"
-                    (debounceClick)="clickedItem(1)"
-                >
-                    <img src="/red_cat.png" />
-                    @if (character!.remainingTreats > 0) {
-                        <div class="bg-sheet-orange rounded-full h-10 w-10 absolute top-3 left-2"></div>
-                    }
-                </div>
-                <div
-                    class="max-h-14 max-w-14 relative"
-                    appDebounceClick
-                    [debounceTime]="80"
-                    (debounceClick)="clickedItem(2)"
-                >
-                    <img src="/red_cat.png" />
-                    @if (character!.remainingTreats > 1) {
-                        <div class="bg-sheet-orange rounded-full h-10 w-10 absolute top-3 left-2"></div>
-                    }
-                </div>
-                <div
-                    class="max-h-14 max-w-14 relative"
-                    appDebounceClick
-                    [debounceTime]="80"
-                    (debounceClick)="clickedItem(3)"
-                >
-                    @if (character!.remainingTreats >= 3) {
-                        <img src="/red_cat.png" />
-                    } @else {
-                        <img src="/gray_cat.png" />
-                    }
-                    @if (character!.remainingTreats > 2) {
-                        <div class="bg-sheet-orange rounded-full h-10 w-10 absolute top-3 left-2"></div>
-                    }
-                </div>
-                <div
-                    class="max-h-14 max-w-14 relative"
-                    appDebounceClick
-                    [debounceTime]="80"
-                    (debounceClick)="clickedItem(4)"
-                >
-                    <img src="/gray_cat.png" />
-                    @if (character!.remainingTreats > 3) {
-                        <div class="bg-sheet-orange rounded-full h-10 w-10 absolute top-3 left-2"></div>
-                    }
-                </div>
-                <div
-                    class="max-h-14 max-w-14 relative"
-                    appDebounceClick
-                    [debounceTime]="80"
-                    (debounceClick)="clickedItem(5)"
-                >
-                    <img src="/gray_cat.png" />
-                    @if (character!.remainingTreats > 4) {
-                        <div class="bg-sheet-orange rounded-full h-10 w-10 absolute top-3 left-2"></div>
-                    }
-                </div>
+                @for (index of indexRange; track $index) {
+                    <ng-container
+                        [ngTemplateOutlet]="xpIcon"
+                        [ngTemplateOutletContext]="{ index: index }"
+                    ></ng-container>
+                }
                 <div class="flex flex-col h-16 w-16 text-center border-2 border-sheet-orange bg-white ml-auto">
                     <span class="font-bold text-sheet-orange text-xs">STARTING</span>
                     <span class="text-sheet-orange text-2xl">{{ character ? character.treatsDisplay : 0 }}</span>
@@ -87,3 +34,24 @@
         </div>
     </div>
 }
+
+<ng-template
+    #xpIcon
+    let-index="index"
+>
+    <div
+        class="max-h-14 max-w-14 relative"
+        appDebounceClick
+        [debounceTime]="80"
+        (debounceClick)="clickedItem(index)"
+    >
+        @if (index <= 3) {
+            <img src="/red_cat.png" />
+        } @else {
+            <img src="/gray_cat.png" />
+        }
+        @if (character!.remainingTreats > index - 1) {
+            <div class="bg-sheet-orange rounded-full absolute h-10 w-10 top-[50%] left-[50%] -ml-5 -mt-4"></div>
+        }
+    </div>
+</ng-template>
