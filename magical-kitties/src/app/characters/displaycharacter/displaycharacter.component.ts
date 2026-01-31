@@ -11,12 +11,13 @@ import { AuthService } from '../../services/authService.service';
 import { BonusFeatureUpgrade } from '../characterbuilderkitty/bonus-feature/models/bonus-feature.model';
 import { CharacterAPIService } from '../services/characters.service';
 import { InjuriesComponent } from "./injuries/injuries.component";
+import { KittyTreatsComponent } from "./kitty-treats/kitty-treats.component";
 import { OwiesComponent } from "./owies/owies.component";
 import { StatBubbleComponent } from "./stat-bubble/stat-bubble.component";
 
 @Component({
     selector: 'app-displaycharacter',
-    imports: [StatBubbleComponent, MatButtonModule, MatFormFieldModule, MatInputModule, MarkdownComponent, OwiesComponent, InjuriesComponent],
+    imports: [StatBubbleComponent, MatButtonModule, MatFormFieldModule, MatInputModule, MarkdownComponent, OwiesComponent, InjuriesComponent, KittyTreatsComponent],
     templateUrl: './displaycharacter.component.html',
     styleUrl: './displaycharacter.component.scss'
 })
@@ -25,20 +26,22 @@ export class DisplayCharacterComponent implements OnInit, OnDestroy {
     authService: AuthService = inject(AuthService);
     AttributeOption = AttributeOption;
     character?: Character;
-    characterSubscription!: Subscription;
+    subscriptions: Subscription[] = [];
 
     ngOnInit(): void {
-        this.characterSubscription = this.characterService.character$.subscribe({
+        this.subscriptions.push(this.characterService.character$.subscribe({
             next: (character: Character | undefined) => {
                 this.character = character;
             }
-        });
+        }));
+
+        this.characterService.getRules().subscribe();
     }
 
     ngOnDestroy(): void {
-        if (this.characterSubscription) {
-            this.characterSubscription.unsubscribe();
-        }
+        this.subscriptions.forEach(subscription => {
+            subscription.unsubscribe();
+        })
     }
 
     getTalentInformation(): string {

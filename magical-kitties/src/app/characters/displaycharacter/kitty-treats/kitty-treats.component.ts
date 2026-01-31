@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Subscription } from 'rxjs';
-import { DebounceClickDirective } from "../../../directives/debounce-click.directive";
+import { DebounceClickDirective } from '../../../directives/debounce-click.directive';
 import { AttributeOption } from '../../../models/Characters/attributeoption.model';
 import { Character } from '../../../models/Characters/character.model';
 import { UpdateCharacterAttributes } from '../../../models/Characters/updateacharacterattributes.model';
@@ -11,12 +11,12 @@ import { AuthService } from '../../../services/authService.service';
 import { CharacterAPIService } from '../../services/characters.service';
 
 @Component({
-    selector: 'app-owies',
+    selector: 'app-kitty-treats',
     imports: [CommonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, DebounceClickDirective],
-    templateUrl: './owies.component.html',
-    styleUrl: './owies.component.scss',
+    templateUrl: './kitty-treats.component.html',
+    styleUrl: './kitty-treats.component.scss',
 })
-export class OwiesComponent implements OnInit {
+export class KittyTreatsComponent {
     characterService: CharacterAPIService = inject(CharacterAPIService);
     authService: AuthService = inject(AuthService);
     character?: Character;
@@ -37,22 +37,35 @@ export class OwiesComponent implements OnInit {
             return;
         }
 
-        if (itemClicked > this.character.currentOwies) {
-            this.character.currentOwies += 1;
+        let shouldSend = true;
+
+        if (itemClicked <= this.character.remainingTreats) {
+            this.character.usedTreats += 1;
+            this.character.remainingTreats -= 1;
         } else {
-            this.character.currentOwies -= 1;
+            this.character.usedTreats -= 1;
+            this.character.remainingTreats += 1;
         }
 
-        const payload: UpdateCharacterAttributes = {
-            characterId: this.character.id,
-            currentOwies: this.character.currentOwies,
+        if (this.character.remainingTreats > this.character.treatsDisplay) {
+            this.character.remainingTreats = this.character.treatsDisplay;
+            this.character.usedTreats = 0;
+            shouldSend = false;
         }
 
-        this.characterService.updateAttribute(AttributeOption.currentowies, payload).subscribe({
-            next: (_) => {
-            },
-            error: () => {
+        if (shouldSend) {
+
+            const payload: UpdateCharacterAttributes = {
+                characterId: this.character.id,
+                usedTreats: this.character.usedTreats,
             }
-        });
+
+            this.characterService.updateAttribute(AttributeOption.usedtreats, payload).subscribe({
+                next: (_) => {
+                },
+                error: () => {
+                }
+            });
+        }
     }
 }

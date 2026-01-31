@@ -23,13 +23,15 @@ export class Character {
     private cute!: number;
     private fierce!: number;
     private maxOwies!: number;
+    usedTreats!: number;
     cunningDisplay: number = 0;
     cuteDisplay: number = 0;
     fierceDisplay: number = 0;
     maxOwiesDisplay!: number;
+    treatsDisplay!: number;
     currentOwies!: number;
     startingTreats!: number;
-    currentTreats!: number;
+    remainingTreats!: number;
     private _currentInjuries: number = 0;
     public set currentInjuries(value: number) {
         this._currentInjuries = value;
@@ -55,6 +57,8 @@ export class Character {
         this.cuteDisplay = 0;
         this.fierceDisplay = 0;
         this.maxOwiesDisplay = 0;
+        this.treatsDisplay = 0;
+        this.remainingTreats = 0;
 
         // run upgrades to alter display values to user.
         this.upgrades.forEach((upgrade: Upgrade) => {
@@ -80,7 +84,8 @@ export class Character {
                     this.maxOwiesDisplay += 1;
                     break;
                 case UpgradeOption.treatsValue:
-                    this.startingTreats += 1;
+                    this.treatsDisplay += 1;
+                    this.remainingTreats += 1;
                     break;
                 default:
                     break;
@@ -91,10 +96,13 @@ export class Character {
         this.cuteDisplay += this.cute;
         this.fierceDisplay += this.fierce;
         this.maxOwiesDisplay += this.maxOwies;
+        this.treatsDisplay += this.startingTreats;
+        this.remainingTreats += this.startingTreats;
 
         this.cunningDisplay -= this.currentInjuries;
         this.cuteDisplay -= this.currentInjuries;
         this.fierceDisplay -= this.currentInjuries;
+        this.remainingTreats -= this.usedTreats;
 
         // displays can't go below 0
         if (this.cunningDisplay < 0) {

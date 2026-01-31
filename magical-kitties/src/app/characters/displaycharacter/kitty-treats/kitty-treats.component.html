@@ -1,0 +1,89 @@
+@if (character) {
+    <div class="flex flex-col full-width-mobile md:!w-full">
+        <div class="flex flex-col mt-2 md:w-1/2">
+            <span class="font-bold text-sheet-orange text-lg">KITTY TREATS</span>
+            <div class="flex space-x-1 bg-sheet-orange h-10 items-center mt-2 mb-5 full-width-mobile md:!w-full pr-2">
+                <div
+                    class="max-h-14 max-w-14 relative"
+                    appDebounceClick
+                    [debounceTime]="80"
+                    (debounceClick)="clickedItem(1)"
+                >
+                    <img src="/red_cat.png" />
+                    @if (character!.remainingTreats > 0) {
+                        <div class="bg-sheet-orange rounded-full h-10 w-10 absolute top-3 left-2"></div>
+                    }
+                </div>
+                <div
+                    class="max-h-14 max-w-14 relative"
+                    appDebounceClick
+                    [debounceTime]="80"
+                    (debounceClick)="clickedItem(2)"
+                >
+                    <img src="/red_cat.png" />
+                    @if (character!.remainingTreats > 1) {
+                        <div class="bg-sheet-orange rounded-full h-10 w-10 absolute top-3 left-2"></div>
+                    }
+                </div>
+                <div
+                    class="max-h-14 max-w-14 relative"
+                    appDebounceClick
+                    [debounceTime]="80"
+                    (debounceClick)="clickedItem(3)"
+                >
+                    @if (character!.remainingTreats >= 3) {
+                        <img src="/red_cat.png" />
+                    } @else {
+                        <img src="/gray_cat.png" />
+                    }
+                    @if (character!.remainingTreats > 2) {
+                        <div class="bg-sheet-orange rounded-full h-10 w-10 absolute top-3 left-2"></div>
+                    }
+                </div>
+                <div
+                    class="max-h-14 max-w-14 relative"
+                    appDebounceClick
+                    [debounceTime]="80"
+                    (debounceClick)="clickedItem(4)"
+                >
+                    <img src="/gray_cat.png" />
+                    @if (character!.remainingTreats > 3) {
+                        <div class="bg-sheet-orange rounded-full h-10 w-10 absolute top-3 left-2"></div>
+                    }
+                </div>
+                <div
+                    class="max-h-14 max-w-14 relative"
+                    appDebounceClick
+                    [debounceTime]="80"
+                    (debounceClick)="clickedItem(5)"
+                >
+                    <img src="/gray_cat.png" />
+                    @if (character!.remainingTreats > 4) {
+                        <div class="bg-sheet-orange rounded-full h-10 w-10 absolute top-3 left-2"></div>
+                    }
+                </div>
+                <div class="flex flex-col h-16 w-16 text-center border-2 border-sheet-orange bg-white ml-auto">
+                    <span class="font-bold text-sheet-orange text-xs">STARTING</span>
+                    <span class="text-sheet-orange text-2xl">{{ character ? character.treatsDisplay : 0 }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col">
+            <span class="font-bold text-sheet-red text-sm">SPEND ONE KITTY TREAT TO:</span>
+            <div class="flex flex-col md:flex-row text-sheet-red">
+                <div class="flex flex-col md:w-2/5 lg:w-1/4">
+                    <ul class="list-disc pl-3">
+                        <li>Reroll any or all dice for one check.</li>
+                        <li>Avoid taking an Injury.</li>
+                    </ul>
+                </div>
+                <div class="flex flex-col md:w-3/5 lg:w-3/4">
+                    <ul class="list-disc pl-3">
+                        <li>Use a Magical Power bonus feature you don't have one time only.</li>
+                        <li>Add something to the story beyond your kitty's control</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+}
