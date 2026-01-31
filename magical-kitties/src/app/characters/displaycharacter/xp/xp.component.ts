@@ -57,4 +57,23 @@ export class XpComponent {
             }
         });
     }
+
+    shouldShowLevelUp(): string {
+        let result = "";
+        if (!this.character || !this.characterService.rules) {
+            return result;
+        }
+
+        const requiredXP = this.characterService.rules?.levelExperiencePoints[this.character!.level];
+
+        if (!requiredXP) {
+            return result;
+        }
+
+        if (this.character!.currentXp >= requiredXP) {
+            result = "animate-background bg-gradient-to-r from-green-300 via-blue-600 to-red-300 bg-[length:_400%_400%] [animation-duration:_6s] text-white";
+        }
+
+        return result;
+    }
 }

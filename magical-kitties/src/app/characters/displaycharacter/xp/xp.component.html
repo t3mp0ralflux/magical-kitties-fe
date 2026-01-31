@@ -8,9 +8,20 @@
                     [ngTemplateOutletContext]="{ index: index }"
                 ></ng-container>
             }
-            <div class="flex flex-col h-12 min-h-12 w-12 min-w-12 text-center border-2 border-sheet-dark-blue bg-white ml-auto md:mr-0 lg:h-16 lg:w-16">
-                <span class="text-sm font-bold text-sheet-dark-blue lg:text-base">LEVEL</span>
-                <span class="text-sheet-dark-blue text-lg lg:text-2xl">{{ character ? character.level : 0 }}</span>
+            <div
+                class="flex flex-col h-12 min-h-12 w-12 min-w-12 text-center border-2 border-sheet-dark-blue bg-white ml-auto md:mr-0 lg:h-16 lg:w-16"
+                [ngClass]="shouldShowLevelUp()"
+            >
+                <span
+                    class="text-sm font-bold text-sheet-dark-blue lg:text-base"
+                    [ngClass]="shouldShowLevelUp()"
+                    >LEVEL</span
+                >
+                <span
+                    class="text-sheet-dark-blue text-lg lg:text-2xl"
+                    [ngClass]="shouldShowLevelUp()"
+                    >{{ character ? character.level : 0 }}</span
+                >
             </div>
         </div>
     </div>
