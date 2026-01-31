@@ -1,16 +1,16 @@
 @if (character) {
     <div class="flex flex-col full-width-mobile md:!w-full">
         <span class="font-bold text-lg text-sheet-dark-blue">CURRENT XP</span>
-        <div class="flex bg-sheet-cute h-5 items-center mt-2 mb-5 pr-2">
+        <div class="flex space-x-1 bg-sheet-cute h-5 items-center mt-2 mb-5 pr-2">
             @for (index of indexRange; track $index) {
                 <ng-container
                     [ngTemplateOutlet]="xpIcon"
                     [ngTemplateOutletContext]="{ index: index }"
                 ></ng-container>
             }
-            <div class="flex flex-col h-12 min-h-12 w-12 min-w-12 text-center border-2 border-sheet-dark-blue bg-white ml-auto md:mr-0">
-                <span class="text-sm font-bold text-sheet-dark-blue">LEVEL</span>
-                <span class="text-sheet-dark-blue text-lg">{{ character ? character.level : 0 }}</span>
+            <div class="flex flex-col h-12 min-h-12 w-12 min-w-12 text-center border-2 border-sheet-dark-blue bg-white ml-auto md:mr-0 lg:h-16 lg:w-16">
+                <span class="text-sm font-bold text-sheet-dark-blue lg:text-base">LEVEL</span>
+                <span class="text-sheet-dark-blue text-lg lg:text-2xl">{{ character ? character.level : 0 }}</span>
             </div>
         </div>
     </div>

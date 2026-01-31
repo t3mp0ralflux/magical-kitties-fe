@@ -1,6 +1,6 @@
 @if (character) {
     <div class="flex flex-col full-width-mobile md:!w-full">
-        <div class="flex flex-col mt-2 md:w-1/2">
+        <div class="flex flex-col md:w-1/2">
             <span class="font-bold text-sheet-orange text-lg">KITTY TREATS</span>
             <div class="flex space-x-1 bg-sheet-orange h-10 items-center mt-2 mb-5 full-width-mobile md:!w-full pr-2">
                 @for (index of indexRange; track $index) {
@@ -11,11 +11,11 @@
                 }
                 <div class="flex flex-col h-16 w-16 text-center border-2 border-sheet-orange bg-white ml-auto">
                     <span class="font-bold text-sheet-orange text-xs">STARTING</span>
-                    <span class="text-sheet-orange text-2xl">{{ character ? character.treatsDisplay : 0 }}</span>
+                    <span class="text-sheet-orange text-2xl mt-1">{{ character ? character.treatsDisplay : 0 }}</span>
                 </div>
             </div>
         </div>
-        <div class="flex flex-col">
+        <div class="flex flex-col mt-1">
             <span class="font-bold text-sheet-red text-sm">SPEND ONE KITTY TREAT TO:</span>
             <div class="flex flex-col md:flex-row text-sheet-red">
                 <div class="flex flex-col md:w-2/5 lg:w-1/4">
