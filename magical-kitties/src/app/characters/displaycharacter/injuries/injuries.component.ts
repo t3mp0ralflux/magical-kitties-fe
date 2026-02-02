@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatExpansionModule } from "@angular/material/expansion";
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Subscription } from 'rxjs';
 import { DebounceClickDirective } from "../../../directives/debounce-click.directive";
@@ -13,7 +14,7 @@ import { CharacterAPIService } from '../../services/characters.service';
 
 @Component({
     selector: 'app-injuries',
-    imports: [CommonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, DebounceClickDirective],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, DebounceClickDirective, MatExpansionModule],
     templateUrl: './injuries.component.html',
     styleUrl: './injuries.component.scss',
 })

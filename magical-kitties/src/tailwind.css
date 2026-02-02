@@ -11,4 +11,17 @@
     --color-sheet-dark-blue: #004d66;
     --color-sheet-orange: #d7712b;
     --color-sheet-red: #ab4344;
+
+    --animate-background: background-move ease infinite;
+
+    @keyframes background-move {
+        0%,
+        100% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+    }
 }

@@ -1,0 +1,49 @@
+@if (character) {
+    <div class="flex flex-col full-width-mobile md:!w-full">
+        <span class="font-bold text-lg text-sheet-dark-blue">CURRENT XP</span>
+        <div class="flex space-x-1 bg-sheet-cute h-5 items-center mt-2 mb-5 pr-2">
+            @for (index of indexRange; track $index) {
+                <ng-container
+                    [ngTemplateOutlet]="xpIcon"
+                    [ngTemplateOutletContext]="{ index: index }"
+                ></ng-container>
+            }
+            <div
+                class="flex flex-col h-12 min-h-12 w-12 min-w-12 text-center border-2 border-sheet-dark-blue bg-white ml-auto md:mr-0 lg:h-16 lg:w-16"
+                [ngClass]="shouldShowLevelUp()"
+            >
+                <span
+                    class="text-sm font-bold text-sheet-dark-blue lg:text-base"
+                    [ngClass]="shouldShowLevelUp()"
+                    >LEVEL</span
+                >
+                <span
+                    class="text-sheet-dark-blue text-lg lg:text-2xl"
+                    [ngClass]="shouldShowLevelUp()"
+                    >{{ character ? character.level : 0 }}</span
+                >
+            </div>
+        </div>
+    </div>
+}
+
+<ng-template
+    #xpIcon
+    let-index="index"
+>
+    <div
+        class="max-h-8 max-w-8 md:max-h-12 md:max-w-12 relative"
+        appDebounceClick
+        [debounceTime]="80"
+        (debounceClick)="clickedItem(index)"
+    >
+        @if (index <= 5) {
+            <img src="/blue_paw.png" />
+        } @else {
+            <img src="/gray_paw.png" />
+        }
+        @if (character!.currentXp > index - 1) {
+            <div class="bg-sheet-cute rounded-full absolute h-5 w-5 top-[50%] left-[50%] -ml-2.5 -mt-2.5 md:h-6 md:w-6 md:-ml-3 md:-mt-3 lg:h-8 lg:w-8 lg:-ml-4 lg:-mt-4"></div>
+        }
+    </div>
+</ng-template>

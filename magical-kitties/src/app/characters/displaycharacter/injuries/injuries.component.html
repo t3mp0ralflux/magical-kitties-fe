@@ -23,7 +23,7 @@
                         <span class="text-sm text-gray-500">-1 dice</span>
                     </div>
                     @if (character!.currentInjuries > 0) {
-                        <div class="bg-sheet-red rounded-full h-8 w-8 absolute top-8 left-3"></div>
+                        <ng-container *ngTemplateOutlet="xpDot"></ng-container>
                     }
                 </div>
                 <div
@@ -41,7 +41,7 @@
                         <span class="text-sm text-gray-500">-2 dice</span>
                     </div>
                     @if (character!.currentInjuries > 1) {
-                        <div class="bg-sheet-red rounded-full h-8 w-8 absolute top-8 left-3"></div>
+                        <ng-container *ngTemplateOutlet="xpDot"></ng-container>
                     }
                 </div>
                 <div
@@ -60,7 +60,7 @@
                     </div>
 
                     @if (character!.currentInjuries > 2) {
-                        <div class="bg-sheet-red rounded-full h-8 w-8 absolute top-8 left-3"></div>
+                        <ng-container *ngTemplateOutlet="xpDot"></ng-container>
                     }
                 </div>
                 <div
@@ -78,7 +78,7 @@
                         <span class="text-sm text-gray-500">X</span>
                     </div>
                     @if (character!.currentInjuries > 3) {
-                        <div class="bg-sheet-red rounded-full h-8 w-8 absolute top-8 left-3"></div>
+                        <ng-container *ngTemplateOutlet="xpDot"></ng-container>
                     }
                 </div>
             </div>
@@ -97,3 +97,7 @@
         </div>
     </div>
 }
+
+<ng-template #xpDot>
+    <div class="bg-sheet-red rounded-full absolute h-10 w-10 top-[50%] left-[50%] -ml-5"></div>
+</ng-template>
