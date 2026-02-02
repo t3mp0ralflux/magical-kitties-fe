@@ -434,7 +434,7 @@ export class CharacterBuilderKittyComponent implements AfterContentInit, OnDestr
             const dialogSubscription = this.dialog.open(ConfirmModalComponent, { data: dialogData }).afterClosed().subscribe({
                 next: (result) => {
                     if (result) {
-                        this.submitLevelUp(payload);
+                        this.submitLevelChange(payload);
                         this.character!.currentXp = 0;
                         this.resetUpgrades();
                     }
@@ -446,7 +446,7 @@ export class CharacterBuilderKittyComponent implements AfterContentInit, OnDestr
 
             this.editorSubscriptions.push(dialogSubscription);
         } else {
-            this.submitLevelUp(payload);
+            this.submitLevelChange(payload);
         }
     }
 
@@ -526,7 +526,7 @@ export class CharacterBuilderKittyComponent implements AfterContentInit, OnDestr
         this.dialog.open(InformationDisplayComponent, config);
     }
 
-    private submitLevelUp(payload: UpdateCharacterAttributes) {
+    private submitLevelChange(payload: UpdateCharacterAttributes) {
         this.characterApi.updateLevel(payload).subscribe({
             next: (_) => {
                 let shouldResetElements = false;

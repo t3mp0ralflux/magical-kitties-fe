@@ -1,5 +1,5 @@
 @if (character) {
-    <div class="relative plain-background z-10 pl-1 pr-1 overflow-x-hidden pb-5 lg:max-w-[1200px] lg:ml-auto lg:mr-auto">
+    <div class="relative plain-background z-10 px-1 pb-5 overflow-x-hidden lg:max-w-[1200px] lg:ml-auto lg:mr-auto">
         <div class="flex flex-col w-3/4">
             <div class="flex border-b charactersheet-dark-blue text-2xl">
                 {{ character.name }}
@@ -16,10 +16,30 @@
             <div class="charactersheet-dark-blue text-xs">PLAYER NAME</div>
         </div>
         <div class="hidden md:flex md:rounded-l-full md:rounded-r-full md:border-4 md:bg-white md:absolute md:-top-50 md:-right-20 md:w-[25rem] md:h-[25rem] border-sheet-medium-blue"></div>
-        <div class="flex justify-around mt-2 md:mt-0 md:grid md:grid-cols-3 md:grid-rows-12 md:max-w-72 md:max-h-20 md:ml-auto">
-            <div class="row-1 col-1"><app-stat-bubble [option]="AttributeOption.cute"></app-stat-bubble></div>
-            <div class="row-4 col-2"><app-stat-bubble [option]="AttributeOption.cunning"></app-stat-bubble></div>
-            <div class="row-3 col-3"><app-stat-bubble [option]="AttributeOption.fierce"></app-stat-bubble></div>
+        <div class="flex flex-col md:flex-row">
+            <div class="flex items-end mb-2 mt-2 md:mt-0">
+                <button
+                    class="mr-5"
+                    mat-flat-button
+                    matIconPrefix
+                    [routerLink]="['builder', 'kitty']"
+                >
+                    <mat-icon>construction</mat-icon>
+                    <span class="text-lg">Back to Editor</span>
+                </button>
+                <button mat-raised-button>
+                    <span
+                        class="text-lg"
+                        (click)="endScene()"
+                        >End Scene</span
+                    >
+                </button>
+            </div>
+            <div class="flex justify-around mt-2 md:mt-0 md:grid md:grid-cols-3 md:grid-rows-12 md:max-w-72 md:max-h-20 md:ml-auto">
+                <div class="row-1 col-1"><app-stat-bubble [option]="AttributeOption.cute"></app-stat-bubble></div>
+                <div class="row-4 col-2"><app-stat-bubble [option]="AttributeOption.cunning"></app-stat-bubble></div>
+                <div class="row-3 col-3"><app-stat-bubble [option]="AttributeOption.fierce"></app-stat-bubble></div>
+            </div>
         </div>
         <div class="bg-white">
             <div class="flex flex-col pt-1 mt-1 md:mt-0 border-l-1 border-t-1 border-r-1 border-sheet-dark-blue">

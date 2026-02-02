@@ -93,8 +93,4 @@ export class BuilderlayoutComponent extends LayoutComponent implements OnDestroy
             }
         })
     }
-
-    navigate(page: string) {
-        this.router.navigate([page], { relativeTo: this.route });
-    }
 }

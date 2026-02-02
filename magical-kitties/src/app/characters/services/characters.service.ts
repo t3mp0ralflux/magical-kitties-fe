@@ -105,6 +105,17 @@ export class CharacterAPIService {
         });
     }
 
+    resetCharacter(characterId: string): Observable<HttpResponse<any>>;
+    resetCharacter(characterId: string): Observable<HttpErrorResponse>;
+    resetCharacter(characterId: string): Observable<HttpResponse<any>> | Observable<HttpErrorResponse> {
+        return this.apiClient.request<HttpResponse<any>>({
+            path: `${this.baseUrl}/characters/${characterId}/reset`,
+            method: HttpMethod.PUT,
+            headerResponse: true,
+            responseType: "text"
+        });
+    }
+
     updateName(payload: UpdateCharacterDescriptors): Observable<string> {
         return this.apiClient.request<any>({
             path: `${this.baseUrl}/characters/description/${DescriptionOption.name}`,
