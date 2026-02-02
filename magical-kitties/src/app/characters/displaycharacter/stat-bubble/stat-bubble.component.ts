@@ -31,12 +31,10 @@ export class StatBubbleComponent implements OnInit, OnDestroy {
         this.subscriptions.push(this.characterService.character$.subscribe({
             next: (character: Character | undefined) => {
                 this.character = character;
+
+                this.updateValues();
             }
         }));
-    }
-
-    ngAfterContentInit(): void {
-        this.updateValues();
     }
 
     ngOnDestroy(): void {
