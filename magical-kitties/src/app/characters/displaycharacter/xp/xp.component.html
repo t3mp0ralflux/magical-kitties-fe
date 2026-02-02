@@ -1,7 +1,7 @@
 @if (character) {
     <div class="flex flex-col full-width-mobile md:!w-full">
         <span class="font-bold text-lg text-sheet-dark-blue">CURRENT XP</span>
-        <div class="flex space-x-1 bg-sheet-cute h-5 items-center mt-2 mb-5 pr-2">
+        <div class="flex space-x-1 bg-sheet-light-blue h-5 items-center mt-2 mb-5 pr-2">
             @for (index of indexRange; track $index) {
                 <ng-container
                     [ngTemplateOutlet]="xpIcon"
