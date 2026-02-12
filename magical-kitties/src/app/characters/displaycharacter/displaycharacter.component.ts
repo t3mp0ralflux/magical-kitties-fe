@@ -1,13 +1,18 @@
+import { HttpResponse } from '@angular/common/http';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { MatButtonModule } from "@angular/material/button";
+import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { Router, RouterLink } from '@angular/router';
 import { MarkdownComponent } from "ngx-markdown";
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AttributeOption } from '../../models/Characters/attributeoption.model';
 import { Character } from '../../models/Characters/character.model';
 import { UpgradeOption } from '../../models/Characters/upgradeoption.model';
 import { AuthService } from '../../services/authService.service';
+import { ConfirmModalComponent } from '../../sharedcomponents/confirm-modal/confirm-modal.component';
 import { BonusFeatureUpgrade } from '../characterbuilderkitty/bonus-feature/models/bonus-feature.model';
 import { CharacterAPIService } from '../services/characters.service';
 import { InjuriesComponent } from "./injuries/injuries.component";
@@ -19,7 +24,7 @@ import { XpComponent } from './xp/xp.component';
 
 @Component({
     selector: 'app-displaycharacter',
-    imports: [StatBubbleComponent, MatButtonModule, MatFormFieldModule, MatInputModule, MarkdownComponent, OwiesComponent, InjuriesComponent, KittyTreatsComponent, XpComponent, LevelInfogramComponent],
+    imports: [StatBubbleComponent, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule, MarkdownComponent, OwiesComponent, InjuriesComponent, KittyTreatsComponent, XpComponent, LevelInfogramComponent, RouterLink],
     templateUrl: './displaycharacter.component.html',
     styleUrl: './displaycharacter.component.scss'
 })
@@ -29,6 +34,8 @@ export class DisplayCharacterComponent implements OnInit, OnDestroy {
     AttributeOption = AttributeOption;
     character?: Character;
     subscriptions: Subscription[] = [];
+    router = inject(Router);
+    dialog: MatDialog = inject(MatDialog);
 
     ngOnInit(): void {
         this.subscriptions.push(this.characterService.character$.subscribe({
@@ -44,6 +51,26 @@ export class DisplayCharacterComponent implements OnInit, OnDestroy {
         this.subscriptions.forEach(subscription => {
             subscription.unsubscribe();
         })
+    }
+
+    endScene(): void {
+        const dialogData = { message: "Ending the scene will reset all Injuries, Owies, and Kitty treats to their default values. Are you sure you want to do this?" };
+
+        const dialogSubscription = this.dialog.open(ConfirmModalComponent, { data: dialogData }).afterClosed().subscribe({
+            next: (result) => {
+                if (result) {
+                    this.submitReset().subscribe({
+                        next: (_ => {
+                            this.characterService.getCharacterInformation(this.character!.id).subscribe();
+                        })
+                    });
+                }
+            },
+            error: (err) => {
+            }
+        });
+
+        this.subscriptions.push(dialogSubscription);
     }
 
     getTalentInformation(): string {
@@ -94,6 +121,10 @@ export class DisplayCharacterComponent implements OnInit, OnDestroy {
         #### ${this.character?.flaw?.name}
         - ${this.character?.flaw?.description}`;
 
+    }
+
+    private submitReset(): Observable<HttpResponse<any>> {
+        return this.characterService.resetCharacter(this.character!.id);
     }
 
 }
