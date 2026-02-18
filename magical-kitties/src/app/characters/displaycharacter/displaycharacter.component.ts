@@ -5,11 +5,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatTabsModule } from '@angular/material/tabs';
 import { Router, RouterLink } from '@angular/router';
 import { MarkdownComponent } from "ngx-markdown";
 import { Observable, Subscription } from 'rxjs';
 import { AttributeOption } from '../../models/Characters/attributeoption.model';
 import { Character } from '../../models/Characters/character.model';
+import { Problem } from '../../models/Characters/problem.model';
 import { UpgradeOption } from '../../models/Characters/upgradeoption.model';
 import { AuthService } from '../../services/authService.service';
 import { ConfirmModalComponent } from '../../sharedcomponents/confirm-modal/confirm-modal.component';
@@ -24,7 +26,7 @@ import { XpComponent } from './xp/xp.component';
 
 @Component({
     selector: 'app-displaycharacter',
-    imports: [StatBubbleComponent, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule, MarkdownComponent, OwiesComponent, InjuriesComponent, KittyTreatsComponent, XpComponent, LevelInfogramComponent, RouterLink],
+    imports: [StatBubbleComponent, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule, MatTabsModule, MarkdownComponent, OwiesComponent, InjuriesComponent, KittyTreatsComponent, XpComponent, LevelInfogramComponent, RouterLink],
     templateUrl: './displaycharacter.component.html',
     styleUrl: './displaycharacter.component.scss'
 })
@@ -121,6 +123,14 @@ export class DisplayCharacterComponent implements OnInit, OnDestroy {
         #### ${this.character?.flaw?.name}
         - ${this.character?.flaw?.description}`;
 
+    }
+
+    getParsedProblemText(problem: Problem): string {
+        const actualSource = problem.customSource ??= problem.source;
+        const actualEmotion = problem.customEmotion ??= problem.emotion;
+        const verb = !problem.solved ? "is making them feel" : "made them feel";
+
+        return `${actualSource} ${verb} ${actualEmotion}.`;
     }
 
     private submitReset(): Observable<HttpResponse<any>> {

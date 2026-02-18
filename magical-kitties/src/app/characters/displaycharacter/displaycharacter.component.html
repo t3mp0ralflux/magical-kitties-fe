@@ -41,63 +41,112 @@
                 <div class="row-3 col-3"><app-stat-bubble [option]="AttributeOption.fierce"></app-stat-bubble></div>
             </div>
         </div>
-        <div class="bg-white">
-            <div class="flex flex-col pt-1 mt-1 md:mt-0 border-l-1 border-t-1 border-r-1 border-sheet-dark-blue">
-                <div class="flex mb-2 bg-sheet-medium-blue w-full">
-                    <span class="ml-3 font-semibold text-sm text-white lg:text-base">KITTY DESCRIPTION</span>
+        <mat-tab-group class="mt-2 md:mt-5">
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="mr-2">pets</mat-icon>
+                    Kitty
+                </ng-template>
+                <div class="bg-white">
+                    <div class="flex flex-col pt-1 mt-1 md:mt-0 border-l-1 border-t-1 border-r-1 border-sheet-dark-blue">
+                        <div class="flex mb-2 bg-sheet-medium-blue w-full">
+                            <span class="ml-3 font-semibold text-sm text-white lg:text-base">KITTY DESCRIPTION</span>
+                        </div>
+                        <markdown
+                            class="h-32 px-1"
+                            [data]="character.description"
+                        ></markdown>
+                    </div>
+                    <div class="flex flex-col pt-1 border-l-1 border-t-1 border-r-1 border-sheet-purple">
+                        <div class="flex bg-sheet-purple">
+                            <span class="ml-3 font-semibold text-sm text-white lg:text-base">TALENT: +1 DIE</span>
+                        </div>
+                        <markdown
+                            class="prose px-1 max-w-full"
+                            ngPreserveWhitespaces
+                            [data]="getTalentInformation()"
+                        ></markdown>
+                    </div>
+                    <div class="flex flex-col pt-1 border-l-1 border-t-1 border-r-1 border-sheet-cute">
+                        <div class="flex bg-sheet-medium-blue">
+                            <span class="ml-3 font-semibold text-sm text-white lg:text-base">MAGICAL POWER: +2 DICE</span>
+                        </div>
+                        <markdown
+                            class="prose px-1 max-w-full"
+                            ngPreserveWhitespaces
+                            [data]="getMagicalPowerInformation()"
+                        ></markdown>
+                    </div>
+                    <div class="flex flex-col pt-1 border-1 border-sheet-orange">
+                        <div class="flex bg-sheet-orange">
+                            <span class="ml-3 font-semibold text-sm text-white lg:text-base">FLAW: +1 KITTY TREAT</span>
+                        </div>
+                        <markdown
+                            class="prose px-1 max-w-full"
+                            ngPreserveWhitespaces
+                            [data]="getFlawInformation()"
+                        ></markdown>
+                    </div>
                 </div>
-                <markdown
-                    class="h-32"
-                    [data]="character.description"
-                ></markdown>
-            </div>
-            <div class="flex flex-col pt-1 border-l-1 border-t-1 border-r-1 border-sheet-purple">
-                <div class="flex bg-sheet-purple">
-                    <span class="ml-3 font-semibold text-sm text-white lg:text-base">TALENT: +1 DIE</span>
+                <div class="flex flex-col md:flex-row md:justify-between">
+                    <div class="min-w-1/2 sm:max-w-1/2 md:max-w-2/5 sm:mr-5 lg:mr-10">
+                        <app-owies></app-owies>
+                    </div>
+                    <div class="w-1/2">
+                        <app-injuries></app-injuries>
+                    </div>
                 </div>
-                <markdown
-                    class="prose pl-1 pr-1 max-w-full"
-                    ngPreserveWhitespaces
-                    [data]="getTalentInformation()"
-                ></markdown>
-            </div>
-            <div class="flex flex-col pt-1 border-l-1 border-t-1 border-r-1 border-sheet-cute">
-                <div class="flex bg-sheet-medium-blue">
-                    <span class="ml-3 font-semibold text-sm text-white lg:text-base">MAGICAL POWER: +2 DICE</span>
+                <app-kitty-treats></app-kitty-treats>
+                <div class="flex flex-col mt-2 md:flex-row md:justify-between">
+                    <div class="min-w-1/2 sm:max-w-1/2 md:max-w-2/5 sm:mr-5 lg:mr-10">
+                        <app-xp></app-xp>
+                    </div>
+                    <div class="w-full mt-2 sm:w-1/2">
+                        <app-level-infogram></app-level-infogram>
+                    </div>
                 </div>
-                <markdown
-                    class="prose pl-1 pr-1 max-w-full"
-                    ngPreserveWhitespaces
-                    [data]="getMagicalPowerInformation()"
-                ></markdown>
-            </div>
-            <div class="flex flex-col pt-1 border-1 border-sheet-orange">
-                <div class="flex bg-sheet-orange">
-                    <span class="ml-3 font-semibold text-sm text-white lg:text-base">FLAW: +1 KITTY TREAT</span>
+            </mat-tab>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="mr-2">home</mat-icon>
+                    Humans
+                </ng-template>
+                <div class="bg-white">
+                    <div class="flex border-b charactersheet-dark-blue text-xl">
+                        {{ character.hometown }}
+                    </div>
+                    <div class="charactersheet-dark-blue text-xs">HOMETOWN</div>
+                    @for (human of character.humans; track human.id) {
+                        <div class="flex border-b charactersheet-dark-blue text-xl mt-2">
+                            {{ human.name }}
+                        </div>
+                        <div class="charactersheet-dark-blue text-xs">HUMAN NAME</div>
+                        <div class="flex flex-col pt-1 mt-1 md:mt-0 border-l-1 border-t-1 border-r-1 border-sheet-dark-blue">
+                            <div class="flex mb-2 bg-sheet-medium-blue w-full">
+                                <span class="ml-3 font-semibold text-sm text-white lg:text-base">HUMAN DESCRIPTION</span>
+                            </div>
+                            <markdown
+                                class="h-32 px-1"
+                                [data]="human.description"
+                            ></markdown>
+                        </div>
+                        <div class="flex flex-col border-1 border-sheet-orange px-1">
+                            <div class="flex">
+                                <div class="text-sheet-orange md:text-lg">Problem</div>
+                                <div class="ml-auto text-sheet-orange border-l-1 border-sheet-orange min-w-10 text-center md:text-lg">Rank</div>
+                            </div>
+                            <div class="flex flex-col">
+                                @for (problem of human.problems; track problem.id) {
+                                    <div class="flex">
+                                        <div>{{ getParsedProblemText(problem) }}</div>
+                                        <div class="ml-auto border-l-1 border-sheet-orange min-w-10 text-center">{{ problem.rank }}</div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
                 </div>
-                <markdown
-                    class="prose pl-1 pr-1 max-w-full"
-                    ngPreserveWhitespaces
-                    [data]="getFlawInformation()"
-                ></markdown>
-            </div>
-        </div>
-        <div class="flex flex-col md:flex-row md:justify-between">
-            <div class="min-w-1/2 sm:max-w-1/2 md:max-w-2/5 sm:mr-5 lg:mr-10">
-                <app-owies></app-owies>
-            </div>
-            <div class="w-1/2">
-                <app-injuries></app-injuries>
-            </div>
-        </div>
-        <app-kitty-treats></app-kitty-treats>
-        <div class="flex flex-col mt-2 md:flex-row md:justify-between">
-            <div class="min-w-1/2 sm:max-w-1/2 md:max-w-2/5 sm:mr-5 lg:mr-10">
-                <app-xp></app-xp>
-            </div>
-            <div class="w-full mt-2 sm:w-1/2">
-                <app-level-infogram></app-level-infogram>
-            </div>
-        </div>
+            </mat-tab>
+        </mat-tab-group>
     </div>
 }
