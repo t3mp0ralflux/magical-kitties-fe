@@ -1,29 +1,29 @@
 <mat-dialog-content>
     @for (item of data.data; track item) {
-    <div
-        class="flex flex-col mb-4"
-        id="{{ item.id }}"
-    >
-        <span class="text-xl font-semibold underline">{{ item.name }}</span>
-        <markdown
-            ngPreserveWhitespaces
-            [data]="item.description"
-        ></markdown>
-        @if (item.bonusFeatures) {
-        <div class="ml-8">
-            <span class="text-lg font-semibold underline">Bonus Features</span>
-            <ng-container
-                [ngTemplateOutlet]="bonusFeaturesTemplate"
-                [ngTemplateOutletContext]="{ features: item.bonusFeatures }"
-            ></ng-container>
+        <div
+            class="flex flex-col mb-4"
+            id="{{ item.id }}"
+        >
+            <span class="text-xl font-semibold underline">{{ item.name }}</span>
+            <markdown
+                ngPreserveWhitespaces
+                [data]="item.description"
+            ></markdown>
+            @if (item.bonusFeatures) {
+                <div class="ml-8">
+                    <span class="text-lg font-semibold underline">Bonus Features</span>
+                    <ng-container
+                        [ngTemplateOutlet]="bonusFeaturesTemplate"
+                        [ngTemplateOutletContext]="{ features: item.bonusFeatures }"
+                    ></ng-container>
+                </div>
+            }
         </div>
-        }
-    </div>
     }
 </mat-dialog-content>
 <mat-dialog-actions>
     <button
-        mat-raised-button
+        matButton="elevated"
         mat-dialog-close=""
     >
         Close
@@ -36,13 +36,13 @@
 >
     <ul class="ml-5 list-disc">
         @for (item of features; track item) {
-        <li class="mb-2">
-            <span class="font-semibold">{{ item.name }}</span>
-            <markdown
-                ngPreserveWhitespaces
-                [data]="item.description"
-            ></markdown>
-        </li>
+            <li class="mb-2">
+                <span class="font-semibold">{{ item.name }}</span>
+                <markdown
+                    ngPreserveWhitespaces
+                    [data]="item.description"
+                ></markdown>
+            </li>
         }
     </ul>
 </ng-template>

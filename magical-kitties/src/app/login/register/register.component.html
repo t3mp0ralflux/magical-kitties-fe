@@ -1,120 +1,128 @@
 @if (!registrationComplete) {
-  <form
-    class="flex flex-col"
-    [formGroup]="formGroup"
-    (submit)="submit()"
+    <form
+        class="flex flex-col"
+        [formGroup]="formGroup"
+        (submit)="submit()"
     >
-    <mat-form-field ngClass="{{ formGroup.controls['firstName'].errors !== null ? 'mb-2' : '' }}">
-      <mat-label>First Name</mat-label>
-      <input
-        matInput
-        formControlName="firstName"
-        />
-        @if (formGroup.controls["firstName"].hasError('required')){
-          <mat-error>First Name is required</mat-error>
-        }
-      </mat-form-field>
-      <mat-form-field ngClass="{{ formGroup.controls['lastName'].errors !== null ? 'mb-2' : '' }}">
-        <mat-label>Last Name</mat-label>
-        <input
-          matInput
-          formControlName="lastName"
-          />
-          @if (formGroup.controls["lastName"].hasError('required')){
-            <mat-error>Last Name is required</mat-error>
-          }
+        <mat-form-field ngClass="{{ formGroup.controls['firstName'].errors !== null ? 'mb-2' : '' }}">
+            <mat-label>First Name</mat-label>
+            <input
+                matInput
+                formControlName="firstName"
+            />
+            @if (formGroup.controls["firstName"].hasError("required")) {
+                <mat-error>First Name is required</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field ngClass="{{ formGroup.controls['lastName'].errors !== null ? 'mb-2' : '' }}">
+            <mat-label>Last Name</mat-label>
+            <input
+                matInput
+                formControlName="lastName"
+            />
+            @if (formGroup.controls["lastName"].hasError("required")) {
+                <mat-error>Last Name is required</mat-error>
+            }
         </mat-form-field>
         <mat-form-field ngClass="{{ formGroup.controls['email'].errors ? 'mb-5 sm:mb-2' : '' }}">
-          <mat-label>Email address</mat-label>
-          <input
-            matInput
-            formControlName="email"
-            type="email"
+            <mat-label>Email address</mat-label>
+            <input
+                matInput
+                formControlName="email"
+                type="email"
             />
-            @if (formGroup.controls["email"].hasError('required')){
-              <mat-error>Email is required</mat-error>
-              } @if (formGroup.controls["email"].hasError('email')){
-              <mat-error>Email is not formatted correctly</mat-error>
-              } @if (formGroup.controls["email"].hasError('api')){
-              <mat-error>{{ formGroup.controls["email"].getError("api") }}</mat-error>
+            @if (formGroup.controls["email"].hasError("required")) {
+                <mat-error>Email is required</mat-error>
             }
-          </mat-form-field>
-          <mat-form-field ngClass="{{ formGroup.controls['username'].errors ? 'mb-2' : '' }}">
+            @if (formGroup.controls["email"].hasError("email")) {
+                <mat-error>Email is not formatted correctly</mat-error>
+            }
+            @if (formGroup.controls["email"].hasError("api")) {
+                <mat-error>{{ formGroup.controls["email"].getError("api") }}</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field ngClass="{{ formGroup.controls['username'].errors ? 'mb-2' : '' }}">
             <mat-label>Username</mat-label>
             <input
-              matInput
-              formControlName="username"
-              />
-              @if (formGroup.controls["username"].hasError('required')){
+                matInput
+                formControlName="username"
+            />
+            @if (formGroup.controls["username"].hasError("required")) {
                 <mat-error>Username is required</mat-error>
-                } @if (formGroup.controls["username"].hasError('api')){
+            }
+            @if (formGroup.controls["username"].hasError("api")) {
                 <mat-error>{{ formGroup.controls["username"].getError("api") }}</mat-error>
-              }
-            </mat-form-field>
-            <mat-form-field ngClass="{{ formGroup.controls['email'].errors ? 'mb-2' : '' }}">
-              <mat-label>Password</mat-label>
-              <input
+            }
+        </mat-form-field>
+        <mat-form-field ngClass="{{ formGroup.controls['email'].errors ? 'mb-2' : '' }}">
+            <mat-label>Password</mat-label>
+            <input
                 matInput
                 formControlName="password"
                 [type]="hidePassword ? 'password' : 'text'"
-                />
-                <mat-icon
-                  matSuffix
-                  (click)="hidePassword = !hidePassword"
-                  >{{ hidePassword ? "visibility_off" : "visibility" }}</mat-icon
-                  >
-                  @if (formGroup.controls["password"].hasError('required')){
-                    <mat-error>Password is required</mat-error>
-                    } @if (formGroup.controls["password"].hasError('pattern')){
-                    <mat-error>Password does not match criteria</mat-error>
-                  }
-                </mat-form-field>
-                <mat-form-field ngClass="{{ formGroup.controls['email'].errors ? 'mb-2' : '' }}">
-                  <mat-label>Re-Enter Password</mat-label>
-                  <input
-                    matInput
-                    formControlName="passwordReEnter"
-                    [type]="hidePassword ? 'password' : 'text'"
-                    />
-                    <mat-icon
-                      matSuffix
-                      (click)="hidePassword = !hidePassword"
-                      >{{ hidePassword ? "visibility_off" : "visibility" }}</mat-icon
-                      >
-                      @if (formGroup.controls["passwordReEnter"].hasError('required')){
-                        <mat-error>Password Re-Enter is required</mat-error>
-                        } @if (formGroup.controls["passwordReEnter"].hasError('pattern')){
-                        <mat-error>Password does not match criteria</mat-error>
-                        } @if (formGroup.controls["passwordReEnter"].hasError('confirmedValidator')){
-                        <mat-error>Passwords do not match</mat-error>
-                      }
-                    </mat-form-field>
-                    <div
-                      id="passwordGuidelines"
-                      class="mb-5"
-                      >
-                      <span>Passwords must have:</span>
-                      <ul>
-                        <li>At least 8 characters</li>
-                        <li>At least one uppercase letter</li>
-                        <li>At least one lowercase letter</li>
-                        <li>At least one number</li>
-                        <li>At least one special character</li>
-                      </ul>
-                    </div>
-                    <button
-                      mat-raised-button
-                      type="submit"
-                      disabled="{{ formGroup.invalid || formSubmitting }}"
-                      >
-                      @if(formSubmitting){
-                        <mat-spinner [diameter]="20"></mat-spinner>
-                      } @else{ Register }
-                      </button>
-                    </form>
-                  }
-                  @if (registrationComplete) {
-                    <div>
-                      <span>Thanks for registering your account! An email will be sent out to verify your account before you can login.</span>
-                    </div>
-                  }
+            />
+            <mat-icon
+                matSuffix
+                (click)="hidePassword = !hidePassword"
+                >{{ hidePassword ? "visibility_off" : "visibility" }}</mat-icon
+            >
+            @if (formGroup.controls["password"].hasError("required")) {
+                <mat-error>Password is required</mat-error>
+            }
+            @if (formGroup.controls["password"].hasError("pattern")) {
+                <mat-error>Password does not match criteria</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field ngClass="{{ formGroup.controls['email'].errors ? 'mb-2' : '' }}">
+            <mat-label>Re-Enter Password</mat-label>
+            <input
+                matInput
+                formControlName="passwordReEnter"
+                [type]="hidePassword ? 'password' : 'text'"
+            />
+            <mat-icon
+                matSuffix
+                (click)="hidePassword = !hidePassword"
+                >{{ hidePassword ? "visibility_off" : "visibility" }}</mat-icon
+            >
+            @if (formGroup.controls["passwordReEnter"].hasError("required")) {
+                <mat-error>Password Re-Enter is required</mat-error>
+            }
+            @if (formGroup.controls["passwordReEnter"].hasError("pattern")) {
+                <mat-error>Password does not match criteria</mat-error>
+            }
+            @if (formGroup.controls["passwordReEnter"].hasError("confirmedValidator")) {
+                <mat-error>Passwords do not match</mat-error>
+            }
+        </mat-form-field>
+        <div
+            id="passwordGuidelines"
+            class="mb-5"
+        >
+            <span>Passwords must have:</span>
+            <ul>
+                <li>At least 8 characters</li>
+                <li>At least one uppercase letter</li>
+                <li>At least one lowercase letter</li>
+                <li>At least one number</li>
+                <li>At least one special character</li>
+            </ul>
+        </div>
+        <button
+            matButton="elevated"
+            type="submit"
+            disabled="{{ formGroup.invalid || formSubmitting }}"
+        >
+            @if (formSubmitting) {
+                <mat-spinner [diameter]="20"></mat-spinner>
+            } @else {
+                Register
+            }
+        </button>
+    </form>
+}
+@if (registrationComplete) {
+    <div>
+        <span>Thanks for registering your account! An email will be sent out to verify your account before you can login.</span>
+    </div>
+}

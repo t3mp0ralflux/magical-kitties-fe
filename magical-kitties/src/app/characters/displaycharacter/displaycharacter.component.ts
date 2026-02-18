@@ -1,10 +1,13 @@
+import { CommonModule } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialog } from '@angular/material/dialog';
+import { MatExpansionModule } from "@angular/material/expansion";
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { Router, RouterLink } from '@angular/router';
 import { MarkdownComponent } from "ngx-markdown";
@@ -26,7 +29,7 @@ import { XpComponent } from './xp/xp.component';
 
 @Component({
     selector: 'app-displaycharacter',
-    imports: [StatBubbleComponent, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule, MatTabsModule, MarkdownComponent, OwiesComponent, InjuriesComponent, KittyTreatsComponent, XpComponent, LevelInfogramComponent, RouterLink],
+    imports: [CommonModule, StatBubbleComponent, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule, MatTabsModule, MatSidenavModule, MarkdownComponent, OwiesComponent, InjuriesComponent, KittyTreatsComponent, XpComponent, LevelInfogramComponent, RouterLink, MatExpansionModule],
     templateUrl: './displaycharacter.component.html',
     styleUrl: './displaycharacter.component.scss'
 })
@@ -133,8 +136,53 @@ export class DisplayCharacterComponent implements OnInit, OnDestroy {
         return `${actualSource} ${verb} ${actualEmotion}.`;
     }
 
+    toggleHelp(): void {
+        document.getElementById("help")?.classList.toggle("invisible");
+        // document.getElementById("help-bg")?.classList.toggle("opacity-50");
+        // document.getElementById("help-bg")?.classList.toggle("opacity-0");
+        document.getElementById("help")?.classList.toggle("-translate-y-full");
+        //document.getElementById("test")?.classList.toggle("-translate-y-full");
+        document.getElementById("help")?.classList.toggle("-translate-x-full");
+        //document.getElementById("test")?.classList.toggle("-translate-x-full");
+
+        const div = document.getElementById("test");
+        if (div) {
+            if (div.classList.contains('invisible')) {
+                div.classList.remove('invisible');
+            } else {
+                div.classList.add('invisible');
+            }
+        }
+    }
+
+    toggleAnimation(): void {
+        const div = document.getElementById('test');
+        if (div) {
+            if (div.classList.contains('opacity-100')) {
+                // Ease out (move down and right, fade out)
+                div.classList.remove('opacity-100', 'translate-x-0', 'translate-y-0');
+                div.classList.add('opacity-0', 'translate-x-full', 'translate-y-full');
+            } else {
+                // Ease in (return to original position and become visible)
+                div.classList.remove('opacity-0', 'translate-x-full', 'translate-y-full');
+                div.classList.add('opacity-100', 'translate-x-0', 'translate-y-0');
+            }
+        }
+    }
+    toggleAnimation2(): void {
+        const div = document.getElementById('test');
+        if (div) {
+            if (div.classList.contains('scale-0')) {
+                div.classList.remove('scale-0');
+                div.classList.add('scale-100');
+            } else {
+                div.classList.remove('scale-100');
+                div.classList.add('scale-0');
+            }
+        }
+    }
+
     private submitReset(): Observable<HttpResponse<any>> {
         return this.characterService.resetCharacter(this.character!.id);
     }
-
 }

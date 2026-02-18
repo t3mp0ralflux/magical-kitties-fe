@@ -40,7 +40,7 @@
         <span class="error mb-5">{{ accountErrorMessage }}.</span>
     }
     <button
-        mat-raised-button
+        matButton="elevated"
         type="submit"
         disabled="{{ formGroup.invalid || formSubmitting }}"
         (click)="login()"

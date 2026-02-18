@@ -4,7 +4,7 @@
 
         <div class="ml-auto">
             <button
-                mat-raised-button
+                matButton="elevated"
                 class="create"
                 (click)="createCharacter()"
             >
@@ -41,52 +41,52 @@
         </mat-form-field>
     </div>
     @if (characters$ | async; as characters) {
-    <div class="flex flex-col md:flex-row flex-wrap min-w-1/2">
-        @for (character of characters.items; track trackByFn(character.id, "Characters")) {
-        <div class="ml-auto mr-auto xl:ml-0 xl:mr-0 w-96 p-2.5">
-            <mat-card class="min-w-fit">
-                <mat-card-content>
-                    <div class="flex h-20">
-                        <div class="flex justify-center items-center mr-3 h-10 w-10"><mat-icon>person</mat-icon></div>
-                        <div class="flex flex-col">
-                            <span class="text-xl">{{ character.name }}</span>
-                            <span class="text">Level: {{ character.level }} | Human: {{ character.humanName ?? "Unknown" }}</span>
-                        </div>
-                    </div>
-                </mat-card-content>
-                <mat-card-actions class="flex justify-between">
-                    <button
-                        class="mr-1"
-                        mat-button
-                        (click)="viewCharacter(character.id)"
-                    >
-                        <span class="text-lg">View</span>
-                    </button>
-                    <button
-                        class="mr-1"
-                        mat-button
-                        (click)="editCharacter(character.id)"
-                    >
-                        <span class="text-lg">Edit</span>
-                    </button>
-                    <button
-                        class="mr-1"
-                        mat-button
-                        (click)="copyCharacter(character.id)"
-                    >
-                        <span class="text-lg">Copy</span>
-                    </button>
-                    <button
-                        class="mr-1"
-                        mat-button
-                        (click)="deleteCharacter(character)"
-                    >
-                        <span class="text-lg">Delete</span>
-                    </button>
-                </mat-card-actions>
-            </mat-card>
+        <div class="flex flex-col md:flex-row flex-wrap min-w-1/2">
+            @for (character of characters.items; track trackByFn(character.id, "Characters")) {
+                <div class="ml-auto mr-auto xl:ml-0 xl:mr-0 w-96 p-2.5">
+                    <mat-card class="min-w-fit">
+                        <mat-card-content>
+                            <div class="flex h-20">
+                                <div class="flex justify-center items-center mr-3 h-10 w-10"><mat-icon>person</mat-icon></div>
+                                <div class="flex flex-col">
+                                    <span class="text-xl">{{ character.name }}</span>
+                                    <span class="text">Level: {{ character.level }} | Human: {{ character.humanName ?? "Unknown" }}</span>
+                                </div>
+                            </div>
+                        </mat-card-content>
+                        <mat-card-actions class="flex justify-between">
+                            <button
+                                class="mr-1"
+                                mat-button
+                                (click)="viewCharacter(character.id)"
+                            >
+                                <span class="text-lg">View</span>
+                            </button>
+                            <button
+                                class="mr-1"
+                                mat-button
+                                (click)="editCharacter(character.id)"
+                            >
+                                <span class="text-lg">Edit</span>
+                            </button>
+                            <button
+                                class="mr-1"
+                                mat-button
+                                (click)="copyCharacter(character.id)"
+                            >
+                                <span class="text-lg">Copy</span>
+                            </button>
+                            <button
+                                class="mr-1"
+                                mat-button
+                                (click)="deleteCharacter(character)"
+                            >
+                                <span class="text-lg">Delete</span>
+                            </button>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+            }
         </div>
-        }
-    </div>
     }
 </div>

@@ -16,7 +16,6 @@ import { AuthService } from '../../services/authService.service';
     styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-    menuOpen: boolean = false;
     private router: Router = inject(Router);
     private authService: AuthService = inject(AuthService)
 
@@ -27,7 +26,6 @@ export class HeaderComponent {
     }
 
     toggleMenu(): void {
-        this.menuOpen = !this.menuOpen;
         document.getElementById("minimenu-container")?.classList.toggle("invisible");
         document.getElementById("minimenu-bg")?.classList.toggle("opacity-0");
         document.getElementById("minimenu-bg")?.classList.toggle("opacity-50");

@@ -74,7 +74,7 @@
             id="minimenu"
             class="absolute duration-500 ease-out transition-all right-0 w-2/3 translate-x-full"
         >
-            <div class="relative z-30 flex grow">
+            <div class="relative z-40 flex grow">
                 <div class="flex flex-col mat-toolbar grow pb-3">
                     <div class="flex grow justify-center py-3">
                         <ng-container *ngTemplateOutlet="signInOut"></ng-container>
@@ -93,15 +93,16 @@
                         <button mat-button>Learn to Play</button>
                     </div>
                     @if (account !== undefined) {
-                    <mat-divider></mat-divider>
-                    } @if (account !== undefined) {
-                    <button
-                        mat-button
-                        (click)="logout()"
-                        class="font-bold"
-                    >
-                        Sign Out
-                    </button>
+                        <mat-divider></mat-divider>
+                    }
+                    @if (account !== undefined) {
+                        <button
+                            mat-button
+                            (click)="logout()"
+                            class="font-bold"
+                        >
+                            Sign Out
+                        </button>
                     }
                 </div>
             </div>
@@ -111,31 +112,32 @@
 
 <ng-template #signInOut>
     @if (account === undefined) {
-    <button
-        mat-stroked-button
-        class="mr-5"
-        [routerLink]="['/login']"
-    >
-        Sign In
-    </button>
-    } @if (account === undefined) {
-    <button
-        mat-raised-button
-        class="sign-up"
-        [routerLink]="['/register']"
-    >
-        Sign Up
-    </button>
+        <button
+            mat-stroked-button
+            class="mr-5"
+            [routerLink]="['/login']"
+        >
+            Sign In
+        </button>
+    }
+    @if (account === undefined) {
+        <button
+            matButton="elevated"
+            class="sign-up"
+            [routerLink]="['/register']"
+        >
+            Sign Up
+        </button>
     }
 
     <div class="hidden sm:block">
         @if (account !== undefined) {
-        <button
-            mat-button
-            [matMenuTriggerFor]="accountMenu"
-        >
-            <mat-icon>person</mat-icon>{{ account.userName }}
-        </button>
+            <button
+                mat-button
+                [matMenuTriggerFor]="accountMenu"
+            >
+                <mat-icon>person</mat-icon>{{ account.userName }}
+            </button>
         }
         <mat-menu #accountMenu="matMenu">
             <button mat-menu-item>Settings</button>
@@ -149,7 +151,7 @@
     </div>
     <div class="sm:hidden">
         @if (account !== undefined) {
-        <button mat-button><mat-icon>person</mat-icon>{{ account.userName }}</button>
+            <button mat-button><mat-icon>person</mat-icon>{{ account.userName }}</button>
         }
     </div>
 </ng-template>
