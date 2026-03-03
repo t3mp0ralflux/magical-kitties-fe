@@ -22,10 +22,10 @@
                 }
             </div>
             <div class="ml-auto">
-                <mat-icon
+                <span
                     class="cursor-pointer material-symbols-outlined"
                     (click)="removeHuman()"
-                    >remove</mat-icon
+                    >remove</span
                 >
             </div>
         </mat-card-header>
@@ -70,7 +70,7 @@
                     class="mt-2 mb-2"
                     (click)="addNewProblem()"
                 >
-                    <mat-icon class="material-symbols-outlined">add</mat-icon><span class="text-lg">Add Problem</span>
+                    <div class="flex align-middle"><span class="material-symbols-outlined">add</span><span class="text-lg">Add Problem</span></div>
                 </button>
             </div>
         </mat-card-content>

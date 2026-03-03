@@ -19,11 +19,11 @@
             formControlName="password"
             [type]="hidePassword ? 'password' : 'text'"
         />
-        <mat-icon
+        <span
             matSuffix
             (click)="hidePassword = !hidePassword"
             class="material-symbols-outlined"
-            >{{ hidePassword ? "visibility_off" : "visibility" }}</mat-icon
+            >{{ hidePassword ? "visibility_off" : "visibility" }}</span
         >
         <mat-hint>
             <a

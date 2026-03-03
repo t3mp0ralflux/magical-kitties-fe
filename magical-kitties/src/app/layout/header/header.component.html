@@ -35,7 +35,7 @@
                         (click)="toggleMenu()"
                         class="mini-menu"
                     >
-                        <mat-icon class="material-symbols-outlined">menu</mat-icon>
+                        <span class="material-symbols-outlined">menu</span>
                     </button>
                 </mat-toolbar-row>
             </mat-toolbar>
@@ -136,7 +136,7 @@
                 mat-button
                 [matMenuTriggerFor]="accountMenu"
             >
-                <mat-icon class="material-symbols-outlined">person</mat-icon>{{ account.userName }}
+                <span class="material-symbols-outlined">person</span>{{ account.userName }}
             </button>
         }
         <mat-menu #accountMenu="matMenu">
@@ -151,7 +151,7 @@
     </div>
     <div class="sm:hidden">
         @if (account !== undefined) {
-            <button mat-button><mat-icon class="material-symbols-outlined">person</mat-icon>{{ account.userName }}</button>
+            <button mat-button><span class="material-symbols-outlined">person</span>{{ account.userName }}</button>
         }
     </div>
 </ng-template>
