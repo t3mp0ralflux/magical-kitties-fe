@@ -136,7 +136,9 @@
                 mat-button
                 [matMenuTriggerFor]="accountMenu"
             >
-                <span class="material-symbols-outlined">person</span>{{ account.userName }}
+                <div class="flex align-middle">
+                    <span class="material-symbols-outlined">person</span><span>{{ account.userName }}</span>
+                </div>
             </button>
         }
         <mat-menu #accountMenu="matMenu">
@@ -151,7 +153,11 @@
     </div>
     <div class="sm:hidden">
         @if (account !== undefined) {
-            <button mat-button><span class="material-symbols-outlined">person</span>{{ account.userName }}</button>
+            <button mat-button>
+                <div class="flex align-middle">
+                    <span class="material-symbols-outlined">person</span><span>{{ account.userName }}</span>
+                </div>
+            </button>
         }
     </div>
 </ng-template>
