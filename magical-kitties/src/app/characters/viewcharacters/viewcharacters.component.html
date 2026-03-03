@@ -23,7 +23,11 @@
                 placeholder="Search by name or level"
                 (keyup)="search(getValue($event))"
             />
-            <mat-icon matPrefix>search</mat-icon>
+            <mat-icon
+                matPrefix
+                class="material-symbols-outlined"
+                >search</mat-icon
+            >
         </mat-form-field>
         <mat-form-field
             class="ml-3"
@@ -47,7 +51,7 @@
                     <mat-card class="min-w-fit">
                         <mat-card-content>
                             <div class="flex h-20">
-                                <div class="flex justify-center items-center mr-3 h-10 w-10"><mat-icon>person</mat-icon></div>
+                                <div class="flex justify-center items-center mr-3 h-10 w-10"><mat-icon class="material-symbols-outlined">person</mat-icon></div>
                                 <div class="flex flex-col">
                                     <span class="text-xl">{{ character.name }}</span>
                                     <span class="text">Level: {{ character.level }} | Human: {{ character.humanName ?? "Unknown" }}</span>

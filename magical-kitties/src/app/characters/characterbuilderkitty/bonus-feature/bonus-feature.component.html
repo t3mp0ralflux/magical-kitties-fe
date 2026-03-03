@@ -26,7 +26,7 @@
                     >-</mat-option
                 >
                 @for (item of characterCurrentPowers; track trackByFn(item.id, "CurrentPowers")) {
-                <mat-option [value]="item.id">{{ item.name }}</mat-option>
+                    <mat-option [value]="item.id">{{ item.name }}</mat-option>
                 }
             </mat-select>
         </mat-form-field>
@@ -46,13 +46,13 @@
                     >-</mat-option
                 >
                 @for (item of getAvailableBonusFeatures(); track trackByFn(item.id, "AvailableFeatures")) {
-                <mat-option [value]="item.id">{{ item.name }}</mat-option>
+                    <mat-option [value]="item.id">{{ item.name }}</mat-option>
                 }
             </mat-select>
         </mat-form-field>
         <div class="flex ml-1 justify-end sm:w-10 sm:ml-0">
             <mat-icon
-                class="cursor-pointer"
+                class="cursor-pointer material-symbols-outlined"
                 (click)="openInfoDialog()"
                 [hidden]="!showOptions"
                 >help</mat-icon

@@ -26,13 +26,13 @@
                     >-</mat-option
                 >
                 @for (item of availableMagicalPowers; track trackByFn(item.id, "AvailableMagicPowers")) {
-                <mat-option [value]="item.id">{{ item.name }}</mat-option>
+                    <mat-option [value]="item.id">{{ item.name }}</mat-option>
                 }
             </mat-select>
         </mat-form-field>
         <div class="flex ml-1 justify-end sm:w-10 sm:ml-0">
             <mat-icon
-                class="ml-auto cursor-pointer"
+                class="ml-auto cursor-pointer material-symbols-outlined"
                 (click)="openInfoDialog(characterApi.rules?.magicalPowers, magicalPowerChoice.value)"
                 [hidden]="!showOptions"
                 >help</mat-icon

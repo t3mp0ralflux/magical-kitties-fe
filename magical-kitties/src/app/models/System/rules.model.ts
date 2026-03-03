@@ -21,6 +21,7 @@ export interface Rules {
     problemSource: ProblemSource[];
     emotion: ProblemSource[];
     diceRules: string[];
+    rollInstructions: string[];
     diceDifficulties: DiceDifficulty[];
     diceSuccesses: DiceSuccess[];
     rollComplications: string[];

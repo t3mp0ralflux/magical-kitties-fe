@@ -5,7 +5,7 @@
     <mat-card-header
         ><div class="ml-auto">
             <mat-icon
-                class="cursor-pointer"
+                class="cursor-pointer material-symbols-outlined"
                 (click)="removeProblem()"
                 >remove</mat-icon
             >
@@ -23,32 +23,33 @@
                         (selectionChange)="updateProblemSource($event)"
                         [value]="getProblemValue(problem.source, characterAPI.rules?.problemSource)"
                     >
-                        @if (getProblemValue(problem.source, characterAPI.rules?.problemSource) === '') {
-                        <mat-option value="">-- Select Source --</mat-option>
-                        } @for (problem of characterAPI.rules?.problemSource; track trackByFn(problem.source, "Problems")) {
-                        <mat-option [value]="problem.source">{{ problem.source }}</mat-option>
+                        @if (getProblemValue(problem.source, characterAPI.rules?.problemSource) === "") {
+                            <mat-option value="">-- Select Source --</mat-option>
+                        }
+                        @for (problem of characterAPI.rules?.problemSource; track trackByFn(problem.source, "Problems")) {
+                            <mat-option [value]="problem.source">{{ problem.source }}</mat-option>
                         }
                     </mat-select>
                 </mat-form-field>
             </div>
-            @if (selectedProblemSource === 'Custom') {
-            <div class="flex flex-col ml-1 max-w-1/2">
-                <mat-label class="text-xs pb-[2px] sm:text-base sm:pb-0">Custom Source</mat-label>
-                @if ({value: (remainingSourceCharacters$ | async)}; as count) {
-                <mat-form-field
-                    appearance="outline"
-                    hintLabel="{{count.value! <= Constants.MaxCharactersSmallInput/2 ? `Characters remaining: ${count.value!}` : '' }}"
-                >
-                    <input
-                        matInput
-                        maxlength="{{ Constants.MaxCharactersSmallInput }}"
-                        [(ngModel)]="problem.customSource"
-                        (keyup)="updateMaxSource()"
-                        (blur)="customSourceUpdated(getValue($event))"
-                    />
-                </mat-form-field>
-                }
-            </div>
+            @if (selectedProblemSource === "Custom") {
+                <div class="flex flex-col ml-1 max-w-1/2">
+                    <mat-label class="text-xs pb-[2px] sm:text-base sm:pb-0">Custom Source</mat-label>
+                    @if ({ value: (remainingSourceCharacters$ | async) }; as count) {
+                        <mat-form-field
+                            appearance="outline"
+                            hintLabel="{{ count.value! <= Constants.MaxCharactersSmallInput / 2 ? `Characters remaining: ${count.value!}` : '' }}"
+                        >
+                            <input
+                                matInput
+                                maxlength="{{ Constants.MaxCharactersSmallInput }}"
+                                [(ngModel)]="problem.customSource"
+                                (keyup)="updateMaxSource()"
+                                (blur)="customSourceUpdated(getValue($event))"
+                            />
+                        </mat-form-field>
+                    }
+                </div>
             }
         </div>
         <div
@@ -62,32 +63,33 @@
                         (selectionChange)="updateProblemEmotion($event)"
                         [value]="getEmotionValue(problem.emotion, characterAPI.rules?.emotion)"
                     >
-                        @if (getProblemValue(problem.emotion, characterAPI.rules?.emotion) === '') {
-                        <mat-option value="">-- Select Emotion --</mat-option>
-                        } @for (emotion of characterAPI.rules?.emotion; track trackByFn(emotion.source, "Emotion")) {
-                        <mat-option [value]="emotion.source">{{ emotion.source }}</mat-option>
+                        @if (getProblemValue(problem.emotion, characterAPI.rules?.emotion) === "") {
+                            <mat-option value="">-- Select Emotion --</mat-option>
+                        }
+                        @for (emotion of characterAPI.rules?.emotion; track trackByFn(emotion.source, "Emotion")) {
+                            <mat-option [value]="emotion.source">{{ emotion.source }}</mat-option>
                         }
                     </mat-select>
                 </mat-form-field>
             </div>
-            @if (selectedProblemEmotion === 'Custom') {
-            <div class="flex flex-col ml-1 max-w-1/2">
-                <mat-label class="text-xs pb-[2px] sm:text-base sm:pb-0">Custom Emotion</mat-label>
-                @if ({value: (remainingEmotionCharacters$ | async)}; as count) {
-                <mat-form-field
-                    appearance="outline"
-                    hintLabel="{{count.value! <= Constants.MaxCharactersSmallInput/2 ? `Characters remaining: ${count.value!}` : '' }}"
-                >
-                    <input
-                        matInput
-                        maxlength="{{ Constants.MaxCharactersSmallInput }}"
-                        [(ngModel)]="problem.customEmotion"
-                        (keyup)="updateMaxEmotion()"
-                        (blur)="customEmotionUpdated(getValue($event))"
-                    />
-                </mat-form-field>
-                }
-            </div>
+            @if (selectedProblemEmotion === "Custom") {
+                <div class="flex flex-col ml-1 max-w-1/2">
+                    <mat-label class="text-xs pb-[2px] sm:text-base sm:pb-0">Custom Emotion</mat-label>
+                    @if ({ value: (remainingEmotionCharacters$ | async) }; as count) {
+                        <mat-form-field
+                            appearance="outline"
+                            hintLabel="{{ count.value! <= Constants.MaxCharactersSmallInput / 2 ? `Characters remaining: ${count.value!}` : '' }}"
+                        >
+                            <input
+                                matInput
+                                maxlength="{{ Constants.MaxCharactersSmallInput }}"
+                                [(ngModel)]="problem.customEmotion"
+                                (keyup)="updateMaxEmotion()"
+                                (blur)="customEmotionUpdated(getValue($event))"
+                            />
+                        </mat-form-field>
+                    }
+                </div>
             }
         </div>
         <div class="flex mt-1 sm:justify-around">

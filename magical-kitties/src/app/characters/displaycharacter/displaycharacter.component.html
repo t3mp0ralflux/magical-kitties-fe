@@ -1,14 +1,48 @@
 @if (character) {
     <div class="fixed bottom-0 right-0 lg:absolute lg:top-0 z-80">
         <mat-drawer-container
-            class="bg-transparent!"
+            class="bg-transparent! h-full"
             [hasBackdrop]="false"
         >
             <mat-drawer
                 #drawer
                 [mode]="'side'"
                 [position]="'end'"
-                >Drawer Content Goes Here. There's a lot that goes into this and it's huge!</mat-drawer
+                class="min-w-lg"
+                ><div class="flex flex-col text-sheet-orange">
+                    <span class="font-bold text-lg">HOW DO I ROLL CHECKS?</span>
+                    <div
+                        style="
+                            font-variation-settings:
+                                &quot;FILL&quot; 1,
+                                &quot;wght&quot; 100,
+                                &quot;GRAD&quot; 0,
+                                &quot;opsz&quot; 0;
+                        "
+                        class="flex align-middle"
+                    >
+                        <span class="material-symbols-outlined">stat_0</span><span>Gather your dice:</span>
+                    </div>
+                    <span class="flex flex-col indent-5">
+                        @for (diceResult of characterService.rules?.diceRules; track $index) {
+                            <span>{{ diceResult }}</span>
+                        }
+                    </span>
+                    @for (instruction of characterService.rules?.rollInstructions; track $index) {
+                        <div
+                            style="
+                                font-variation-settings:
+                                    &quot;FILL&quot; 1,
+                                    &quot;wght&quot; 100,
+                                    &quot;GRAD&quot; 0,
+                                    &quot;opsz&quot; 0;
+                            "
+                            class="flex align-middle"
+                        >
+                            <span class="material-symbols-outlined">stat_0</span><span>{{ instruction }}</span>
+                        </div>
+                    }
+                </div></mat-drawer
             >
             <mat-drawer-content class="min-h-56">
                 <div id="fullHelp">
@@ -54,7 +88,7 @@
                     matIconPrefix
                     [routerLink]="['builder', 'kitty']"
                 >
-                    <mat-icon>construction</mat-icon>
+                    <mat-icon class="material-symbols-outlined">construction</mat-icon>
                     <span class="text-lg">Back to Editor</span>
                 </button>
                 <button matButton="elevated">
@@ -74,7 +108,7 @@
         <mat-tab-group class="mt-2 md:mt-5">
             <mat-tab>
                 <ng-template mat-tab-label>
-                    <mat-icon class="mr-2">pets</mat-icon>
+                    <mat-icon class="mr-2 material-symbols-outlined">pets</mat-icon>
                     Kitty
                 </ng-template>
                 <div class="bg-white">
@@ -138,7 +172,7 @@
             </mat-tab>
             <mat-tab>
                 <ng-template mat-tab-label>
-                    <mat-icon class="mr-2">home</mat-icon>
+                    <mat-icon class="mr-2 material-symbols-outlined">home</mat-icon>
                     Humans
                 </ng-template>
                 <div class="bg-white">
@@ -190,9 +224,9 @@
         (click)="drawer.toggle()"
     >
         @if (drawer.opened) {
-            <mat-icon>keyboard_double_arrow_right</mat-icon>
+            <mat-icon class="material-symbols-outlined">keyboard_double_arrow_right</mat-icon>
         } @else {
-            <mat-icon>keyboard_double_arrow_left</mat-icon>
+            <mat-icon class="material-symbols-outlined">keyboard_double_arrow_left</mat-icon>
         }
     </button>
 </ng-template>

@@ -64,6 +64,7 @@
             <mat-icon
                 matSuffix
                 (click)="hidePassword = !hidePassword"
+                class="material-symbols-outlined"
                 >{{ hidePassword ? "visibility_off" : "visibility" }}</mat-icon
             >
             @if (formGroup.controls["password"].hasError("required")) {
@@ -83,6 +84,7 @@
             <mat-icon
                 matSuffix
                 (click)="hidePassword = !hidePassword"
+                class="material-symbols-outlined"
                 >{{ hidePassword ? "visibility_off" : "visibility" }}</mat-icon
             >
             @if (formGroup.controls["passwordReEnter"].hasError("required")) {
