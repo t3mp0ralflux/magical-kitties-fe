@@ -4,7 +4,6 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { Subscription } from 'rxjs';
 import { AttributeOption } from '../../../models/Characters/attributeoption.model';
@@ -23,7 +22,7 @@ import { BonusFeatureUpgrade } from './models/bonus-feature.model';
 
 @Component({
     selector: 'app-bonus-feature',
-    imports: [CommonModule, MatSelectModule, MatFormFieldModule, ReactiveFormsModule, MatCheckboxModule, MatIconModule],
+    imports: [CommonModule, MatSelectModule, MatFormFieldModule, ReactiveFormsModule, MatCheckboxModule],
     templateUrl: './bonus-feature.component.html',
     styleUrl: './bonus-feature.component.scss'
 })

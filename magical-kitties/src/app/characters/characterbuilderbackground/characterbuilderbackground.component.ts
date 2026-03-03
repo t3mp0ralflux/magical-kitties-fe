@@ -5,7 +5,6 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from "@angular/material/button";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { Constants } from '../../Constants';
@@ -21,7 +20,7 @@ import { HumanBuilderComponent } from "./human-builder/human-builder.component";
 
 @Component({
     selector: 'app-characterbuilderbackground',
-    imports: [CommonModule, MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule, MatButtonModule, MatIconModule, HumanBuilderComponent, MatExpansionModule],
+    imports: [CommonModule, MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule, MatButtonModule, HumanBuilderComponent, MatExpansionModule],
     templateUrl: './characterbuilderbackground.component.html',
     styleUrl: './characterbuilderbackground.component.scss'
 })

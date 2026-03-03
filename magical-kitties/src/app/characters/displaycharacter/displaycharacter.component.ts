@@ -5,7 +5,6 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatDialog } from '@angular/material/dialog';
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -29,7 +28,7 @@ import { XpComponent } from './xp/xp.component';
 
 @Component({
     selector: 'app-displaycharacter',
-    imports: [CommonModule, StatBubbleComponent, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule, MatTabsModule, MatSidenavModule, MarkdownComponent, OwiesComponent, InjuriesComponent, KittyTreatsComponent, XpComponent, LevelInfogramComponent, RouterLink, MatExpansionModule],
+    imports: [CommonModule, StatBubbleComponent, MatButtonModule, MatFormFieldModule, MatInputModule, MatTabsModule, MatSidenavModule, MarkdownComponent, OwiesComponent, InjuriesComponent, KittyTreatsComponent, XpComponent, LevelInfogramComponent, RouterLink, MatExpansionModule],
     templateUrl: './displaycharacter.component.html',
     styleUrl: './displaycharacter.component.scss'
 })
