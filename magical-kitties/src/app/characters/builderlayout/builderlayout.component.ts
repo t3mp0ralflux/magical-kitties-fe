@@ -3,7 +3,6 @@ import { Component, inject, OnDestroy } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { Router, RouterEvent, RouterLinkWithHref, RouterOutlet } from '@angular/router';
@@ -19,7 +18,7 @@ import { CharacterAPIService } from '../services/characters.service';
 
 @Component({
     selector: 'app-builderlayout',
-    imports: [CommonModule, RouterOutlet, MatToolbarModule, MatIconModule, HeaderComponent, FooterComponent, MatInputModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatDividerModule, RouterLinkWithHref],
+    imports: [CommonModule, RouterOutlet, MatToolbarModule, HeaderComponent, FooterComponent, MatInputModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatDividerModule, RouterLinkWithHref],
     templateUrl: './builderlayout.component.html',
     styleUrl: './builderlayout.component.scss'
 })

@@ -15,7 +15,7 @@
                     <div class="hidden sm:flex flex-col mr-5">
                         <div class="text-xl">Character Builder</div>
                         <div class="text-sm flex items-center">
-                            <mat-icon>person</mat-icon>
+                            <span class="material-symbols-outlined">person</span>
                             {{ character?.name }}
                         </div>
                     </div>
@@ -24,7 +24,7 @@
                             class="cursor-pointer"
                             [routerLink]="['.']"
                         >
-                            <div class="flex items-center"><mat-icon class="mr-1">settings</mat-icon>Home</div>
+                            <div class="flex items-center"><span class="mr-1 material-symbols-outlined">settings</span>Home</div>
                             @if (currentPage === "builder") {
                                 <ng-container *ngTemplateOutlet="underline"></ng-container>
                             }

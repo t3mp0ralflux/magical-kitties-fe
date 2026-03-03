@@ -4,7 +4,6 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PasswordResetRequest } from '../../models/Login/passwordreset.model';
@@ -14,7 +13,7 @@ import { MatchValidator } from '../utilities';
 
 @Component({
     selector: 'app-resetpassword',
-    imports: [CommonModule, ReactiveFormsModule, FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule],
+    imports: [CommonModule, ReactiveFormsModule, FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
     templateUrl: './resetpassword.component.html',
     styleUrl: './resetpassword.component.scss'
 })

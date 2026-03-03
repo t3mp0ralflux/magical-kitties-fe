@@ -5,7 +5,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
@@ -22,7 +21,7 @@ import { CopyCharacterModalComponent } from './copy-modal/copy-modal.component';
 import { DeleteModalComponent } from './delete-modal/delete-modal.component';
 @Component({
     selector: 'app-viewcharacters',
-    imports: [CommonModule, MatButtonModule, MatCardModule, MatIconModule, MatFormFieldModule, MatInputModule, MatPaginatorModule, MatSelectModule, MatDividerModule],
+    imports: [CommonModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatPaginatorModule, MatSelectModule, MatDividerModule],
     templateUrl: './viewcharacters.component.html',
     styleUrl: './viewcharacters.component.scss',
 })

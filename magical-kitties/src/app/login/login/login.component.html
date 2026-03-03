@@ -19,10 +19,11 @@
             formControlName="password"
             [type]="hidePassword ? 'password' : 'text'"
         />
-        <mat-icon
+        <span
             matSuffix
             (click)="hidePassword = !hidePassword"
-            >{{ hidePassword ? "visibility_off" : "visibility" }}</mat-icon
+            class="material-symbols-outlined"
+            >{{ hidePassword ? "visibility_off" : "visibility" }}</span
         >
         <mat-hint>
             <a
@@ -40,7 +41,7 @@
         <span class="error mb-5">{{ accountErrorMessage }}.</span>
     }
     <button
-        mat-raised-button
+        matButton="elevated"
         type="submit"
         disabled="{{ formGroup.invalid || formSubmitting }}"
         (click)="login()"

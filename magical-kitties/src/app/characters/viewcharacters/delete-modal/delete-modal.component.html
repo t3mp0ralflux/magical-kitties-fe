@@ -16,14 +16,14 @@
 </mat-dialog-content>
 <mat-dialog-actions
     ><button
-        mat-raised-button
+        matButton="elevated"
         mat-dialog-close
         class="cancel"
     >
         Cancel
     </button>
     <button
-        mat-raised-button
+        matButton="elevated"
         [mat-dialog-close]="true"
         disabled="{{ formGroup.invalid }}"
     >

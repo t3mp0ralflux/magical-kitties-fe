@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router, RouterLink } from '@angular/router';
@@ -11,12 +10,11 @@ import { AuthService } from '../../services/authService.service';
 
 @Component({
     selector: 'app-header',
-    imports: [CommonModule, MatToolbarModule, MatDividerModule, MatButtonModule, MatMenuModule, MatIconModule, RouterLink],
+    imports: [CommonModule, MatToolbarModule, MatDividerModule, MatButtonModule, MatMenuModule, RouterLink],
     templateUrl: './header.component.html',
     styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-    menuOpen: boolean = false;
     private router: Router = inject(Router);
     private authService: AuthService = inject(AuthService)
 
@@ -27,7 +25,6 @@ export class HeaderComponent {
     }
 
     toggleMenu(): void {
-        this.menuOpen = !this.menuOpen;
         document.getElementById("minimenu-container")?.classList.toggle("invisible");
         document.getElementById("minimenu-bg")?.classList.toggle("opacity-0");
         document.getElementById("minimenu-bg")?.classList.toggle("opacity-50");

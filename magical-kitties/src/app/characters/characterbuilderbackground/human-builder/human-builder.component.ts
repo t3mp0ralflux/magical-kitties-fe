@@ -6,7 +6,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -22,7 +21,7 @@ import { ProblemBuilderComponent } from "./problem-builder/problem-builder.compo
 
 @Component({
     selector: 'app-human-builder',
-    imports: [CommonModule, MatCardModule, MatIconModule, MatSelectModule, MatInputModule, MatFormFieldModule, MatButtonModule, FormsModule, ReactiveFormsModule, ProblemBuilderComponent, MatExpansionModule],
+    imports: [CommonModule, MatCardModule, MatSelectModule, MatInputModule, MatFormFieldModule, MatButtonModule, FormsModule, ReactiveFormsModule, ProblemBuilderComponent, MatExpansionModule],
     templateUrl: './human-builder.component.html',
     styleUrl: './human-builder.component.scss'
 })
