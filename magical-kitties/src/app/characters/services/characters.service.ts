@@ -71,7 +71,6 @@ export class CharacterAPIService {
                 this.character.next(returnValue);
             }),
             catchError(err => {
-                debugger;
                 return of(false);
             })
         );

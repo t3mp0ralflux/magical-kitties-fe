@@ -66,7 +66,7 @@ export class Character {
                 case UpgradeOption.attribute3:
                 case UpgradeOption.attribute4:
                     const attributeUpgrade = upgrade.choice as ImproveAttributeUpgrade;
-                    switch (attributeUpgrade.attributeOption) {
+                    switch (attributeUpgrade?.attributeOption) {
                         case AttributeOption.cute:
                             this.cuteDisplay += 1;
                             break;
@@ -98,24 +98,6 @@ export class Character {
         this.maxOwiesDisplay += this.maxOwies;
         this.treatsDisplay += this.startingTreats;
         this.remainingTreats += this.startingTreats;
-
-        this.cunningDisplay -= this.currentInjuries;
-        this.cuteDisplay -= this.currentInjuries;
-        this.fierceDisplay -= this.currentInjuries;
-        this.remainingTreats -= this.usedTreats;
-
-        // displays can't go below 0
-        if (this.cunningDisplay < 0) {
-            this.cunningDisplay = 0;
-        }
-
-        if (this.cuteDisplay < 0) {
-            this.cuteDisplay = 0;
-        }
-
-        if (this.fierceDisplay < 0) {
-            this.fierceDisplay = 0;
-        }
     }
 
     setBaseCuteValue(value: number): void {
