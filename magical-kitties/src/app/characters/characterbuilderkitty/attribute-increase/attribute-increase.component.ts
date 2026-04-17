@@ -49,23 +49,18 @@ export class AttributeIncreaseComponent implements AfterContentInit, OnDestroy {
 
         const characterChangeSubscription = this.characterApi.characterChanged$.subscribe({
             next: (update: CharacterUpdate) => {
-                if (update.attributeOption === undefined) {
-                    return;
-                }
-
-                switch (update.attributeOption.valueOf()) {
-                    case AttributeOption.cunning:
-                    case AttributeOption.cute:
-                    case AttributeOption.fierce:
-                        this.addValidAttributes();
-                        break;
+                switch (update.attributeOption?.valueOf()) {
                     case AttributeOption.level:
                         if (update.value === true) {
                             this.attributeChoice.setValue(undefined);
                             this.showOptions = false;
                         }
                         break;
+                    case AttributeOption.cunning:
+                    case AttributeOption.cute:
+                    case AttributeOption.fierce:
                     default:
+                        this.addValidAttributes();
                         break;
                 }
             }
@@ -131,6 +126,8 @@ export class AttributeIncreaseComponent implements AfterContentInit, OnDestroy {
             });
         }
 
+        this.addValidAttributes();
+
         this.upgradeSelected.next(event.checked);
     }
 
@@ -147,7 +144,7 @@ export class AttributeIncreaseComponent implements AfterContentInit, OnDestroy {
 
         this.upgradeInformation.choice = this.attributeInformation;
 
-        const upgradeRequest = new UpsertUpgradeRequest({ upgradeId: this.id, upgradeOption: this.upgradeRule!.upgradeOption, block: this.upgradeRule!.block, value: JSON.stringify(this.attributeInformation) });
+        const upgradeRequest = new UpsertUpgradeRequest({ upgradeId: this.id, upgradeOption: this.upgradeRule!.upgradeOption, block: this.upgradeRule!.block, value: this.attributeInformation.attributeOption === undefined ? undefined : JSON.stringify(this.attributeInformation) });
 
         this.characterApi.upsertUpgrade(this.character!.id, upgradeRequest).subscribe({
             next: (_: string) => {
@@ -155,6 +152,14 @@ export class AttributeIncreaseComponent implements AfterContentInit, OnDestroy {
                 if (existingUpgrade) {
                     existingUpgrade = this.upgradeInformation;
                 }
+
+                const characterUpdate: CharacterUpdate = new CharacterUpdate({
+                    attributeOption: value.value
+                });
+
+                this.character?.updateCalculatedValues();
+
+                this.characterApi.characterHasChanged(characterUpdate);
             },
             error: (err) => {
                 console.log(err[0].message);
@@ -163,6 +168,7 @@ export class AttributeIncreaseComponent implements AfterContentInit, OnDestroy {
     }
 
     addValidAttributes(): void {
+        // https://stackoverflow.com/questions/50515206/multiple-selects-with-the-same-options <- IDEAS
         this.Attributes = [];
         let maxValue: number = 3;
 
@@ -170,15 +176,15 @@ export class AttributeIncreaseComponent implements AfterContentInit, OnDestroy {
             maxValue = 4;
         }
 
-        if (this.character!.getBaseCunningValue() < maxValue) {
+        if (this.character!.cunningDisplay < maxValue || this.attributeInformation?.attributeOption === AttributeOption.cunning) {
             this.Attributes.push(AttributeOption.cunning);
         }
 
-        if (this.character!.getBaseCuteValue() < maxValue) {
+        if (this.character!.cuteDisplay < maxValue || this.attributeInformation?.attributeOption === AttributeOption.cute) {
             this.Attributes.push(AttributeOption.cute);
         }
 
-        if (this.character!.getBaseFierceValue() < maxValue) {
+        if (this.character!.fierceDisplay < maxValue || this.attributeInformation?.attributeOption === AttributeOption.fierce) {
             this.Attributes.push(AttributeOption.fierce);
         }
     }
