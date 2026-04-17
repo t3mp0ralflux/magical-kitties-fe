@@ -137,12 +137,8 @@ export class DisplayCharacterComponent implements OnInit, OnDestroy {
 
     toggleHelp(): void {
         document.getElementById("help")?.classList.toggle("invisible");
-        // document.getElementById("help-bg")?.classList.toggle("opacity-50");
-        // document.getElementById("help-bg")?.classList.toggle("opacity-0");
         document.getElementById("help")?.classList.toggle("-translate-y-full");
-        //document.getElementById("test")?.classList.toggle("-translate-y-full");
         document.getElementById("help")?.classList.toggle("-translate-x-full");
-        //document.getElementById("test")?.classList.toggle("-translate-x-full");
 
         const div = document.getElementById("test");
         if (div) {

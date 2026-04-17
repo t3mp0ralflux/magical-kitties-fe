@@ -49,10 +49,6 @@ export class AttributeIncreaseComponent implements AfterContentInit, OnDestroy {
 
         const characterChangeSubscription = this.characterApi.characterChanged$.subscribe({
             next: (update: CharacterUpdate) => {
-                // if (update.attributeOption === undefined) {
-                //     return;
-                // }
-
                 switch (update.attributeOption?.valueOf()) {
                     case AttributeOption.level:
                         if (update.value === true) {
