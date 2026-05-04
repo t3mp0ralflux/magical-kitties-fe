@@ -70,7 +70,15 @@
                         <img src="/girl_dm.png" />
                     </div>
                     <div class="ml-3 mr-3 flex flex-col w-96">
-                        <mat-label>Character Name</mat-label>
+                        <div class="flex">
+                            <mat-label>Character Name</mat-label>
+                            <span
+                                class="ml-5 cursor-pointer material-symbols-outlined"
+                                (click)="openInfoDialog(InformationConstants.nameInformation)"
+                                >help</span
+                            >
+                        </div>
+
                         @if ({ value: remainingNameCharacters$ | async }; as count) {
                             <mat-form-field
                                 appearance="outline"

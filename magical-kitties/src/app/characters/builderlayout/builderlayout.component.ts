@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -8,12 +9,14 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { Router, RouterEvent, RouterLinkWithHref, RouterOutlet } from '@angular/router';
 import { BehaviorSubject, filter, forkJoin, Observable } from 'rxjs';
 import { Constants } from '../../Constants';
+import { InformationConstants } from '../../information/Constants';
 import { FooterComponent } from '../../layout/footer/footer.component';
 import { HeaderComponent } from '../../layout/header/header.component';
 import { LayoutComponent } from '../../layout/layout.component';
 import { Character } from '../../models/Characters/character.model';
 import { UpdateCharacterDescriptors } from '../../models/Characters/updatecharacterdescriptors.model';
 import { trackByFn } from '../../utilities';
+import { InformationDisplayComponent } from '../characterbuilderkitty/information-display/information-display.component';
 import { CharacterAPIService } from '../services/characters.service';
 
 @Component({
@@ -24,8 +27,10 @@ import { CharacterAPIService } from '../services/characters.service';
 })
 export class BuilderlayoutComponent extends LayoutComponent implements OnDestroy {
     router: Router = inject(Router);
+    dialog: MatDialog = inject(MatDialog);
     characterApi: CharacterAPIService = inject(CharacterAPIService);
     Constants = Constants;
+    InformationConstants = InformationConstants
     trackByFn = trackByFn;
     characterId: string;
     currentPage?: string;
@@ -91,5 +96,11 @@ export class BuilderlayoutComponent extends LayoutComponent implements OnDestroy
                 console.log("Name update error: " + err);
             }
         })
+    }
+
+    openInfoDialog(data: any | undefined): void {
+        const config = new MatDialogConfig();
+        config.data = { data: [data] };
+        this.dialog.open(InformationDisplayComponent, config);
     }
 }

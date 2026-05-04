@@ -3,17 +3,20 @@ import { HttpResponse } from '@angular/common/http';
 import { AfterContentInit, Component, inject, OnDestroy } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from "@angular/material/button";
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { Constants } from '../../Constants';
+import { InformationConstants } from '../../information/Constants';
 import { getValue } from '../../login/utilities';
 import { Character } from '../../models/Characters/character.model';
 import { DescriptionOption } from '../../models/Characters/descriptionoption.model';
 import { DescriptionUpdateRequest } from '../../models/Characters/descriptionupdaterequest.model';
 import { Human } from '../../models/Characters/human.model';
 import { trackByFn } from '../../utilities';
+import { InformationDisplayComponent } from '../characterbuilderkitty/information-display/information-display.component';
 import { CharacterAPIService } from '../services/characters.service';
 import { HumanAPIService } from '../services/humans.service';
 import { HumanBuilderComponent } from "./human-builder/human-builder.component";
@@ -28,10 +31,12 @@ export class CharacterBuilderBackgroundComponent implements AfterContentInit, On
     hometownControl: FormControl = new FormControl();
     kittyDescriptionControl: FormControl = new FormControl();
     characterAPI: CharacterAPIService = inject(CharacterAPIService);
+    dialog: MatDialog = inject(MatDialog);
     humanAPI: HumanAPIService = inject(HumanAPIService);
     character?: Character;
     getValue = getValue;
     trackByFn = trackByFn;
+    InformationConstants = InformationConstants
     Constants = Constants;
     characterSubscription?: Subscription;
     descriptionMaxCountSubject = new BehaviorSubject(0);
@@ -139,5 +144,11 @@ export class CharacterBuilderBackgroundComponent implements AfterContentInit, On
                 debugger;
             }
         })
+    }
+
+    openInfoDialog(data: {}[] | undefined, anchor: number): void {
+        const config = new MatDialogConfig();
+        config.data = { data: data, anchor: anchor };
+        this.dialog.open(InformationDisplayComponent, config);
     }
 }

@@ -32,9 +32,12 @@ export class CharacterAPIService {
     getRules(): Observable<Rules> {
         return this.apiClient.request<Rules>({
             path: `${this.baseUrl}/rules`,
-            method: HttpMethod.GET
+            method: HttpMethod.GET,
+            skipAuth: true
         }).pipe(
-            tap(x => this.rules = x)
+            tap(x => {
+                this.rules = x
+            })
         );
     }
 

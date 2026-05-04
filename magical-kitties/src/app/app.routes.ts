@@ -6,6 +6,7 @@ import { CharacterBuilderKittyComponent } from './characters/characterbuilderkit
 import { DisplayCharacterComponent } from './characters/displaycharacter/displaycharacter.component';
 import { ViewCharactersComponent } from './characters/viewcharacters/viewcharacters.component';
 import { CharacterGuard } from './guards/character-guard.guard';
+import { RulesComponent } from './information/rules/rules.component';
 import { LandingComponent } from './landing/landing.component';
 import { ForbiddenComponent } from './layout/forbidden/forbidden.component';
 import { LayoutComponent } from './layout/layout.component';
@@ -61,6 +62,14 @@ export const routes: Routes = [
             { path: "", component: CharacterBuilderHomeComponent },
             { path: "kitty", component: CharacterBuilderKittyComponent },
             { path: "background", component: CharacterBuilderBackgroundComponent },
+        ]
+    },
+    {
+        path: 'learn',
+        component: LayoutComponent,
+        children: [
+            { path: "", component: RulesComponent },
+            { path: "rules", component: RulesComponent },
         ]
     },
     {

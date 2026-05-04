@@ -2,6 +2,7 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { CharacterAPIService } from '../characters/services/characters.service';
 import { Account } from '../models/Account/account.model';
 import { AuthService } from '../services/authService.service';
 import { FooterComponent } from './footer/footer.component';
@@ -18,11 +19,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
     loading: boolean = true;
     route: ActivatedRoute = inject(ActivatedRoute);
     authService: AuthService = inject(AuthService);
+    characterService: CharacterAPIService = inject(CharacterAPIService);
     subscriptions: Subscription[] = [];
-
-    menuOpened(event: any) {
-        this.menuOpen = event.value;
-    }
 
     ngOnInit(): void {
         const routeSubscription = this.route.params.subscribe({

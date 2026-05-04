@@ -1,0 +1,554 @@
+<div class="bg-sheet-bg-light-blue flex flex-col px-2 content">
+    <mat-tab-group>
+        <mat-tab label="Gameplay Information">
+            <div class="mb-1">
+                <h1>guiding the game</h1>
+                <p>The Game Master guides the game. They make up the events that happen in the story. The GM also decides how difficult it is for the kitties to do tricky tasks, describes what happens when the kitties succeed or fail, and acts out what all the other creatures in the story are doing. That includes the humans the kitties live with, the scary dog down the road, the feather-headed sparrow that shows up whenever trouble's brewing, and more.</p>
+                <br />
+                <p>But <strong>Magical Kitties Save the Day</strong> isn't just Make Believe or Let's Pretend. It's also a game with rules. Your kitties will face big problems, and when they try to solve them the GM will use the rules of the game to figure out the result. Because each player takes on the role of a character in the story — like an actor on television or in a movie — Magical Kitties is called a roleplaying game, or RPG for short.</p>
+            </div>
+            <div class="bg-white border-2 border-sheet-bg-dark-blue my-1">
+                <h2 class="text-center mt-2">HOW TO BE A MAGICAL KITTY</h2>
+                <ul>
+                    <li class="flex items-center"><span class="material-symbols-outlined">star_rate</span>You must keep your magic hidden from humans.</li>
+                    <li class="flex items-center"><span class="material-symbols-outlined">star_rate</span>You pick your human, even when it seems like the humans pick the kitties.</li>
+                    <li class="flex items-center"><span class="material-symbols-outlined">star_rate</span>You want to help your human.</li>
+                    <li class="flex items-center"><span class="material-symbols-outlined">star_rate</span>You can understand humans, but they can't understand you.</li>
+                    <li class="flex items-center"><span class="material-symbols-outlined">star_rate</span>You can understand other animals, and they can understand you, too.</li>
+                    <li class="flex items-center"><span class="material-symbols-outlined">star_rate</span>You can read human writing, but it's very difficult and sometimes you get it wrong.</li>
+                    <li class="flex items-center"><span class="material-symbols-outlined">star_rate</span>You have a special spot in your home that the humans can't reach. This spot lets you get in and out of your home without being seen.</li>
+                    <li class="flex items-center"><span class="material-symbols-outlined">star_rate</span>YOU MUST KEEP YOUR MAGIC HIDDEN FROM HUMANS!<br /></li>
+                    <li class="flex items-center"><span class="ml-6"></span>(There are a small number of humans who already know the secrets of magical kitties. Witches, for example. These humans can often understand you, and it's okay to use your Magical Powers in front of them.)</li>
+                </ul>
+            </div>
+            <div class="my-1">
+                <h1>winning the game</h1>
+                <p>Unlike other games, roleplaying games like <strong>Magical Kitties Save the Day</strong> aren't about winning or losing. Instead, they're about having fun and creating a story with your friends. That's not to say you don't have goals, but while other games tell you what the goals are, Magical Kitties lets you create your own. One player might want to help their kitty's owner make new friends, while another player could want their kitty to track down the alien who stole a favorite toy.</p>
+                <br />
+                <p>Good things and bad things will happen to the kitties as you play the game, but these are never the end of the game. They're just another episode in the series. As long as you and your friends keep describing what your kitties are doing and saying, the game keeps going. And along the way you'll make a world together!</p>
+            </div>
+        </mat-tab>
+        <mat-tab label="Talents">
+            @if (characterAPI.rules) {
+                <div class="flex flex-col md:flex-row md:max-w-1/3 talents">
+                    <table
+                        mat-table
+                        [dataSource]="characterAPI.rules.talents.slice(0, 12)"
+                        class="border-2 border-sheet-bg-light-blue"
+                    >
+                        <ng-container matColumnDef="id">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                            >
+                                Roll
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let element"
+                            >
+                                {{ element.id }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="name">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                            >
+                                Talent
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let element"
+                            >
+                                <h6>{{ element.name }}:</h6>
+                                {{ element.description }}
+                            </td>
+                        </ng-container>
+
+                        <tr
+                            mat-header-row
+                            *matHeaderRowDef="displayedColumns"
+                        ></tr>
+                        <tr
+                            mat-row
+                            *matRowDef="let row; columns: displayedColumns"
+                        ></tr>
+                    </table>
+                    <table
+                        mat-table
+                        [dataSource]="characterAPI.rules.talents.slice(12, 24)"
+                    >
+                        <ng-container matColumnDef="id">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                            >
+                                Roll
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let element"
+                            >
+                                {{ element.id }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="name">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                            >
+                                Talent
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let element"
+                            >
+                                <h6>{{ element.name }}:</h6>
+                                {{ element.description }}
+                            </td>
+                        </ng-container>
+
+                        <tr
+                            mat-header-row
+                            *matHeaderRowDef="displayedColumns"
+                        ></tr>
+                        <tr
+                            mat-row
+                            *matRowDef="let row; columns: displayedColumns"
+                        ></tr>
+                    </table>
+                    <table
+                        mat-table
+                        [dataSource]="characterAPI.rules.talents.slice(24, 36)"
+                    >
+                        <ng-container matColumnDef="id">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                            >
+                                Roll
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let element"
+                            >
+                                {{ element.id }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="name">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                            >
+                                Talent
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let element"
+                            >
+                                <h6>{{ element.name }}:</h6>
+                                {{ element.description }}
+                            </td>
+                        </ng-container>
+
+                        <tr
+                            mat-header-row
+                            *matHeaderRowDef="displayedColumns"
+                        ></tr>
+                        <tr
+                            mat-row
+                            *matRowDef="let row; columns: displayedColumns"
+                        ></tr>
+                    </table>
+                </div>
+            }
+        </mat-tab>
+        <mat-tab label="Flaws">
+            @if (characterAPI.rules) {
+                <div class="flex flex-col md:flex-row md:max-w-1/3 flaws">
+                    <table
+                        mat-table
+                        [dataSource]="characterAPI.rules.flaws.slice(0, 12)"
+                        class="border-2 border-sheet-bg-light-blue"
+                    >
+                        <ng-container matColumnDef="id">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                            >
+                                Roll
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let element"
+                            >
+                                {{ element.id }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="name">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                            >
+                                Flaw
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let element"
+                            >
+                                <h6>{{ element.name }}:</h6>
+                                {{ element.description }}
+                            </td>
+                        </ng-container>
+
+                        <tr
+                            mat-header-row
+                            *matHeaderRowDef="displayedColumns"
+                        ></tr>
+                        <tr
+                            mat-row
+                            *matRowDef="let row; columns: displayedColumns"
+                        ></tr>
+                    </table>
+                    <table
+                        mat-table
+                        [dataSource]="characterAPI.rules.flaws.slice(12, 24)"
+                    >
+                        <ng-container matColumnDef="id">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                            >
+                                Roll
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let element"
+                            >
+                                {{ element.id }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="name">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                            >
+                                Talent
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let element"
+                            >
+                                <h6>{{ element.name }}:</h6>
+                                {{ element.description }}
+                            </td>
+                        </ng-container>
+
+                        <tr
+                            mat-header-row
+                            *matHeaderRowDef="displayedColumns"
+                        ></tr>
+                        <tr
+                            mat-row
+                            *matRowDef="let row; columns: displayedColumns"
+                        ></tr>
+                    </table>
+                    <table
+                        mat-table
+                        [dataSource]="characterAPI.rules.flaws.slice(24, 36)"
+                    >
+                        <ng-container matColumnDef="id">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                            >
+                                Roll
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let element"
+                            >
+                                {{ element.id }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="name">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                            >
+                                Talent
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let element"
+                            >
+                                <h6>{{ element.name }}:</h6>
+                                {{ element.description }}
+                            </td>
+                        </ng-container>
+
+                        <tr
+                            mat-header-row
+                            *matHeaderRowDef="displayedColumns"
+                        ></tr>
+                        <tr
+                            mat-row
+                            *matRowDef="let row; columns: displayedColumns"
+                        ></tr>
+                    </table>
+                </div>
+            }
+        </mat-tab>
+        <mat-tab label="Magical Powers">
+            @if (characterAPI.rules) {
+                <!-- <div class="flex flex-col md:flex-row md:max-w-1/3 magicalpowers">
+                    <table
+                        mat-table
+                        [dataSource]="characterAPI.rules.magicalPowers.slice(0, 12)"
+                        class="border-2 border-sheet-bg-light-blue"
+                    >
+                        <ng-container matColumnDef="id">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                            >
+                                Roll
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let element"
+                            >
+                                {{ element.id }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="name">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                            >
+                                Talent
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let element"
+                            >
+                                <h6>{{ element.name }}:</h6>
+                                <markdown>
+                                    {{ element.description }}
+                                </markdown>
+                            </td>
+                        </ng-container>
+
+                        <tr
+                            mat-header-row
+                            *matHeaderRowDef="displayedColumns"
+                        ></tr>
+                        <tr
+                            mat-row
+                            *matRowDef="let row; columns: displayedColumns"
+                        ></tr>
+                    </table>
+                    <table
+                        mat-table
+                        [dataSource]="characterAPI.rules.magicalPowers.slice(12, 24)"
+                    >
+                        <ng-container matColumnDef="id">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                            >
+                                Roll
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let element"
+                            >
+                                {{ element.id }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="name">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                            >
+                                Talent
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let element"
+                            >
+                                <h6>{{ element.name }}:</h6>
+                                {{ element.description }}
+                            </td>
+                        </ng-container>
+
+                        <tr
+                            mat-header-row
+                            *matHeaderRowDef="displayedColumns"
+                        ></tr>
+                        <tr
+                            mat-row
+                            *matRowDef="let row; columns: displayedColumns"
+                        ></tr>
+                    </table>
+                    <table
+                        mat-table
+                        [dataSource]="characterAPI.rules.magicalPowers.slice(24, 36)"
+                    >
+                        <ng-container matColumnDef="id">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                            >
+                                Roll
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let element"
+                            >
+                                {{ element.id }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="name">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                            >
+                                Talent
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let element"
+                            >
+                                <h6>{{ element.name }}:</h6>
+                                {{ element.description }}
+                            </td>
+                        </ng-container>
+
+                        <tr
+                            mat-header-row
+                            *matHeaderRowDef="displayedColumns"
+                        ></tr>
+                        <tr
+                            mat-row
+                            *matRowDef="let row; columns: displayedColumns"
+                        ></tr>
+                    </table>
+                </div> -->
+
+                <!-- TODO: fix this -->
+                <div class="flex flex-row">
+                    <table
+                        mat-table
+                        [dataSource]="getTableData(this.characterAPI.rules.magicalPowers)"
+                    >
+                        <ng-container matColumnDef="name_0">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                            >
+                                Roll
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let row"
+                            >
+                                {{ row[0]?.id }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="value_0">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                            >
+                                Magical Power
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let row"
+                                class="align-top p-3!"
+                            >
+                                <div>
+                                    <h6>{{ row[0]?.name }}:</h6>
+                                </div>
+                                <div class="mt-3">
+                                    {{ getMarkdownText(row[0].description) }}
+                                </div>
+                                <!-- <markdown class="prose">row[0].description</markdown> -->
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="name_1">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                            >
+                                Roll
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let row"
+                            >
+                                {{ row[1]?.id }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="value_1">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                            >
+                                Magical Power
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let row"
+                            >
+                                <h6>{{ row[1]?.name }}:</h6>
+                                {{ row[1]?.description }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="name_2">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                            >
+                                Roll
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let row"
+                            >
+                                {{ row[2]?.id }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="value_2">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                            >
+                                Magical Power
+                            </th>
+                            <td
+                                mat-cell
+                                *matCellDef="let row"
+                            >
+                                <h6>{{ row[2]?.name }}:</h6>
+                                {{ row[2]?.description }}
+                            </td>
+                        </ng-container>
+
+                        <tr
+                            mat-header-row
+                            *matHeaderRowDef="['name_0', 'value_0', 'name_1', 'value_1', 'name_2', 'value_2']"
+                        ></tr>
+                        <tr
+                            mat-row
+                            *matRowDef="let row; columns: ['name_0', 'value_0', 'name_1', 'value_1', 'name_2', 'value_2']"
+                        ></tr>
+                    </table>
+                </div>
+            }
+        </mat-tab>
+        <mat-tab label="Making a Check"></mat-tab>
+    </mat-tab-group>
+</div>

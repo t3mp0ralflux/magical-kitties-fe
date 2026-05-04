@@ -54,9 +54,13 @@
                     >
                         Characters
                     </button>
-                    <button mat-button>Game Rules</button>
+                    <button
+                        mat-button
+                        [routerLink]="['/learn/rules']"
+                    >
+                        Learn to Play
+                    </button>
                     <button mat-button>Source</button>
-                    <button mat-button>Learn to Play</button>
                 </mat-toolbar-row>
             </mat-toolbar>
         </div>
@@ -88,9 +92,13 @@
                         >
                             Characters
                         </button>
-                        <button mat-button>Game Rules</button>
+                        <button
+                            mat-button
+                            [routerLink]="['/learn/rules']"
+                        >
+                            Learn to Play
+                        </button>
                         <button mat-button>Source</button>
-                        <button mat-button>Learn to Play</button>
                     </div>
                     @if (account !== undefined) {
                         <mat-divider></mat-divider>

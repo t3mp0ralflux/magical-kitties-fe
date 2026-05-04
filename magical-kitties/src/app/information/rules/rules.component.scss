@@ -1,0 +1,36 @@
+@use "@angular/material" as mat;
+
+.mat-column-id,
+.mat-column-name_0,
+.mat-column-name_1,
+.mat-column-name_2 {
+    width: 35px;
+    border-right: 1px solid;
+    border-left: 1px solid;
+    padding: 0;
+    text-align: center;
+}
+
+.mat-mdc-header-row {
+    background-color: purple;
+    color: white;
+    height: 30px !important;
+}
+
+.talents {
+    .mat-mdc-row {
+        height: 90px;
+    }
+}
+
+.flaws {
+    .mat-mdc-row {
+        height: 90px;
+    }
+}
+
+.magicalpowers {
+    .mat-mdc-row {
+        height: 150px;
+    }
+}

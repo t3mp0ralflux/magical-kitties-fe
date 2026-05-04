@@ -49,7 +49,14 @@
     class="flex justify-around mt-4"
 >
     <div class="flex flex-col">
-        <span class="ml-auto mr-auto text-xl font-semibold">Cunning</span>
+        <div class="flex items-center">
+            <span class="ml-auto mr-auto text-xl font-semibold">Cunning</span>
+            <span
+                class="ml-2 cursor-pointer material-symbols-outlined"
+                (click)="openInfoDialog([InformationConstants.cunningInformation], 0)"
+                >help</span
+            >
+        </div>
         <mat-form-field
             class="mt-1 max-w-28"
             appearance="outline"
@@ -70,7 +77,14 @@
         </mat-form-field>
     </div>
     <div class="flex flex-col">
-        <span class="ml-auto mr-auto text-xl font-semibold">Cute</span>
+        <div class="flex items-center">
+            <span class="ml-auto mr-auto text-xl font-semibold">Cute</span>
+            <span
+                class="ml-2 cursor-pointer material-symbols-outlined"
+                (click)="openInfoDialog([InformationConstants.cuteInformation], 0)"
+                >help</span
+            >
+        </div>
         <mat-form-field
             class="mt-1 max-w-28"
             appearance="outline"
@@ -91,7 +105,14 @@
         </mat-form-field>
     </div>
     <div class="flex flex-col">
-        <span class="ml-auto mr-auto text-xl font-semibold">Fierce</span>
+        <div class="flex items-center">
+            <span class="ml-auto mr-auto text-xl font-semibold">Fierce</span>
+            <span
+                class="ml-2 cursor-pointer material-symbols-outlined"
+                (click)="openInfoDialog([InformationConstants.fierceInformation], 0)"
+                >help</span
+            >
+        </div>
         <mat-form-field
             class="mt-1 max-w-28"
             appearance="outline"
@@ -122,12 +143,21 @@
             appearance="outlined"
         >
             <mat-card-header>
-                <span class="text-xl font-semibold mb-2">Flaw</span>
+                <div class="flex items-center mb-2">
+                    <span class="text-xl font-semibold">Flaw</span>
+                    <span
+                        class="ml-2 cursor-pointer material-symbols-outlined"
+                        (click)="openInfoDialog([InformationConstants.flawInformation], 0)"
+                    >
+                        help
+                    </span>
+                </div>
                 <span
                     class="ml-auto cursor-pointer material-symbols-outlined"
                     (click)="openInfoDialog(characterApi.rules?.flaws, flawControl.value)"
-                    >help</span
                 >
+                    list
+                </span>
             </mat-card-header>
             <mat-card-content>
                 <div class="flex">
@@ -161,12 +191,21 @@
             appearance="outlined"
         >
             <mat-card-header>
-                <span class="text-xl font-semibold mb-2">Talent</span>
+                <div class="flex items-center mb-2">
+                    <span class="text-xl font-semibold">Talent</span>
+                    <span
+                        class="ml-2 cursor-pointer material-symbols-outlined"
+                        (click)="openInfoDialog([InformationConstants.talentInformation], 0)"
+                    >
+                        help
+                    </span>
+                </div>
                 <span
                     class="ml-auto cursor-pointer material-symbols-outlined"
                     (click)="openInfoDialog(characterApi.rules?.talents, talentControl.value)"
-                    >help</span
                 >
+                    list
+                </span>
             </mat-card-header>
             <mat-card-content>
                 <div class="flex">
@@ -200,11 +239,19 @@
             appearance="outlined"
         >
             <mat-card-header>
-                <span class="text-xl font-semibold mb-2">Magical Power</span>
+                <div class="flex items-center mb-2">
+                    <span class="text-xl font-semibold">Magical Power</span>
+                    <span
+                        class="ml-2 cursor-pointer material-symbols-outlined"
+                        (click)="openInfoDialog([InformationConstants.magicalPowerInformation], 0)"
+                    >
+                        help
+                    </span>
+                </div>
                 <span
                     class="ml-auto cursor-pointer material-symbols-outlined"
                     (click)="openInfoDialog(characterApi.rules?.magicalPowers, magicalPowerControl.value)"
-                    >help</span
+                    >list</span
                 >
             </mat-card-header>
             <mat-card-content>

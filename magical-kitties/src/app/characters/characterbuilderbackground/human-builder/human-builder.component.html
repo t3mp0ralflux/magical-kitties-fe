@@ -5,7 +5,15 @@
     >
         <mat-card-header>
             <div class="flex flex-col">
-                <mat-label>Name</mat-label>
+                <div class="flex items-center mb-2">
+                    <mat-label>Name</mat-label>
+                    <span
+                        class="ml-2 cursor-pointer material-symbols-outlined"
+                        (click)="openInfoDialog([InformationConstants.humanNameInformation], 0)"
+                    >
+                        help
+                    </span>
+                </div>
                 @if ({ value: (remainingNameCharacters$ | async) }; as count) {
                     <mat-form-field
                         appearance="outline"
@@ -31,7 +39,15 @@
         </mat-card-header>
         <mat-card-content>
             <div class="flex flex-col">
-                <mat-label>Description</mat-label>
+                <div class="flex item-center mb-2">
+                    <mat-label>Description</mat-label>
+                    <span
+                        class="ml-2 cursor-pointer material-symbols-outlined"
+                        (click)="openInfoDialog([InformationConstants.humanDescriptionInformation], 0)"
+                    >
+                        help
+                    </span>
+                </div>
                 @if ({ value: (remainingDescriptionCharacters$ | async) }; as count) {
                     <mat-form-field
                         appearance="outline"
@@ -49,7 +65,15 @@
                 }
             </div>
             <div class="flex flex-col">
-                <mat-label>Problems</mat-label>
+                <div class="flex items-center mb-2">
+                    <mat-label>Problems</mat-label>
+                    <span
+                        class="ml-2 cursor-pointer material-symbols-outlined"
+                        (click)="openInfoDialog([InformationConstants.humanProblemsInformation], 0)"
+                    >
+                        help
+                    </span>
+                </div>
                 <mat-accordion multi="true">
                     @for (problem of human.problems; track trackByFn(problem.id, "HumanProblems")) {
                         <mat-expansion-panel class="mt-1 accordion-color">
