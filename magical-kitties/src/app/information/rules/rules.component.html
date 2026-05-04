@@ -1,5 +1,5 @@
-<div class="bg-sheet-bg-light-blue flex flex-col px-2 content">
-    <mat-tab-group>
+<div class="bg-sheet-bg-light-blue flex flex-col px-2 content md:min-h-[1000px]">
+    <mat-tab-group [selectedIndex]="shownTab">
         <mat-tab label="Gameplay Information">
             <div class="mb-1">
                 <h1>guiding the game</h1>
@@ -302,7 +302,7 @@
         </mat-tab>
         <mat-tab label="Magical Powers">
             @if (characterAPI.rules) {
-                <!-- <div class="flex flex-col md:flex-row md:max-w-1/3 magicalpowers">
+                <div class="flex flex-col md:flex-row md:max-w-1/3 magicalpowers">
                     <table
                         mat-table
                         [dataSource]="characterAPI.rules.magicalPowers.slice(0, 12)"
@@ -335,7 +335,7 @@
                             >
                                 <h6>{{ element.name }}:</h6>
                                 <markdown>
-                                    {{ element.description }}
+                                    {{ element.shortDescription }}
                                 </markdown>
                             </td>
                         </ng-container>
@@ -379,7 +379,7 @@
                                 *matCellDef="let element"
                             >
                                 <h6>{{ element.name }}:</h6>
-                                {{ element.description }}
+                                {{ element.shortDescription }}
                             </td>
                         </ng-container>
 
@@ -422,7 +422,7 @@
                                 *matCellDef="let element"
                             >
                                 <h6>{{ element.name }}:</h6>
-                                {{ element.description }}
+                                {{ element.shortDescription }}
                             </td>
                         </ng-container>
 
@@ -435,120 +435,127 @@
                             *matRowDef="let row; columns: displayedColumns"
                         ></tr>
                     </table>
-                </div> -->
-
-                <!-- TODO: fix this -->
-                <div class="flex flex-row">
-                    <table
-                        mat-table
-                        [dataSource]="getTableData(this.characterAPI.rules.magicalPowers)"
-                    >
-                        <ng-container matColumnDef="name_0">
-                            <th
-                                mat-header-cell
-                                *matHeaderCellDef
-                            >
-                                Roll
-                            </th>
-                            <td
-                                mat-cell
-                                *matCellDef="let row"
-                            >
-                                {{ row[0]?.id }}
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="value_0">
-                            <th
-                                mat-header-cell
-                                *matHeaderCellDef
-                            >
-                                Magical Power
-                            </th>
-                            <td
-                                mat-cell
-                                *matCellDef="let row"
-                                class="align-top p-3!"
-                            >
-                                <div>
-                                    <h6>{{ row[0]?.name }}:</h6>
-                                </div>
-                                <div class="mt-3">
-                                    {{ getMarkdownText(row[0].description) }}
-                                </div>
-                                <!-- <markdown class="prose">row[0].description</markdown> -->
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="name_1">
-                            <th
-                                mat-header-cell
-                                *matHeaderCellDef
-                            >
-                                Roll
-                            </th>
-                            <td
-                                mat-cell
-                                *matCellDef="let row"
-                            >
-                                {{ row[1]?.id }}
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="value_1">
-                            <th
-                                mat-header-cell
-                                *matHeaderCellDef
-                            >
-                                Magical Power
-                            </th>
-                            <td
-                                mat-cell
-                                *matCellDef="let row"
-                            >
-                                <h6>{{ row[1]?.name }}:</h6>
-                                {{ row[1]?.description }}
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="name_2">
-                            <th
-                                mat-header-cell
-                                *matHeaderCellDef
-                            >
-                                Roll
-                            </th>
-                            <td
-                                mat-cell
-                                *matCellDef="let row"
-                            >
-                                {{ row[2]?.id }}
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="value_2">
-                            <th
-                                mat-header-cell
-                                *matHeaderCellDef
-                            >
-                                Magical Power
-                            </th>
-                            <td
-                                mat-cell
-                                *matCellDef="let row"
-                            >
-                                <h6>{{ row[2]?.name }}:</h6>
-                                {{ row[2]?.description }}
-                            </td>
-                        </ng-container>
-
-                        <tr
-                            mat-header-row
-                            *matHeaderRowDef="['name_0', 'value_0', 'name_1', 'value_1', 'name_2', 'value_2']"
-                        ></tr>
-                        <tr
-                            mat-row
-                            *matRowDef="let row; columns: ['name_0', 'value_0', 'name_1', 'value_1', 'name_2', 'value_2']"
-                        ></tr>
-                    </table>
                 </div>
             }
         </mat-tab>
-        <mat-tab label="Making a Check"></mat-tab>
+        <mat-tab label="Making a Check">
+            @if (characterAPI.rules) {
+                <div class="flex flex-col md:flex-row">
+                    <div
+                        id="left-half"
+                        class="md:w-1/2 md:mr-5"
+                    >
+                        <h1>making a check</h1>
+                        <p>When your kitty tries something tricky or dangerous, your GM will ask you to make a check. Normal actions like hopping from the ground onto a chair, or waking up from a nap, don't need checks. Harder tasks like jumping off a moving train, or reading human words, do need checks.</p>
+                        <br />
+                        <h2>Your Dice Pool</h2>
+                        <p>Your dice pool is the number of dice you roll for your kitty to overcome a challenge. Your GM will tell you whether the check needs Cute, Cunning, or Fierce. The number you have in that Attribute is the number of dice you start with in your pool.</p>
+                        <br />
+                        <p>If your kitty is using a Talent, you can add another die to the pool. If your kitty is using a Magical Power, you get two more dice, once per scene. You may also get a die for a success bonus, or lose one for each Injury you have. If your total dice in a pool is zero, you can't roll it.</p>
+                        <div class="flex flex-col bg-white border-2 border-sheet-bg-dark-blue my-2">
+                            <div class="my-2 help-box-title">
+                                <div class="text-sheet-dark-blue font-bold text-lg text-center">ALL THE DICE</div>
+                            </div>
+                            <div class="flex flex-col px-3">
+                                @for (diceRule of characterAPI.rules.diceRules; track $index) {
+                                    <span>{{ diceRule }}</span>
+                                }
+                                <br />
+                                <span class="my-2">If that equals 0 dice, you can't roll it.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        id="right-half"
+                        class="md:w-1/2 md:ml-5"
+                    >
+                        <h2>Difficulty</h2>
+                        <p>Your GM will also tell you the difficulty of the check, depending on what your kitty is trying to do. This number ranges from 3 to 6, and the higher it is, the tougher the check is.</p>
+
+                        <table
+                            mat-table
+                            [dataSource]="characterAPI.rules.diceDifficulties"
+                            class="border-2 border-sheet-bg-light-blue my-2"
+                        >
+                            <ng-container matColumnDef="difficulty">
+                                <th
+                                    mat-header-cell
+                                    *matHeaderCellDef
+                                >
+                                    Difficulty
+                                </th>
+                                <td
+                                    mat-cell
+                                    *matCellDef="let element"
+                                >
+                                    <div class="flex flex-col">
+                                        <span>
+                                            {{ element.difficulty }}
+                                        </span>
+                                        <span>
+                                            {{ element.difficultyText }}
+                                        </span>
+                                    </div>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="cute">
+                                <th
+                                    mat-header-cell
+                                    *matHeaderCellDef
+                                >
+                                    Cute
+                                </th>
+                                <td
+                                    mat-cell
+                                    *matCellDef="let element"
+                                >
+                                    {{ element.cuteAction }}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="cunning">
+                                <th
+                                    mat-header-cell
+                                    *matHeaderCellDef
+                                >
+                                    Cunning
+                                </th>
+                                <td
+                                    mat-cell
+                                    *matCellDef="let element"
+                                >
+                                    {{ element.cunningAction }}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="fierce">
+                                <th
+                                    mat-header-cell
+                                    *matHeaderCellDef
+                                >
+                                    Fierce
+                                </th>
+                                <td
+                                    mat-cell
+                                    *matCellDef="let element"
+                                >
+                                    {{ element.fierceAction }}
+                                </td>
+                            </ng-container>
+                            <tr
+                                mat-header-row
+                                *matHeaderRowDef="displayedDifficultyColumns"
+                            ></tr>
+                            <tr
+                                mat-row
+                                *matRowDef="let row; columns: displayedDifficultyColumns"
+                            ></tr>
+                        </table>
+
+                        <div>
+                            <img src="acrobat_cat.png" />
+                        </div>
+                    </div>
+                </div>
+            }
+        </mat-tab>
     </mat-tab-group>
 </div>

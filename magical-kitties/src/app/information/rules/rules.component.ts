@@ -2,26 +2,55 @@ import { Component, inject } from '@angular/core';
 import { MatIconModule } from "@angular/material/icon";
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MarkdownService } from 'ngx-markdown';
+import { ActivatedRoute } from '@angular/router';
+import { MarkdownComponent, MarkdownService } from 'ngx-markdown';
+import { Subscription } from 'rxjs';
 import { CharacterAPIService } from '../../characters/services/characters.service';
 
 @Component({
     selector: 'app-rules',
-    imports: [MatIconModule, MatTabsModule, MatTableModule],
+    imports: [MatIconModule, MatTabsModule, MatTableModule, MarkdownComponent],
     templateUrl: './rules.component.html',
     styleUrl: './rules.component.scss',
 })
 export class RulesComponent {
     characterAPI: CharacterAPIService = inject(CharacterAPIService);
     markdownService: MarkdownService = inject(MarkdownService);
+    route: ActivatedRoute = inject(ActivatedRoute);
     displayedColumns: string[] = ["id", "name"];
+    displayedDifficultyColumns: string[] = ["difficulty", "cute", "cunning", "fierce"]
     readonly ROWS_PER_COL = 12;
     displayedColumns2: string[] = [];
+    routeSubscription: Subscription = new Subscription();
+    shownTab = 0;
 
     ngOnInit(): void {
         if (!this.characterAPI.rules) {
             this.characterAPI.getRules().subscribe();
         }
+
+        this.routeSubscription = this.route.fragment.subscribe({
+            next: (fragment) => {
+                switch (fragment?.toLowerCase()) {
+                    case "talents":
+                        this.shownTab = 1;
+                        break;
+                    case "flaws":
+                        this.shownTab = 2;
+                        break;
+                    case "magic":
+                        this.shownTab = 3;
+                        break;
+                    case "checks":
+                        this.shownTab = 4;
+                        break;
+                    default:
+                        this.shownTab = 0;
+                        break;
+                }
+            }
+        })
+
     }
 
     getTableData(data: any[]): any[][] {
