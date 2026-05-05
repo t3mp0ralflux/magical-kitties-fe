@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatIconModule } from "@angular/material/icon";
 import { MatTableModule } from '@angular/material/table';
@@ -9,7 +10,7 @@ import { CharacterAPIService } from '../../characters/services/characters.servic
 
 @Component({
     selector: 'app-rules',
-    imports: [MatIconModule, MatTabsModule, MatTableModule, MarkdownComponent],
+    imports: [CommonModule, MatIconModule, MatTabsModule, MatTableModule, MarkdownComponent],
     templateUrl: './rules.component.html',
     styleUrl: './rules.component.scss',
 })
@@ -18,7 +19,8 @@ export class RulesComponent {
     markdownService: MarkdownService = inject(MarkdownService);
     route: ActivatedRoute = inject(ActivatedRoute);
     displayedColumns: string[] = ["id", "name"];
-    displayedDifficultyColumns: string[] = ["difficulty", "cute", "cunning", "fierce"]
+    displayedDifficultyColumns: string[] = ["difficulty", "cute", "cunning", "fierce"];
+    displayedDiceColumns: string[] = ["successes", "result", "enhancements"];
     readonly ROWS_PER_COL = 12;
     displayedColumns2: string[] = [];
     routeSubscription: Subscription = new Subscription();
@@ -43,6 +45,9 @@ export class RulesComponent {
                         break;
                     case "checks":
                         this.shownTab = 4;
+                        break;
+                    case "extras":
+                        this.shownTab = 5;
                         break;
                     default:
                         this.shownTab = 0;

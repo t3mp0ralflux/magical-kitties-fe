@@ -1,20 +1,32 @@
 @use "@angular/material" as mat;
 
-.mat-column-id,
-.mat-column-name_0,
-.mat-column-name_1,
-.mat-column-name_2 {
+.mat-column-id {
     width: 35px;
-    border-right: 1px solid;
-    border-left: 1px solid;
     padding: 0;
     text-align: center;
 }
 
+.mat-mdc-table {
+    border-bottom: 1px solid purple;
+}
+
 .mat-mdc-header-row {
-    background-color: purple;
+    border: 1px solid;
+    border-color: purple !important;
+    background-color: purple !important;
     color: white;
     height: 30px !important;
+}
+
+.mat-mdc-cell {
+    border-left: 1px solid purple;
+    border-right: 1px solid purple;
+}
+
+.tables {
+    .mat-mdc-row {
+        height: 90px;
+    }
 }
 
 .talents {

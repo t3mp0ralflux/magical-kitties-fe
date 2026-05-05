@@ -2,7 +2,7 @@
     <mat-tab-group [selectedIndex]="shownTab">
         <mat-tab label="Gameplay Information">
             <div class="mb-1">
-                <h1>guiding the game</h1>
+                <h1 class="border-t-2 border-sheet-dark-blue">guiding the game</h1>
                 <p>The Game Master guides the game. They make up the events that happen in the story. The GM also decides how difficult it is for the kitties to do tricky tasks, describes what happens when the kitties succeed or fail, and acts out what all the other creatures in the story are doing. That includes the humans the kitties live with, the scary dog down the road, the feather-headed sparrow that shows up whenever trouble's brewing, and more.</p>
                 <br />
                 <p>But <strong>Magical Kitties Save the Day</strong> isn't just Make Believe or Let's Pretend. It's also a game with rules. Your kitties will face big problems, and when they try to solve them the GM will use the rules of the game to figure out the result. Because each player takes on the role of a character in the story — like an actor on television or in a movie — Magical Kitties is called a roleplaying game, or RPG for short.</p>
@@ -10,19 +10,19 @@
             <div class="bg-white border-2 border-sheet-bg-dark-blue my-1">
                 <h2 class="text-center mt-2">HOW TO BE A MAGICAL KITTY</h2>
                 <ul>
-                    <li class="flex items-center"><span class="material-symbols-outlined">star_rate</span>You must keep your magic hidden from humans.</li>
-                    <li class="flex items-center"><span class="material-symbols-outlined">star_rate</span>You pick your human, even when it seems like the humans pick the kitties.</li>
-                    <li class="flex items-center"><span class="material-symbols-outlined">star_rate</span>You want to help your human.</li>
-                    <li class="flex items-center"><span class="material-symbols-outlined">star_rate</span>You can understand humans, but they can't understand you.</li>
-                    <li class="flex items-center"><span class="material-symbols-outlined">star_rate</span>You can understand other animals, and they can understand you, too.</li>
-                    <li class="flex items-center"><span class="material-symbols-outlined">star_rate</span>You can read human writing, but it's very difficult and sometimes you get it wrong.</li>
-                    <li class="flex items-center"><span class="material-symbols-outlined">star_rate</span>You have a special spot in your home that the humans can't reach. This spot lets you get in and out of your home without being seen.</li>
-                    <li class="flex items-center"><span class="material-symbols-outlined">star_rate</span>YOU MUST KEEP YOUR MAGIC HIDDEN FROM HUMANS!<br /></li>
-                    <li class="flex items-center"><span class="ml-6"></span>(There are a small number of humans who already know the secrets of magical kitties. Witches, for example. These humans can often understand you, and it's okay to use your Magical Powers in front of them.)</li>
+                    <li class="flex"><span class="material-symbols-outlined">star_rate</span>You must keep your magic hidden from humans.</li>
+                    <li class="flex"><span class="material-symbols-outlined">star_rate</span>You pick your human, even when it seems like the humans pick the kitties.</li>
+                    <li class="flex"><span class="material-symbols-outlined">star_rate</span>You want to help your human.</li>
+                    <li class="flex"><span class="material-symbols-outlined">star_rate</span>You can understand humans, but they can't understand you.</li>
+                    <li class="flex"><span class="material-symbols-outlined">star_rate</span>You can understand other animals, and they can understand you, too.</li>
+                    <li class="flex"><span class="material-symbols-outlined">star_rate</span>You can read human writing, but it's very difficult and sometimes you get it wrong.</li>
+                    <li class="flex"><span class="material-symbols-outlined">star_rate</span>You have a special spot in your home that the humans can't reach. This spot lets you get in and out of your home without being seen.</li>
+                    <li class="flex"><span class="material-symbols-outlined">star_rate</span>YOU MUST KEEP YOUR MAGIC HIDDEN FROM HUMANS!<br /></li>
+                    <li class="flex"><span class="ml-6"></span>(There are a small number of humans who already know the secrets of magical kitties. Witches, for example. These humans can often understand you, and it's okay to use your Magical Powers in front of them.)</li>
                 </ul>
             </div>
             <div class="my-1">
-                <h1>winning the game</h1>
+                <h1 class="border-t-2 border-sheet-dark-blue">winning the game</h1>
                 <p>Unlike other games, roleplaying games like <strong>Magical Kitties Save the Day</strong> aren't about winning or losing. Instead, they're about having fun and creating a story with your friends. That's not to say you don't have goals, but while other games tell you what the goals are, Magical Kitties lets you create your own. One player might want to help their kitty's owner make new friends, while another player could want their kitty to track down the alien who stole a favorite toy.</p>
                 <br />
                 <p>Good things and bad things will happen to the kitties as you play the game, but these are never the end of the game. They're just another episode in the series. As long as you and your friends keep describing what your kitties are doing and saying, the game keeps going. And along the way you'll make a world together!</p>
@@ -30,528 +30,468 @@
         </mat-tab>
         <mat-tab label="Talents">
             @if (characterAPI.rules) {
-                <div class="flex flex-col md:flex-row md:max-w-1/3 talents">
-                    <table
-                        mat-table
-                        [dataSource]="characterAPI.rules.talents.slice(0, 12)"
-                        class="border-2 border-sheet-bg-light-blue"
-                    >
-                        <ng-container matColumnDef="id">
-                            <th
-                                mat-header-cell
-                                *matHeaderCellDef
-                            >
-                                Roll
-                            </th>
-                            <td
-                                mat-cell
-                                *matCellDef="let element"
-                            >
-                                {{ element.id }}
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="name">
-                            <th
-                                mat-header-cell
-                                *matHeaderCellDef
-                            >
-                                Talent
-                            </th>
-                            <td
-                                mat-cell
-                                *matCellDef="let element"
-                            >
-                                <h6>{{ element.name }}:</h6>
-                                {{ element.description }}
-                            </td>
-                        </ng-container>
-
-                        <tr
-                            mat-header-row
-                            *matHeaderRowDef="displayedColumns"
-                        ></tr>
-                        <tr
-                            mat-row
-                            *matRowDef="let row; columns: displayedColumns"
-                        ></tr>
-                    </table>
-                    <table
-                        mat-table
-                        [dataSource]="characterAPI.rules.talents.slice(12, 24)"
-                    >
-                        <ng-container matColumnDef="id">
-                            <th
-                                mat-header-cell
-                                *matHeaderCellDef
-                            >
-                                Roll
-                            </th>
-                            <td
-                                mat-cell
-                                *matCellDef="let element"
-                            >
-                                {{ element.id }}
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="name">
-                            <th
-                                mat-header-cell
-                                *matHeaderCellDef
-                            >
-                                Talent
-                            </th>
-                            <td
-                                mat-cell
-                                *matCellDef="let element"
-                            >
-                                <h6>{{ element.name }}:</h6>
-                                {{ element.description }}
-                            </td>
-                        </ng-container>
-
-                        <tr
-                            mat-header-row
-                            *matHeaderRowDef="displayedColumns"
-                        ></tr>
-                        <tr
-                            mat-row
-                            *matRowDef="let row; columns: displayedColumns"
-                        ></tr>
-                    </table>
-                    <table
-                        mat-table
-                        [dataSource]="characterAPI.rules.talents.slice(24, 36)"
-                    >
-                        <ng-container matColumnDef="id">
-                            <th
-                                mat-header-cell
-                                *matHeaderCellDef
-                            >
-                                Roll
-                            </th>
-                            <td
-                                mat-cell
-                                *matCellDef="let element"
-                            >
-                                {{ element.id }}
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="name">
-                            <th
-                                mat-header-cell
-                                *matHeaderCellDef
-                            >
-                                Talent
-                            </th>
-                            <td
-                                mat-cell
-                                *matCellDef="let element"
-                            >
-                                <h6>{{ element.name }}:</h6>
-                                {{ element.description }}
-                            </td>
-                        </ng-container>
-
-                        <tr
-                            mat-header-row
-                            *matHeaderRowDef="displayedColumns"
-                        ></tr>
-                        <tr
-                            mat-row
-                            *matRowDef="let row; columns: displayedColumns"
-                        ></tr>
-                    </table>
-                </div>
+                <ng-container
+                    [ngTemplateOutlet]="infoTable"
+                    [ngTemplateOutletContext]="{ data: characterAPI.rules.talents }"
+                ></ng-container>
             }
         </mat-tab>
         <mat-tab label="Flaws">
             @if (characterAPI.rules) {
-                <div class="flex flex-col md:flex-row md:max-w-1/3 flaws">
-                    <table
-                        mat-table
-                        [dataSource]="characterAPI.rules.flaws.slice(0, 12)"
-                        class="border-2 border-sheet-bg-light-blue"
-                    >
-                        <ng-container matColumnDef="id">
-                            <th
-                                mat-header-cell
-                                *matHeaderCellDef
-                            >
-                                Roll
-                            </th>
-                            <td
-                                mat-cell
-                                *matCellDef="let element"
-                            >
-                                {{ element.id }}
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="name">
-                            <th
-                                mat-header-cell
-                                *matHeaderCellDef
-                            >
-                                Flaw
-                            </th>
-                            <td
-                                mat-cell
-                                *matCellDef="let element"
-                            >
-                                <h6>{{ element.name }}:</h6>
-                                {{ element.description }}
-                            </td>
-                        </ng-container>
-
-                        <tr
-                            mat-header-row
-                            *matHeaderRowDef="displayedColumns"
-                        ></tr>
-                        <tr
-                            mat-row
-                            *matRowDef="let row; columns: displayedColumns"
-                        ></tr>
-                    </table>
-                    <table
-                        mat-table
-                        [dataSource]="characterAPI.rules.flaws.slice(12, 24)"
-                    >
-                        <ng-container matColumnDef="id">
-                            <th
-                                mat-header-cell
-                                *matHeaderCellDef
-                            >
-                                Roll
-                            </th>
-                            <td
-                                mat-cell
-                                *matCellDef="let element"
-                            >
-                                {{ element.id }}
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="name">
-                            <th
-                                mat-header-cell
-                                *matHeaderCellDef
-                            >
-                                Talent
-                            </th>
-                            <td
-                                mat-cell
-                                *matCellDef="let element"
-                            >
-                                <h6>{{ element.name }}:</h6>
-                                {{ element.description }}
-                            </td>
-                        </ng-container>
-
-                        <tr
-                            mat-header-row
-                            *matHeaderRowDef="displayedColumns"
-                        ></tr>
-                        <tr
-                            mat-row
-                            *matRowDef="let row; columns: displayedColumns"
-                        ></tr>
-                    </table>
-                    <table
-                        mat-table
-                        [dataSource]="characterAPI.rules.flaws.slice(24, 36)"
-                    >
-                        <ng-container matColumnDef="id">
-                            <th
-                                mat-header-cell
-                                *matHeaderCellDef
-                            >
-                                Roll
-                            </th>
-                            <td
-                                mat-cell
-                                *matCellDef="let element"
-                            >
-                                {{ element.id }}
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="name">
-                            <th
-                                mat-header-cell
-                                *matHeaderCellDef
-                            >
-                                Talent
-                            </th>
-                            <td
-                                mat-cell
-                                *matCellDef="let element"
-                            >
-                                <h6>{{ element.name }}:</h6>
-                                {{ element.description }}
-                            </td>
-                        </ng-container>
-
-                        <tr
-                            mat-header-row
-                            *matHeaderRowDef="displayedColumns"
-                        ></tr>
-                        <tr
-                            mat-row
-                            *matRowDef="let row; columns: displayedColumns"
-                        ></tr>
-                    </table>
-                </div>
+                <ng-container
+                    [ngTemplateOutlet]="infoTable"
+                    [ngTemplateOutletContext]="{ data: characterAPI.rules.flaws }"
+                ></ng-container>
             }
         </mat-tab>
         <mat-tab label="Magical Powers">
             @if (characterAPI.rules) {
-                <div class="flex flex-col md:flex-row md:max-w-1/3 magicalpowers">
-                    <table
-                        mat-table
-                        [dataSource]="characterAPI.rules.magicalPowers.slice(0, 12)"
-                        class="border-2 border-sheet-bg-light-blue"
-                    >
-                        <ng-container matColumnDef="id">
-                            <th
-                                mat-header-cell
-                                *matHeaderCellDef
-                            >
-                                Roll
-                            </th>
-                            <td
-                                mat-cell
-                                *matCellDef="let element"
-                            >
-                                {{ element.id }}
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="name">
-                            <th
-                                mat-header-cell
-                                *matHeaderCellDef
-                            >
-                                Talent
-                            </th>
-                            <td
-                                mat-cell
-                                *matCellDef="let element"
-                            >
-                                <h6>{{ element.name }}:</h6>
-                                <markdown>
-                                    {{ element.shortDescription }}
-                                </markdown>
-                            </td>
-                        </ng-container>
-
-                        <tr
-                            mat-header-row
-                            *matHeaderRowDef="displayedColumns"
-                        ></tr>
-                        <tr
-                            mat-row
-                            *matRowDef="let row; columns: displayedColumns"
-                        ></tr>
-                    </table>
-                    <table
-                        mat-table
-                        [dataSource]="characterAPI.rules.magicalPowers.slice(12, 24)"
-                    >
-                        <ng-container matColumnDef="id">
-                            <th
-                                mat-header-cell
-                                *matHeaderCellDef
-                            >
-                                Roll
-                            </th>
-                            <td
-                                mat-cell
-                                *matCellDef="let element"
-                            >
-                                {{ element.id }}
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="name">
-                            <th
-                                mat-header-cell
-                                *matHeaderCellDef
-                            >
-                                Talent
-                            </th>
-                            <td
-                                mat-cell
-                                *matCellDef="let element"
-                            >
-                                <h6>{{ element.name }}:</h6>
-                                {{ element.shortDescription }}
-                            </td>
-                        </ng-container>
-
-                        <tr
-                            mat-header-row
-                            *matHeaderRowDef="displayedColumns"
-                        ></tr>
-                        <tr
-                            mat-row
-                            *matRowDef="let row; columns: displayedColumns"
-                        ></tr>
-                    </table>
-                    <table
-                        mat-table
-                        [dataSource]="characterAPI.rules.magicalPowers.slice(24, 36)"
-                    >
-                        <ng-container matColumnDef="id">
-                            <th
-                                mat-header-cell
-                                *matHeaderCellDef
-                            >
-                                Roll
-                            </th>
-                            <td
-                                mat-cell
-                                *matCellDef="let element"
-                            >
-                                {{ element.id }}
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="name">
-                            <th
-                                mat-header-cell
-                                *matHeaderCellDef
-                            >
-                                Talent
-                            </th>
-                            <td
-                                mat-cell
-                                *matCellDef="let element"
-                            >
-                                <h6>{{ element.name }}:</h6>
-                                {{ element.shortDescription }}
-                            </td>
-                        </ng-container>
-
-                        <tr
-                            mat-header-row
-                            *matHeaderRowDef="displayedColumns"
-                        ></tr>
-                        <tr
-                            mat-row
-                            *matRowDef="let row; columns: displayedColumns"
-                        ></tr>
-                    </table>
-                </div>
+                <ng-container
+                    [ngTemplateOutlet]="infoTable"
+                    [ngTemplateOutletContext]="{ data: characterAPI.rules.magicalPowers }"
+                ></ng-container>
             }
         </mat-tab>
         <mat-tab label="Making a Check">
             @if (characterAPI.rules) {
-                <div class="flex flex-col md:flex-row">
+                <div class="flex flex-col">
                     <div
-                        id="left-half"
-                        class="md:w-1/2 md:mr-5"
+                        id="make_check"
+                        class="flex flex-col md:flex-row"
                     >
-                        <h1>making a check</h1>
-                        <p>When your kitty tries something tricky or dangerous, your GM will ask you to make a check. Normal actions like hopping from the ground onto a chair, or waking up from a nap, don't need checks. Harder tasks like jumping off a moving train, or reading human words, do need checks.</p>
-                        <br />
-                        <h2>Your Dice Pool</h2>
-                        <p>Your dice pool is the number of dice you roll for your kitty to overcome a challenge. Your GM will tell you whether the check needs Cute, Cunning, or Fierce. The number you have in that Attribute is the number of dice you start with in your pool.</p>
-                        <br />
-                        <p>If your kitty is using a Talent, you can add another die to the pool. If your kitty is using a Magical Power, you get two more dice, once per scene. You may also get a die for a success bonus, or lose one for each Injury you have. If your total dice in a pool is zero, you can't roll it.</p>
-                        <div class="flex flex-col bg-white border-2 border-sheet-bg-dark-blue my-2">
-                            <div class="my-2 help-box-title">
-                                <div class="text-sheet-dark-blue font-bold text-lg text-center">ALL THE DICE</div>
+                        <div
+                            id="check_left_half"
+                            class="md:w-1/2 md:mr-5"
+                        >
+                            <h1 class="border-t-2 border-sheet-dark-blue">making a check</h1>
+                            <p>When your kitty tries something tricky or dangerous, your GM will ask you to make a check. Normal actions like hopping from the ground onto a chair, or waking up from a nap, don't need checks. Harder tasks like jumping off a moving train, or reading human words, do need checks.</p>
+                            <br />
+                            <h2>Your Dice Pool</h2>
+                            <p>Your dice pool is the number of dice you roll for your kitty to overcome a challenge. Your GM will tell you whether the check needs Cute, Cunning, or Fierce. The number you have in that Attribute is the number of dice you start with in your pool.</p>
+                            <br />
+                            <p>If your kitty is using a Talent, you can add another die to the pool. If your kitty is using a Magical Power, you get two more dice, once per scene. You may also get a die for a success bonus, or lose one for each Injury you have. If your total dice in a pool is zero, you can't roll it.</p>
+                            <div class="flex flex-col bg-white border-2 border-sheet-bg-dark-blue my-2">
+                                <div class="my-2 help-box-title">
+                                    <div class="text-sheet-dark-blue font-bold text-lg text-center">ALL THE DICE</div>
+                                </div>
+                                <div class="flex flex-col px-3">
+                                    @for (diceRule of characterAPI.rules.diceRules; track $index) {
+                                        <span>{{ diceRule }}</span>
+                                    }
+                                    <br />
+                                    <span class="my-2">If that equals 0 dice, you can't roll it.</span>
+                                </div>
                             </div>
-                            <div class="flex flex-col px-3">
-                                @for (diceRule of characterAPI.rules.diceRules; track $index) {
-                                    <span>{{ diceRule }}</span>
-                                }
-                                <br />
-                                <span class="my-2">If that equals 0 dice, you can't roll it.</span>
+                        </div>
+                        <div
+                            id="check_right_half"
+                            class="md:w-1/2 md:ml-5"
+                        >
+                            <h2>Difficulty</h2>
+                            <p>Your GM will also tell you the difficulty of the check, depending on what your kitty is trying to do. This number ranges from 3 to 6, and the higher it is, the tougher the check is.</p>
+                            <table
+                                mat-table
+                                [dataSource]="characterAPI.rules.diceDifficulties"
+                                class="my-2"
+                            >
+                                <ng-container matColumnDef="difficulty">
+                                    <th
+                                        mat-header-cell
+                                        *matHeaderCellDef
+                                    >
+                                        Difficulty
+                                    </th>
+                                    <td
+                                        mat-cell
+                                        *matCellDef="let element"
+                                    >
+                                        <div class="flex flex-col">
+                                            <span>
+                                                {{ element.difficulty }}
+                                            </span>
+                                            <span>
+                                                {{ element.difficultyText }}
+                                            </span>
+                                        </div>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="cute">
+                                    <th
+                                        mat-header-cell
+                                        *matHeaderCellDef
+                                    >
+                                        Cute
+                                    </th>
+                                    <td
+                                        mat-cell
+                                        *matCellDef="let element"
+                                    >
+                                        {{ element.cuteAction }}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="cunning">
+                                    <th
+                                        mat-header-cell
+                                        *matHeaderCellDef
+                                    >
+                                        Cunning
+                                    </th>
+                                    <td
+                                        mat-cell
+                                        *matCellDef="let element"
+                                    >
+                                        {{ element.cunningAction }}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="fierce">
+                                    <th
+                                        mat-header-cell
+                                        *matHeaderCellDef
+                                    >
+                                        Fierce
+                                    </th>
+                                    <td
+                                        mat-cell
+                                        *matCellDef="let element"
+                                    >
+                                        {{ element.fierceAction }}
+                                    </td>
+                                </ng-container>
+                                <tr
+                                    mat-header-row
+                                    *matHeaderRowDef="displayedDifficultyColumns"
+                                ></tr>
+                                <tr
+                                    mat-row
+                                    *matRowDef="let row; columns: displayedDifficultyColumns"
+                                ></tr>
+                            </table>
+                            <div>
+                                <img src="acrobat_cat.png" />
                             </div>
                         </div>
                     </div>
                     <div
-                        id="right-half"
-                        class="md:w-1/2 md:ml-5"
+                        id="successes"
+                        class="flex flex-col md:flex-row"
                     >
-                        <h2>Difficulty</h2>
-                        <p>Your GM will also tell you the difficulty of the check, depending on what your kitty is trying to do. This number ranges from 3 to 6, and the higher it is, the tougher the check is.</p>
-
-                        <table
-                            mat-table
-                            [dataSource]="characterAPI.rules.diceDifficulties"
-                            class="border-2 border-sheet-bg-light-blue my-2"
+                        <div
+                            id="success_left_half"
+                            class="md:w-1/2 md:mr-5"
                         >
-                            <ng-container matColumnDef="difficulty">
-                                <th
-                                    mat-header-cell
-                                    *matHeaderCellDef
-                                >
-                                    Difficulty
-                                </th>
-                                <td
-                                    mat-cell
-                                    *matCellDef="let element"
-                                >
-                                    <div class="flex flex-col">
-                                        <span>
-                                            {{ element.difficulty }}
-                                        </span>
-                                        <span>
-                                            {{ element.difficultyText }}
-                                        </span>
+                            <h2>Success</h2>
+                            <p>Once you have your dice pool and you know the difficulty, it's time to roll your dice. Roll them all at once. Each die that gets a number that's either the same as, or more than, the difficulty counts as a success. If you rolled no successes, you fail. If at least one die was a success, then your kitty succeeds. The more successes you roll, the better your kitty does!</p>
+                            <table
+                                mat-table
+                                [dataSource]="characterAPI.rules.diceSuccesses"
+                                class="my-2"
+                            >
+                                <ng-container matColumnDef="successes">
+                                    <th
+                                        mat-header-cell
+                                        *matHeaderCellDef
+                                    >
+                                        Successes
+                                    </th>
+                                    <td
+                                        mat-cell
+                                        *matCellDef="let element"
+                                    >
+                                        <div class="flex flex-col">
+                                            <span>
+                                                {{ element.successes }}
+                                            </span>
+                                        </div>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="result">
+                                    <th
+                                        mat-header-cell
+                                        *matHeaderCellDef
+                                    >
+                                        Result
+                                    </th>
+                                    <td
+                                        mat-cell
+                                        *matCellDef="let element"
+                                    >
+                                        {{ element.result }}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="enhancements">
+                                    <th
+                                        mat-header-cell
+                                        *matHeaderCellDef
+                                    >
+                                        Complication/Bonus
+                                    </th>
+                                    <td
+                                        mat-cell
+                                        *matCellDef="let element"
+                                    >
+                                        {{ element.enhancements }}
+                                    </td>
+                                </ng-container>
+                                <tr
+                                    mat-header-row
+                                    *matHeaderRowDef="displayedDiceColumns"
+                                ></tr>
+                                <tr
+                                    mat-row
+                                    *matRowDef="let row; columns: displayedDiceColumns"
+                                ></tr>
+                            </table>
+                            <div class="mb-2">
+                                <h6 class="font-semibold">No Successes = Failure:</h6>
+                                <p>If you don't roll any successes, you fail at your task. A lot of times this also means that something bad happens to your kitty. This is called a complication. The sidebar shows example complications your GM might choose, but you can also help make up new ones, with GM approval.</p>
+                            </div>
+                            <div class="mb-2">
+                                <h6 class="font-semibold">1 Success = Success, But...:</h6>
+                                <p>If only one die is a success, you do it but either just barely or at a cost to your kitty. If you're attacking a Foe you do one Owie, but the GM applies a complication.</p>
+                            </div>
+                            <div class="mb-2">
+                                <h6 class="font-semibold">2 Success = Success:</h6>
+                                <p>If you roll two successes, then things worked out just like your kitty wanted. If you're attacking a Foe, you do one Owie. There are no extra effects.</p>
+                            </div>
+                            <div class="mb-2">
+                                <h6 class="font-semibold">3 Successes = Success, And...:</h6>
+                                <p>If you have three successes, your kitty not only succeeds, doing one Owie if you're attacking a Foe, but you also gain a bonus! The sidebar shows some bonuses your GM might give you, or you can help make up a new one, with your GM’s approval.</p>
+                            </div>
+                            <div class="mb-2">
+                                <h6 class="font-semibold">4 Success = Super Success!:</h6>
+                                <p>If your kitty has four or more successes, you score a super success! This means you do an amazing job completing your task, deal one Owie if you're attacking a Foe, and get an even more useful super bonus! See the sidebar for examples.</p>
+                            </div>
+                        </div>
+                        <div
+                            id="success_right_half"
+                            class="md:w-1/2 md:mr-5"
+                        >
+                            <div class="flex flex-col bg-white border-2 border-sheet-bg-dark-blue my-2">
+                                <div class="my-2 help-box-title">
+                                    <div class="flex flex-col text-sheet-dark-blue font-bold text-lg text-center">
+                                        <span> EXAMPLE COMPLICATIONS </span>
+                                        <span> (0 & 1 SUCCESSES) </span>
                                     </div>
-                                </td>
-                            </ng-container>
-                            <ng-container matColumnDef="cute">
-                                <th
-                                    mat-header-cell
-                                    *matHeaderCellDef
-                                >
-                                    Cute
-                                </th>
-                                <td
-                                    mat-cell
-                                    *matCellDef="let element"
-                                >
-                                    {{ element.cuteAction }}
-                                </td>
-                            </ng-container>
-                            <ng-container matColumnDef="cunning">
-                                <th
-                                    mat-header-cell
-                                    *matHeaderCellDef
-                                >
-                                    Cunning
-                                </th>
-                                <td
-                                    mat-cell
-                                    *matCellDef="let element"
-                                >
-                                    {{ element.cunningAction }}
-                                </td>
-                            </ng-container>
-                            <ng-container matColumnDef="fierce">
-                                <th
-                                    mat-header-cell
-                                    *matHeaderCellDef
-                                >
-                                    Fierce
-                                </th>
-                                <td
-                                    mat-cell
-                                    *matCellDef="let element"
-                                >
-                                    {{ element.fierceAction }}
-                                </td>
-                            </ng-container>
-                            <tr
-                                mat-header-row
-                                *matHeaderRowDef="displayedDifficultyColumns"
-                            ></tr>
-                            <tr
-                                mat-row
-                                *matRowDef="let row; columns: displayedDifficultyColumns"
-                            ></tr>
-                        </table>
-
-                        <div>
-                            <img src="acrobat_cat.png" />
+                                </div>
+                                <div class="flex flex-col px-3">
+                                    <ul>
+                                        @for (complication of characterAPI.rules.rollComplications; track $index) {
+                                            <li class="flex items-start"><span class="material-symbols-outlined">star_rate</span>{{ complication }}</li>
+                                        }
+                                    </ul>
+                                </div>
+                                <div class="my-2 help-box-title">
+                                    <div class="flex flex-col text-sheet-dark-blue font-bold text-lg text-center">
+                                        <span> EXAMPLE BONUSES </span>
+                                        <span> (3 SUCCESSES) </span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col px-3">
+                                    <ul>
+                                        @for (bonus of characterAPI.rules.rollBonus; track $index) {
+                                            <li class="flex items-start"><span class="material-symbols-outlined">star_rate</span>{{ bonus }}</li>
+                                        }
+                                    </ul>
+                                </div>
+                                <div class="my-2 help-box-title">
+                                    <div class="flex flex-col text-sheet-dark-blue font-bold text-lg text-center">
+                                        <span> EXAMPLE SUPER BONUSES </span>
+                                        <span> (4+ SUCCESSES) </span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col px-3">
+                                    <ul>
+                                        @for (superBonus of characterAPI.rules.rollSuperBonus; track $index) {
+                                            <li class="flex items-start"><span class="material-symbols-outlined">star_rate</span>{{ superBonus }}</li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </mat-tab>
+        <mat-tab label="Extras and Owies">
+            @if (characterAPI.rules) {
+                <div class="flex flex-col">
+                    <div
+                        id="make_check"
+                        class="flex flex-col md:flex-row"
+                    >
+                        <div
+                            id="check_left_half"
+                            class="md:w-1/2 md:mr-5"
+                        >
+                            <h1 class="border-t-2 border-sheet-dark-blue">kitty treats</h1>
+                            <p>Kitty treats are a way you can change the story of the game in your favor. At the start of each episode, you begin with Kitty Treat tokens equal to your character sheet's Kitty Treat value (2 for new kitties). They don't roll over from the last episode. You can spend these during the game for the special effects listed in the sidebar.</p>
+                            <div class="flex flex-col bg-white border-2 border-sheet-bg-dark-blue my-2">
+                                <div class="my-2 help-box-title">
+                                    <div class="text-sheet-dark-blue font-bold text-lg text-center">SPENDING KITTY TREATS</div>
+                                </div>
+                                <div class="flex flex-col px-3">
+                                    <ul>
+                                        @for (treatRule of characterAPI.rules.spendingKittyTreats; track $index) {
+                                            <li class="flex items-start"><span class="material-symbols-outlined">star_rate</span>{{ treatRule }}</li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                            <p>One of those effects is adding things to the story. It might be something like deciding there's a secret door in the house, or saying that a likely foe is actually an old friend of your kitty. This needs the GM's approval, though.</p>
+                            <br />
+                            <p>You can earn more Kitty Treats during play by using your kitty's Flaw. When a kitty's Flaw makes the story more fun and interesting, or the kitty krew's goal more difficult, the GM might give that player another Kitty Treat token. You don't get a Kitty Treat every time you just mention your Flaw, though.</p>
+                            <img src="injured_kitty.png" />
+                        </div>
+                        <div
+                            id="check_right_half"
+                            class="md:w-1/2 md:ml-5"
+                        >
+                            <h1 class="border-t-2 border-sheet-dark-blue">owies</h1>
+                            <markdown ngPreserveWhitespace>While playing _**Magical Kitties Save the Day**_, your kitty is likely to suffer Owies, usually because of complications on failed checks, like setting off a Reaction from a Foe. Owies track physical harm to your kitty. Your kitty has an Owie Limit on your character sheet, which starts at 2. This is how many Owies your kitty can take each episode before being Injured. As long as you don't go above this limit, your kitty might be roughed up, but you're not seriously hurt and you don't get any penalties. You'll want to mark Owies on your sheet to keep track of them, though, because eventually they turn into Injuries…</markdown>
+                            <h2 class="mt-2">Injuries</h2>
+                            <p>If your kitty is at or above your Owie Limit and you take another Owie, you suffer an Injury instead. Write this on your sheet. Each Injury a kitty suffers means you lose one die to roll in your dice pools. If this reduces the number of dice in a pool to zero, your kitty can't roll that Attribute.</p>
+                            <h2 class="mt-2">Getting Knocked Out</h2>
+                            <p>If a kitty has Injuries equal to their highest Attribute (3 for starting kitties, and max 4), they're “incapacitated.” This means the kitty is knocked out or otherwise unable to act for the rest of the scene.</p>
+                            <h2 class="mt-2">Healing</h2>
+                            <p>At the end of a scene where a kitty suffered an Injury, the kitty recovers from one Injury. Erase the Injury from your character sheet. If your kitty was knocked out, this usually means you also wake up, since your total Injuries no longer equal your highest Attribute (3 or 4). But you might be in a whole other heap of trouble when that happens!</p>
+                        </div>
+                    </div>
+                    <div
+                        id="successes"
+                        class="flex flex-col md:flex-row"
+                    >
+                        <div
+                            id="success_left_half"
+                            class="md:w-1/2 md:mr-5"
+                        >
+                            <h2>Success</h2>
+                            <p>Once you have your dice pool and you know the difficulty, it's time to roll your dice. Roll them all at once. Each die that gets a number that's either the same as, or more than, the difficulty counts as a success. If you rolled no successes, you fail. If at least one die was a success, then your kitty succeeds. The more successes you roll, the better your kitty does!</p>
+                            <table
+                                mat-table
+                                [dataSource]="characterAPI.rules.diceSuccesses"
+                                class="my-2"
+                            >
+                                <ng-container matColumnDef="successes">
+                                    <th
+                                        mat-header-cell
+                                        *matHeaderCellDef
+                                    >
+                                        Successes
+                                    </th>
+                                    <td
+                                        mat-cell
+                                        *matCellDef="let element"
+                                    >
+                                        <div class="flex flex-col">
+                                            <span>
+                                                {{ element.successes }}
+                                            </span>
+                                        </div>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="result">
+                                    <th
+                                        mat-header-cell
+                                        *matHeaderCellDef
+                                    >
+                                        Result
+                                    </th>
+                                    <td
+                                        mat-cell
+                                        *matCellDef="let element"
+                                    >
+                                        {{ element.result }}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="enhancements">
+                                    <th
+                                        mat-header-cell
+                                        *matHeaderCellDef
+                                    >
+                                        Complication/Bonus
+                                    </th>
+                                    <td
+                                        mat-cell
+                                        *matCellDef="let element"
+                                    >
+                                        {{ element.enhancements }}
+                                    </td>
+                                </ng-container>
+                                <tr
+                                    mat-header-row
+                                    *matHeaderRowDef="displayedDiceColumns"
+                                ></tr>
+                                <tr
+                                    mat-row
+                                    *matRowDef="let row; columns: displayedDiceColumns"
+                                ></tr>
+                            </table>
+                            <div class="mb-2">
+                                <h6 class="font-semibold">No Successes = Failure:</h6>
+                                <p>If you don't roll any successes, you fail at your task. A lot of times this also means that something bad happens to your kitty. This is called a complication. The sidebar shows example complications your GM might choose, but you can also help make up new ones, with GM approval.</p>
+                            </div>
+                            <div class="mb-2">
+                                <h6 class="font-semibold">1 Success = Success, But...:</h6>
+                                <p>If only one die is a success, you do it but either just barely or at a cost to your kitty. If you're attacking a Foe you do one Owie, but the GM applies a complication.</p>
+                            </div>
+                            <div class="mb-2">
+                                <h6 class="font-semibold">2 Success = Success:</h6>
+                                <p>If you roll two successes, then things worked out just like your kitty wanted. If you're attacking a Foe, you do one Owie. There are no extra effects.</p>
+                            </div>
+                            <div class="mb-2">
+                                <h6 class="font-semibold">3 Successes = Success, And...:</h6>
+                                <p>If you have three successes, your kitty not only succeeds, doing one Owie if you're attacking a Foe, but you also gain a bonus! The sidebar shows some bonuses your GM might give you, or you can help make up a new one, with your GM’s approval.</p>
+                            </div>
+                            <div class="mb-2">
+                                <h6 class="font-semibold">4 Success = Super Success!:</h6>
+                                <p>If your kitty has four or more successes, you score a super success! This means you do an amazing job completing your task, deal one Owie if you're attacking a Foe, and get an even more useful super bonus! See the sidebar for examples.</p>
+                            </div>
+                        </div>
+                        <div
+                            id="success_right_half"
+                            class="md:w-1/2 md:mr-5"
+                        >
+                            <div class="flex flex-col bg-white border-2 border-sheet-bg-dark-blue my-2">
+                                <div class="my-2 help-box-title">
+                                    <div class="flex flex-col text-sheet-dark-blue font-bold text-lg text-center">
+                                        <span> EXAMPLE COMPLICATIONS </span>
+                                        <span> (0 & 1 SUCCESSES) </span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col px-3">
+                                    <ul>
+                                        @for (complication of characterAPI.rules.rollComplications; track $index) {
+                                            <li class="flex items-start"><span class="material-symbols-outlined">star_rate</span>{{ complication }}</li>
+                                        }
+                                    </ul>
+                                </div>
+                                <div class="my-2 help-box-title">
+                                    <div class="flex flex-col text-sheet-dark-blue font-bold text-lg text-center">
+                                        <span> EXAMPLE BONUSES </span>
+                                        <span> (3 SUCCESSES) </span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col px-3">
+                                    <ul>
+                                        @for (bonus of characterAPI.rules.rollBonus; track $index) {
+                                            <li class="flex items-start"><span class="material-symbols-outlined">star_rate</span>{{ bonus }}</li>
+                                        }
+                                    </ul>
+                                </div>
+                                <div class="my-2 help-box-title">
+                                    <div class="flex flex-col text-sheet-dark-blue font-bold text-lg text-center">
+                                        <span> EXAMPLE SUPER BONUSES </span>
+                                        <span> (4+ SUCCESSES) </span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col px-3">
+                                    <ul>
+                                        @for (superBonus of characterAPI.rules.rollSuperBonus; track $index) {
+                                            <li class="flex items-start"><span class="material-symbols-outlined">star_rate</span>{{ superBonus }}</li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -559,3 +499,159 @@
         </mat-tab>
     </mat-tab-group>
 </div>
+
+<ng-template
+    #infoTable
+    let-data="data"
+>
+    @if (characterAPI.rules) {
+        <div class="flex flex-col mb-2 md:flex-row md:max-w-1/3 tables">
+            <table
+                mat-table
+                [dataSource]="data.slice(0, 12)"
+                class="mb-2 md:mb-0"
+            >
+                <ng-container matColumnDef="id">
+                    <th
+                        mat-header-cell
+                        *matHeaderCellDef
+                    >
+                        Roll
+                    </th>
+                    <td
+                        mat-cell
+                        *matCellDef="let element"
+                    >
+                        {{ element.id }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="name">
+                    <th
+                        mat-header-cell
+                        *matHeaderCellDef
+                    >
+                        Talent
+                    </th>
+                    <td
+                        mat-cell
+                        *matCellDef="let element"
+                    >
+                        <h6>{{ element.name }}:</h6>
+                        @if (element.shortDescription) {
+                            {{ element.shortDescription }}
+                        } @else {
+                            {{ element.description }}
+                        }
+                    </td>
+                </ng-container>
+
+                <tr
+                    mat-header-row
+                    *matHeaderRowDef="displayedColumns"
+                ></tr>
+                <tr
+                    mat-row
+                    *matRowDef="let row; columns: displayedColumns"
+                ></tr>
+            </table>
+            <table
+                mat-table
+                [dataSource]="data.slice(12, 24)"
+                class="mb-2 md:mb-0"
+            >
+                <ng-container matColumnDef="id">
+                    <th
+                        mat-header-cell
+                        *matHeaderCellDef
+                    >
+                        Roll
+                    </th>
+                    <td
+                        mat-cell
+                        *matCellDef="let element"
+                        class="md:border-l-0!"
+                    >
+                        {{ element.id }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="name">
+                    <th
+                        mat-header-cell
+                        *matHeaderCellDef
+                    >
+                        Talent
+                    </th>
+                    <td
+                        mat-cell
+                        *matCellDef="let element"
+                    >
+                        <h6>{{ element.name }}:</h6>
+                        @if (element.shortDescription) {
+                            {{ element.shortDescription }}
+                        } @else {
+                            {{ element.description }}
+                        }
+                    </td>
+                </ng-container>
+
+                <tr
+                    mat-header-row
+                    *matHeaderRowDef="displayedColumns"
+                ></tr>
+                <tr
+                    mat-row
+                    *matRowDef="let row; columns: displayedColumns"
+                ></tr>
+            </table>
+            <table
+                mat-table
+                [dataSource]="data.slice(24, 36)"
+                class="mb-2 md:mb-0"
+            >
+                <ng-container matColumnDef="id">
+                    <th
+                        mat-header-cell
+                        *matHeaderCellDef
+                    >
+                        Roll
+                    </th>
+                    <td
+                        mat-cell
+                        *matCellDef="let element"
+                        class="md:border-l-0!"
+                    >
+                        {{ element.id }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="name">
+                    <th
+                        mat-header-cell
+                        *matHeaderCellDef
+                    >
+                        Talent
+                    </th>
+                    <td
+                        mat-cell
+                        *matCellDef="let element"
+                    >
+                        <h6>{{ element.name }}:</h6>
+                        @if (element.shortDescription) {
+                            {{ element.shortDescription }}
+                        } @else {
+                            {{ element.description }}
+                        }
+                    </td>
+                </ng-container>
+
+                <tr
+                    mat-header-row
+                    *matHeaderRowDef="displayedColumns"
+                ></tr>
+                <tr
+                    mat-row
+                    *matRowDef="let row; columns: displayedColumns"
+                ></tr>
+            </table>
+        </div>
+    }
+</ng-template>
