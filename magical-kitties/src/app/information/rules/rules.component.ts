@@ -6,6 +6,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute } from '@angular/router';
 import { MarkdownComponent, MarkdownService } from 'ngx-markdown';
 import { Subscription } from 'rxjs';
+import { LevelInfogramComponent } from "../../characters/displaycharacter/level-infogram/level-infogram.component";
 import { CharacterAPIService } from '../../characters/services/characters.service';
 import { InfoBoxComponent } from "./info-box/info-box.component";
 import { SkillTableComponent } from "./skill-table/skill-table.component";
@@ -13,7 +14,7 @@ import { TipBoxComponent } from "./tip-box/tip-box.component";
 
 @Component({
     selector: 'app-rules',
-    imports: [CommonModule, MatIconModule, MatTabsModule, MatTableModule, MarkdownComponent, InfoBoxComponent, TipBoxComponent, SkillTableComponent],
+    imports: [CommonModule, MatIconModule, MatTabsModule, MatTableModule, MarkdownComponent, InfoBoxComponent, TipBoxComponent, SkillTableComponent, LevelInfogramComponent],
     templateUrl: './rules.component.html',
     styleUrl: './rules.component.scss',
 })
