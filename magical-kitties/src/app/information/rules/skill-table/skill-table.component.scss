@@ -1,0 +1,26 @@
+.mat-column-id {
+    width: 35px;
+    padding: 0;
+    text-align: center;
+}
+
+.mat-mdc-table {
+    border-bottom: 1px solid purple;
+}
+
+.mat-mdc-header-row {
+    border: 1px solid;
+    border-color: purple !important;
+    background-color: purple !important;
+    color: white;
+    height: 30px !important;
+}
+
+.mat-mdc-cell {
+    border-left: 1px solid purple;
+    border-right: 1px solid purple;
+}
+
+.mat-mdc-row {
+    height: 90px;
+}

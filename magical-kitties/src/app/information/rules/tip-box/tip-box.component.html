@@ -1,0 +1,16 @@
+<div
+    class="flex flex-col tip-background pb-3 shadow-xl"
+    ngClass="{{ onLeft === true ? 'pl-7 pr-3' : 'pl-3 pr-7' }}"
+>
+    <div class="flex items-center tip-title text-yellow-700 my-3 h-10">
+        <div class="flex items-center">
+            <img src="tip_paw.png" />
+            <span class="ml-2 font-bold text-xl">
+                {{ title }}
+            </span>
+        </div>
+    </div>
+    <div>
+        {{ body }}
+    </div>
+</div>
