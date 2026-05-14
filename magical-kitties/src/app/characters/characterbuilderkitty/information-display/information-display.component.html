@@ -1,7 +1,7 @@
 <mat-dialog-content>
     @for (item of data.data; track item) {
         <div
-            class="flex flex-col mb-4"
+            class="flex flex-col not-first:pt-4"
             id="{{ item.id }}"
         >
             <span class="text-xl font-semibold underline">{{ item.name }}</span>

@@ -3,5 +3,5 @@ export const Constants = {
     RefreshToken: "refresh_token",
     MaxCharactersBigInput: 250,
     MaxCharactersMediumInput: 100,
-    MaxCharactersSmallInput: 50
+    MaxCharactersSmallInput: 50,
 }

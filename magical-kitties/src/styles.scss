@@ -18,6 +18,13 @@ html {
     --primary-background: #f8f2d1;
 }
 
+@font-face {
+    font-family: "Blackriver";
+    src: url("../public/fonts/Blackriver-Bold.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
 html,
 body {
     height: 100%;
@@ -28,6 +35,23 @@ body {
         Carrois Gothic,
         "Carrois Gothic",
         sans-serif;
+}
+
+h1 {
+    font-size: 40px;
+    font-family: "Blackriver";
+    color: rgba(#004d66, 1);
+}
+
+h2 {
+    font-size: 20px;
+    font-family: "Carrois Gothic";
+    font-weight: bold;
+    color: rgba(#004d66, 1);
+}
+
+h6 {
+    color: rgba(#004d66, 1);
 }
 
 .content {

@@ -1,0 +1,26 @@
+<div class="flex flex-col bg-white border-2 border-border-dark-blue my-2">
+    <div class="flex flex-col my-2 help-box-title">
+        <div class="flex flex-col text-sheet-dark-blue font-bold text-lg text-center">
+            <span>
+                {{ title }}
+            </span>
+            @if (secondaryTitle) {
+                <span>
+                    {{ secondaryTitle }}
+                </span>
+            }
+        </div>
+    </div>
+    <div class="flex flex-col px-3 pb-3">
+        @for (item of data; track $index) {
+            <li class="flex items-start">
+                @if (hasStars) {
+                    <span class="material-symbols-outlined">star_rate</span>
+                }
+                <markdown ngPreserveWhitespace>
+                    {{ item }}
+                </markdown>
+            </li>
+        }
+    </div>
+</div>

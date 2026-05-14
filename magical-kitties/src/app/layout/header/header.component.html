@@ -1,4 +1,4 @@
-<div class="relative z-20">
+<div class="relative z-100">
     <div class="primary">
         <div class="content">
             <!-- Shown only on big screen -->
@@ -54,9 +54,13 @@
                     >
                         Characters
                     </button>
-                    <button mat-button>Game Rules</button>
+                    <button
+                        mat-button
+                        [routerLink]="['/learn/rules']"
+                    >
+                        Learn to Play
+                    </button>
                     <button mat-button>Source</button>
-                    <button mat-button>Learn to Play</button>
                 </mat-toolbar-row>
             </mat-toolbar>
         </div>
@@ -74,7 +78,7 @@
             id="minimenu"
             class="absolute duration-500 ease-out transition-all right-0 w-2/3 translate-x-full"
         >
-            <div class="relative z-40 flex grow">
+            <div class="relative flex grow">
                 <div class="flex flex-col mat-toolbar grow pb-3">
                     <div class="flex grow justify-center py-3">
                         <ng-container *ngTemplateOutlet="signInOut"></ng-container>
@@ -88,9 +92,13 @@
                         >
                             Characters
                         </button>
-                        <button mat-button>Game Rules</button>
+                        <button
+                            mat-button
+                            [routerLink]="['/learn/rules']"
+                        >
+                            Learn to Play
+                        </button>
                         <button mat-button>Source</button>
-                        <button mat-button>Learn to Play</button>
                     </div>
                     @if (account !== undefined) {
                         <mat-divider></mat-divider>

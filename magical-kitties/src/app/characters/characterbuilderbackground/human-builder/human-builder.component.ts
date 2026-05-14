@@ -4,18 +4,21 @@ import { AfterContentInit, Component, EventEmitter, inject, Input, Output } from
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Constants } from '../../../Constants';
+import { InformationConstants } from '../../../information/Constants';
 import { getValue } from '../../../login/utilities';
 import { DescriptionOption } from '../../../models/Characters/descriptionoption.model';
 import { Human } from '../../../models/Characters/human.model';
 import { Problem } from '../../../models/Characters/problem.model';
 import { HumanUpdateRequest } from '../../../models/Humans/humanupdaterequest.model';
 import { trackByFn } from '../../../utilities';
+import { InformationDisplayComponent } from '../../characterbuilderkitty/information-display/information-display.component';
 import { HumanAPIService } from '../../services/humans.service';
 import { ProblemBuilderComponent } from "./problem-builder/problem-builder.component";
 
@@ -31,7 +34,9 @@ export class HumanBuilderComponent implements AfterContentInit {
     getValue = getValue;
     trackByFn = trackByFn;
     Constants = Constants;
+    InformationConstants = InformationConstants;
     humanAPI: HumanAPIService = inject(HumanAPIService);
+    dialog: MatDialog = inject(MatDialog);
     nameMaxCountSubject: BehaviorSubject<number> = new BehaviorSubject(0);
     remainingNameCharacters$: Observable<number> = this.nameMaxCountSubject.asObservable();
     descriptionMaxCountSubject: BehaviorSubject<number> = new BehaviorSubject(0);
@@ -123,5 +128,11 @@ export class HumanBuilderComponent implements AfterContentInit {
                 }
             }
         });
+    }
+
+    openInfoDialog(data: {}[] | undefined, anchor: number): void {
+        const config = new MatDialogConfig();
+        config.data = { data: data, anchor: anchor };
+        this.dialog.open(InformationDisplayComponent, config);
     }
 }

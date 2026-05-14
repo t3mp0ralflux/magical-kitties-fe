@@ -11,6 +11,7 @@ import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { MarkdownComponent } from "ngx-markdown";
 import { BehaviorSubject, combineLatest, Observable, pairwise, startWith, Subscription, tap } from 'rxjs';
+import { InformationConstants } from '../../information/Constants';
 import { getValue } from '../../login/utilities';
 import { AttributeOption } from '../../models/Characters/attributeoption.model';
 import { Character } from '../../models/Characters/character.model';
@@ -48,6 +49,7 @@ export class CharacterBuilderKittyComponent implements AfterContentInit, OnDestr
     levelOptions: number[] = Array(10).fill(1).map((_, i) => i + 1);
     getValue = getValue;
     trackByFn = trackByFn;
+    InformationConstants = InformationConstants;
     UpgradeOption = UpgradeOption;
     AttributeOption = AttributeOption;
     levelControl: FormControl = new FormControl();
@@ -519,7 +521,7 @@ export class CharacterBuilderKittyComponent implements AfterContentInit, OnDestr
         });
     }
 
-    openInfoDialog(data: Flaw[] | Talent[] | MagicalPower[] | undefined, anchor: number): void {
+    openInfoDialog(data: Flaw[] | Talent[] | MagicalPower[] | {}[] | undefined, anchor: number): void {
         const config = new MatDialogConfig();
         config.data = { data: data, anchor: anchor };
         this.dialog.open(InformationDisplayComponent, config);
