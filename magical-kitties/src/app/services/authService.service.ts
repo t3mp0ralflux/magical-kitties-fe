@@ -1,6 +1,6 @@
 import { HttpErrorResponse, HttpResponse } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { Observable, tap } from "rxjs";
+import { map, Observable, tap } from "rxjs";
 import { environment } from "../../environments/environment";
 import { Account } from "../models/Account/account.model";
 import { LoginModel } from "../models/Login/login.model";
@@ -28,6 +28,16 @@ export class AuthService {
         );
     }
 
+    loginByToken(): Observable<Account>;
+    loginByToken(): Observable<HttpErrorResponse>;
+    loginByToken(): Observable<Account> | Observable<HttpErrorResponse> {
+        return this.apiClient.loginByToken().pipe(
+            tap((response: Account) => {
+                this.account = response;
+            })
+        );
+    };
+
     refreshLogin() {
         return this.apiClient.refreshToken().pipe(
             tap((response: Account) => {
@@ -40,9 +50,10 @@ export class AuthService {
         );
     }
 
-    logout(): Observable<void> {
+    logout(): Observable<boolean> {
         return this.apiClient.logout().pipe(
-            tap(_ => this.account = undefined)
+            tap(_ => this.account = undefined),
+            map(_ => true)
         );
     }
 

@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Account } from '../../models/Account/account.model';
 import { AccountCreateRequest } from '../../models/Account/accountcreaterequest.model';
@@ -22,6 +23,7 @@ import { MatchValidator } from '../utilities';
     styleUrl: './register.component.scss'
 })
 export class RegisterComponent implements OnDestroy {
+    private router: Router = inject(Router);
     private _snackBar = inject(MatSnackBar);
     private fb: FormBuilder = inject(FormBuilder);
     private loginService: LoginAPIService = inject(LoginAPIService);
@@ -30,7 +32,6 @@ export class RegisterComponent implements OnDestroy {
     hidePassword: boolean = true;
     formSubmitting: boolean = false;
     registrationComplete: boolean = false;
-
 
     constructor() {
         this.formGroup = this.fb.group(
@@ -44,7 +45,12 @@ export class RegisterComponent implements OnDestroy {
             },
             {
                 validators: MatchValidator('password', 'passwordReEnter')
-            })
+            });
+
+        const registrationState = this.router.lastSuccessfulNavigation()?.extras.state;
+        if (registrationState) {
+            this.registrationComplete = registrationState['resumeNavigation'];
+        }
     }
 
     ngOnDestroy(): void {

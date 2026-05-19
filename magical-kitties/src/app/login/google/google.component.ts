@@ -1,7 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { Constants } from '../../Constants';
+import { Account } from '../../models/Account/account.model';
+import { AccountStatus } from '../../models/Account/accountstatus.model';
+import { NavigationExtras } from '../../models/Login/navigationExtras.model';
+import { AuthService } from '../../services/authService.service';
 
 declare const google: any;
 
@@ -13,7 +17,10 @@ declare const google: any;
 })
 export class GoogleComponent implements OnInit {
 
-    constructor(private router: Router) {}
+    router: Router = inject(Router);
+    authService: AuthService = inject(AuthService);
+
+    constructor() {}
 
     ngOnInit(): void {
         this.initializeGoogleSignIn();
@@ -27,15 +34,31 @@ export class GoogleComponent implements OnInit {
 
         google.accounts.id.renderButton(
             document.getElementById('google-signin-button')!,
-            { theme: 'outline', size: 'large', type: 'standard' }
+            { theme: 'outline', size: 'medium', type: 'standard' }
         );
-
-        google.accounts.id.prompt();
     }
 
     handleCredentialResponse(response: any) {
         localStorage.setItem(Constants.JWTToken, response.credential);
-        this.router.navigateByUrl("/");
+
+        this.authService.loginByToken().subscribe({
+            next: ((account: Account) => {
+                if (account.accountStatus === AccountStatus.created) {
+                    const extras = new NavigationExtras({
+                        resumeNavigation: true // it really means "I've registered this account"
+                    });
+
+                    this.router.navigateByUrl("/register", { state: extras });
+                } else {
+                    this.router.navigateByUrl("/");
+                }
+
+            }),
+            error: (err => {
+
+            })
+        })
+
     }
 
 }
