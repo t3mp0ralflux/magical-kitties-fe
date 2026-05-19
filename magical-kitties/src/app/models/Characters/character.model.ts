@@ -98,6 +98,7 @@ export class Character {
         this.maxOwiesDisplay += this.maxOwies;
         this.treatsDisplay += this.startingTreats;
         this.remainingTreats += this.startingTreats;
+        this.remainingTreats -= this.usedTreats;
     }
 
     setBaseCuteValue(value: number): void {

@@ -38,8 +38,6 @@ export class KittyTreatsComponent {
             return;
         }
 
-        let shouldSend = true;
-
         if (itemClicked <= this.character.remainingTreats) {
             this.character.usedTreats += 1;
             this.character.remainingTreats -= 1;
@@ -48,25 +46,16 @@ export class KittyTreatsComponent {
             this.character.remainingTreats += 1;
         }
 
-        if (this.character.remainingTreats > this.character.treatsDisplay) {
-            this.character.remainingTreats = this.character.treatsDisplay;
-            this.character.usedTreats = 0;
-            shouldSend = false;
+        const payload: UpdateCharacterAttributes = {
+            characterId: this.character.id,
+            usedTreats: this.character.usedTreats,
         }
 
-        if (shouldSend) {
-
-            const payload: UpdateCharacterAttributes = {
-                characterId: this.character.id,
-                usedTreats: this.character.usedTreats,
+        this.characterService.updateAttribute(AttributeOption.usedtreats, payload).subscribe({
+            next: (_) => {
+            },
+            error: () => {
             }
-
-            this.characterService.updateAttribute(AttributeOption.usedtreats, payload).subscribe({
-                next: (_) => {
-                },
-                error: () => {
-                }
-            });
-        }
+        });
     }
 }
