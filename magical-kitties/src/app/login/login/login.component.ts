@@ -14,10 +14,11 @@ import { Account } from '../../models/Account/account.model';
 import { LoginModel } from '../../models/Login/login.model';
 import { AuthService } from '../../services/authService.service';
 import { ErrorSnackbarComponent } from '../../sharedcomponents/error-snackbar/error-snackbar.component';
+import { GoogleComponent } from "../google/google.component";
 
 @Component({
     selector: 'app-login',
-    imports: [MatFormFieldModule, FormsModule, ReactiveFormsModule, MatButtonModule, MatInputModule, RouterLink, RouterLinkActive, MatProgressSpinnerModule, MatDividerModule],
+    imports: [MatFormFieldModule, FormsModule, ReactiveFormsModule, MatButtonModule, MatInputModule, RouterLink, RouterLinkActive, MatProgressSpinnerModule, MatDividerModule, GoogleComponent],
     templateUrl: './login.component.html',
     styleUrl: './login.component.scss'
 })

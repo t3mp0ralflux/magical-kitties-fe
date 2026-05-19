@@ -8,6 +8,8 @@ import { Router, RouterLink } from '@angular/router';
 import { Account } from '../../models/Account/account.model';
 import { AuthService } from '../../services/authService.service';
 
+declare const google: any;
+
 @Component({
     selector: 'app-header',
     imports: [CommonModule, MatToolbarModule, MatDividerModule, MatButtonModule, MatMenuModule, RouterLink],
@@ -32,9 +34,9 @@ export class HeaderComponent {
     }
 
     logout(): void {
-        console.log("logout received.")
         this.authService.logout().subscribe({
             next: (response) => {
+                google.accounts.id.disableAutoSelect();
                 this.router.navigateByUrl('/');
             },
             error: (err) => {

@@ -1,7 +1,7 @@
 import { HttpClient, HttpContext, HttpContextToken, HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpParams, HttpRequest } from "@angular/common/http";
 import { inject, Injectable, OnDestroy } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { catchError, EMPTY, finalize, map, Observable, Subject, Subscription, switchMap, tap, throwError } from "rxjs";
+import { catchError, EMPTY, finalize, map, Observable, of, Subject, Subscription, switchMap, tap, throwError } from "rxjs";
 import { environment } from "../../environments/environment";
 import { Constants } from "../Constants";
 import { Account } from "../models/Account/account.model";
@@ -41,6 +41,7 @@ export interface RequestConfig {
 @Injectable({ providedIn: 'root' })
 export class ApiClient implements HttpInterceptor, OnDestroy {
     private loginApiUrl = `${environment.baseUrl}/auth/login`;
+    private loginTokenApiUrl = `${environment.baseUrl}/auth/login/google`;
     private logoutApiUrl = `${environment.baseUrl}/auth/logout`;
     private refreshApiUrl = `${environment.baseUrl}/auth/token/refresh`;
     private http: HttpClient = inject(HttpClient);
@@ -195,11 +196,16 @@ export class ApiClient implements HttpInterceptor, OnDestroy {
     }
 
     public isLoggedIn(): boolean {
-        const token = localStorage.getItem(Constants.RefreshToken);
-        if (token !== null) {
-            if (!this.tokenExpired(token!)) {
+        const refreshToken = localStorage.getItem(Constants.RefreshToken);
+        const loginToken = localStorage.getItem(Constants.JWTToken);
+
+        if (refreshToken !== null || loginToken !== null) {
+            if (refreshToken && !this.tokenExpired(refreshToken!)) {
                 return true;
-            } else {
+            } else if (loginToken && !this.tokenExpired(loginToken!)) {
+                return true;
+            }
+            else {
                 this.clearTokens();
                 this.tokenExpiredObserver.forEach(observer => {
                     observer();
@@ -242,7 +248,19 @@ export class ApiClient implements HttpInterceptor, OnDestroy {
         )
     }
 
-    logout(): Observable<void> {
+    loginByToken(): Observable<Account> {
+        return this.request<LoginResponse>({
+            method: HttpMethod.POST,
+            path: this.loginTokenApiUrl,
+        }).pipe(
+            map((response: LoginResponse) => {
+                this.storeTokens(response.accessToken, response.refreshToken);
+                return response.account;
+            })
+        )
+    }
+
+    logout(): Observable<boolean> {
         const refreshToken = this.getRefreshToken();
 
         if (refreshToken) {
@@ -252,7 +270,7 @@ export class ApiClient implements HttpInterceptor, OnDestroy {
             }).pipe(
                 map(_ => {
                     this.clearTokens();
-                    return undefined;
+                    return true;
                 }),
                 catchError(err => {
                     console.log(err);
@@ -260,7 +278,8 @@ export class ApiClient implements HttpInterceptor, OnDestroy {
                 })
             )
         } else {
-            return this.clearTokens();
+            this.clearTokens();
+            return of(true);
         }
     }
 
